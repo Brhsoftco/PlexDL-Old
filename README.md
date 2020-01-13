@@ -1,11 +1,11 @@
 # PlexDL
 Plex Downloader/Streamer written in C#
 
-Utilises MaterialSkin.NET by IgnaceMaes - https://github.com/IgnaceMaes/MaterialSkin
-Utilises csharp-plex-api by ammmze for server detection - https://github.com/ammmze/csharp-plex-api
-Utilises Google's Material Design Icons - https://material.io/icons
-Utilises AltoHttp by aalitor for Web Downloads - https://github.com/aalitor/AltoHttp
-Utilises PVS.MediaPlayer by Peter Vegter - https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
+* Utilises MaterialSkin.NET by IgnaceMaes - https://github.com/IgnaceMaes/MaterialSkin
+* Utilises csharp-plex-api by ammmze for server detection - https://github.com/ammmze/csharp-plex-api
+* Utilises Google's Material Design Icons - https://material.io/icons
+* Utilises AltoHttp by aalitor for Web Downloads - https://github.com/aalitor/AltoHttp
+* Utilises PVS.MediaPlayer by Peter Vegter - https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
 ### What does PlexDL do?
 PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and allow you to stream the content or download it from the server. You can also view various metadata attributes about the software via the button in the "Data" section.
