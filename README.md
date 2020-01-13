@@ -8,7 +8,7 @@ Plex Downloader/Streamer written in C#
 * Utilises PVS.MediaPlayer by Peter Vegter - https://www.codeproject.com/Articles/109714/PVS-MediaPlayer-Audio-and-Video-Player-Library
 
 ### What does PlexDL do?
-PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and allow you to stream the content or download it from the server. You can also view various metadata attributes about the software via the button in the "Data" section.
+PlexDL uses a Plex Media Server's ability to serve XML API requests. PlexDL gathers information from the API and displays it in various gridviews to make it easier for you to enjoy your content. PlexDL can gather information about Plex Movies and TV Shows (archives and other content variations are not yet implemented), and provide you with the ability to stream the content or download it from the server. You can also view various metadata attributes about the selected content via the button in the "Data" section.
 
 ### Performance?
 PlexDL is in **no way** stable enough to be called high-performance. It is, however, stable enough to be used in most situations, and will work for almost any PMS out there (provided you have an account key). However, there may be instances where the software is underperforming due to a variety of reasons. One such reason, is that the custom interfaces built to interpret the data from the PMS are far from perfect, and may stutter from time to time. PlexDL is also heavily reliant on internet speeds and reliability, so that is also a factor.
