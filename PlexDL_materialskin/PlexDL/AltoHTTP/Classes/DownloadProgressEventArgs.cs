@@ -1,14 +1,13 @@
-﻿using System;
-
-namespace PlexDL.AltoHttp
+﻿namespace PlexDL.AltoHttp
 {
     /// <summary>
     /// Download progress changed event arguments
     /// </summary>
     public class DownloadProgressChangedEventArgs
     {
-        int progress;
-        int speed;
+        private int progress;
+        private int speed;
+
         /// <summary>
         /// Creates instance of the class
         /// </summary>
@@ -19,6 +18,7 @@ namespace PlexDL.AltoHttp
             this.progress = progress;
             this.speed = speed;
         }
+
         /// <summary>
         /// Gets the current progress
         /// </summary>
@@ -26,6 +26,7 @@ namespace PlexDL.AltoHttp
         {
             get { return progress; }
         }
+
         /// <summary>
         /// Gets the current speed
         /// </summary>

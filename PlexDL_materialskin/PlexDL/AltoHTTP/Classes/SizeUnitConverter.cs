@@ -2,7 +2,7 @@
 
 namespace PlexDL.AltoHttp.Classes
 {
-    static class SizeUnitConverter
+    internal static class SizeUnitConverter
     {
         public static string ConvertBestScaledSize(this long bytes)
         {
@@ -16,9 +16,10 @@ namespace PlexDL.AltoHttp.Classes
                 return (bytes / 1024d).ToString("0.00") + " kb";
             else if (inMb)
                 return (bytes / 1024d / 1024).ToString("0.00") + " mb";
-            else 
+            else
                 return (bytes / 1024d / 1024 / 1024).ToString("0.00") + " gb";
         }
+
         public static double ConvertMemorySize(this long size, FromTo fromTo)
         {
             int degree = (int)fromTo;
@@ -33,6 +34,5 @@ namespace PlexDL.AltoHttp.Classes
                 return size * multiplier;
             }
         }
-
     }
 }

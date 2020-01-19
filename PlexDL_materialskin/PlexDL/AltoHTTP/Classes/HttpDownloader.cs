@@ -14,42 +14,50 @@ namespace PlexDL.AltoHttp
     /// <param name="sender">Sender object</param>
     /// <param name="e">Event arguments</param>
     public delegate void ProgressChangedEventHandler(object sender, DownloadProgressChangedEventArgs e);
+
     /// <summary>
     /// Contains methods to help downloading
     /// </summary>
     public class HttpDownloader : IDownloader
     {
         #region Variables
+
         /// <summary>
         /// Occurs when the download process is completed
         /// </summary>
         public event EventHandler DownloadCompleted;
+
         /// <summary>
         /// Occurs when the download process is cancelled
         /// </summary>
         public event EventHandler DownloadCancelled;
+
         /// <summary>
         /// Occurs when the download progress is changed
         /// </summary>
         public event ProgressChangedEventHandler DownloadProgressChanged;
+
         /// <summary>
         /// Fired when response headers received e.g ContentLegth, Resumeability
         /// </summary>
         public event EventHandler HeadersReceived;
-        HttpWebRequest req;
-        HttpWebResponse resp;
-        Stream str;
-        FileStream file;
-        Stopwatch stpWatch;
-        AsyncOperation oprtor;
-        int bytesReceived, progress, speed, speedBytes;
-        long contentLength;
-        bool acceptRange;
-        string fileURL, destPath;
-        DownloadState state;
-        #endregion
+
+        private HttpWebRequest req;
+        private HttpWebResponse resp;
+        private Stream str;
+        private FileStream file;
+        private Stopwatch stpWatch;
+        private AsyncOperation oprtor;
+        private int bytesReceived, progress, speed, speedBytes;
+        private long contentLength;
+        private bool acceptRange;
+        private string fileURL, destPath;
+        private DownloadState state;
+
+        #endregion Variables
 
         #region Properties
+
         /// <summary>
         /// Gets content size of the file
         /// </summary>
@@ -57,6 +65,7 @@ namespace PlexDL.AltoHttp
         {
             get { return contentLength; }
         }
+
         /// <summary>
         /// Gets the total bytes count received
         /// </summary>
@@ -64,6 +73,7 @@ namespace PlexDL.AltoHttp
         {
             get { return bytesReceived; }
         }
+
         /// <summary>
         /// Gets the current download speed in bytes
         /// </summary>
@@ -71,6 +81,7 @@ namespace PlexDL.AltoHttp
         {
             get { return speed; }
         }
+
         /// <summary>
         /// Gets the current download progress over 100
         /// </summary>
@@ -85,9 +96,9 @@ namespace PlexDL.AltoHttp
                     if (DownloadProgressChanged != null)
                         DownloadProgressChanged(this, new DownloadProgressChangedEventArgs(progress, speed));
                 }), null);
-
             }
         }
+
         /// <summary>
         /// Get the source URL that will be downloaded when the download process is started
         /// </summary>
@@ -109,6 +120,7 @@ namespace PlexDL.AltoHttp
                 return destPath;
             }
         }
+
         /// <summary>
         /// Returns true if the source supports to set ranges into the requests, if not returns false
         /// </summary>
@@ -116,6 +128,7 @@ namespace PlexDL.AltoHttp
         {
             get { return acceptRange; }
         }
+
         /// <summary>
         /// Gets the value that reports the state of the download process
         /// </summary>
@@ -142,9 +155,11 @@ namespace PlexDL.AltoHttp
                     }), null);
             }
         }
-        #endregion
+
+        #endregion Properties
 
         #region Constructor, Destructor, Download Procedure
+
         /// <summary>
         /// Creates an instance of the HttpDownloader class
         /// </summary>
@@ -157,6 +172,7 @@ namespace PlexDL.AltoHttp
             this.destPath = destPath;
             oprtor = AsyncOperationManager.CreateOperation(null);
         }
+
         /// <summary>
         /// Destructor of the class object
         /// </summary>
@@ -164,10 +180,11 @@ namespace PlexDL.AltoHttp
         {
             this.Cancel();
         }
-        void Download(int offset, bool overWriteFile)
-        {
 
+        private void Download(int offset, bool overWriteFile)
+        {
             #region Send Request, Get Response
+
             try
             {
                 req = WebRequest.Create(this.FileURL) as HttpWebRequest;
@@ -192,7 +209,8 @@ namespace PlexDL.AltoHttp
                 state = DownloadState.Completed;
                 return;
             }
-            #endregion
+
+            #endregion Send Request, Get Response
 
             if (overWriteFile)
                 file = File.Open(destPath, FileMode.Append, FileAccess.Write);
@@ -208,8 +226,9 @@ namespace PlexDL.AltoHttp
             byte[] buffer = new byte[4096];
             stpWatch.Reset();
             stpWatch.Start();
-            
+
             #region Get the data to the buffer, write it to the file
+
             while ((bytesRead = str.Read(buffer, 0, buffer.Length)) > 0)
             {
                 if (state == DownloadState.Cancelled | state == DownloadState.Paused) break;
@@ -221,7 +240,8 @@ namespace PlexDL.AltoHttp
                 this.Progress = progress = (int)(bytesReceived * 100.0 / contentLength);
                 speed = (int)(speedBytes / 1.0 / stpWatch.Elapsed.TotalSeconds);
             }
-            #endregion
+
+            #endregion Get the data to the buffer, write it to the file
 
             stpWatch.Reset();
             CloseResources();
@@ -233,9 +253,10 @@ namespace PlexDL.AltoHttp
             }
         }
 
-        #endregion
+        #endregion Constructor, Destructor, Download Procedure
 
         #region Start, Pause, Stop, Resume
+
         /// <summary>
         /// Starts the download async
         /// </summary>
@@ -249,8 +270,8 @@ namespace PlexDL.AltoHttp
             {
                 Download(0, false);
             });
-
         }
+
         /// <summary>
         /// Pauses the download process
         /// </summary>
@@ -261,6 +282,7 @@ namespace PlexDL.AltoHttp
             if (State == DownloadState.Downloading)
                 state = DownloadState.Paused;
         }
+
         /// <summary>
         /// Resumes the download, only if the download is paused
         /// </summary>
@@ -273,6 +295,7 @@ namespace PlexDL.AltoHttp
                 Download((int)bytesReceived, true);
             });
         }
+
         /// <summary>
         /// Cancels the download and deletes the uncompleted file which is saved to destination
         /// </summary>
@@ -289,17 +312,20 @@ namespace PlexDL.AltoHttp
 
             state = DownloadState.Cancelled;
         }
-        #endregion
+
+        #endregion Start, Pause, Stop, Resume
 
         #region Helper Methods
-        void Reset()
+
+        private void Reset()
         {
             progress = 0;
             bytesReceived = 0;
             speed = 0;
             stpWatch = new Stopwatch();
         }
-        void CloseResources()
+
+        private void CloseResources()
         {
             if (resp != null)
                 resp.Close();
@@ -319,7 +345,8 @@ namespace PlexDL.AltoHttp
                 }
             }
         }
-        bool getAcceptRangeHeaderValue()
+
+        private bool getAcceptRangeHeaderValue()
         {
             for (int i = 0; i < resp.Headers.Count; i++)
             {
@@ -328,11 +355,12 @@ namespace PlexDL.AltoHttp
             }
             return false;
         }
-        string getFileNameFromUrl()
+
+        private string getFileNameFromUrl()
         {
             return Path.GetFileName(new Uri(this.fileURL).AbsolutePath);
         }
-        #endregion
+
+        #endregion Helper Methods
     }
-    
 }

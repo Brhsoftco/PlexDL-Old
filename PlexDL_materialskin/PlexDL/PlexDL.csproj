@@ -134,12 +134,6 @@
     <Compile Include="UI\DownloadManager.Designer.cs">
       <DependentUpon>DownloadManager.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\Home.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,9 +183,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DownloadManager.resx">
       <DependentUpon>DownloadManager.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
@@ -264,6 +255,8 @@
     <None Include="Resources\baseline_save_black_18dp.png" />
     <None Include="Resources\baseline_cancel_black_18dp.png" />
     <None Include="Resources\image-not-available-png-8.png" />
+    <None Include="Resources\baseline_book_black_18dp.png" />
+    <None Include="Resources\baseline_book_black_48dp.png" />
     <Content Include="Resources\baseline_cloud_download_black_48dp.ico" />
     <Content Include="Resources\baseline_cancel_black_48dp.png" />
     <None Include="Resources\baseline_pause_black_18dp.png" />

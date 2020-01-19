@@ -1,14 +1,13 @@
-﻿using System;
-
-namespace PlexDL.AltoHttp
+﻿namespace PlexDL.AltoHttp
 {
     /// <summary>
     /// Queue element completed event arguments
     /// </summary>
     public class QueueElementCompletedEventArgs
     {
-        int _index;
-        QueueElement _element;
+        private int _index;
+        private QueueElement _element;
+
         /// <summary>
         /// Contains QueueElementCompleted event args
         /// </summary>
@@ -18,6 +17,7 @@ namespace PlexDL.AltoHttp
             _index = index;
             _element = element;
         }
+
         /// <summary>
         /// The index of the completed element
         /// </summary>

@@ -54,9 +54,6 @@
             this.lblLibraryContent = new MaterialSkin.Controls.MaterialLabel();
             this.lblLibrarySections = new MaterialSkin.Controls.MaterialLabel();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
-            this.lblLibraryContentSections = new MaterialSkin.Controls.MaterialLabel();
-            this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
-            this.lblViewFullLog = new System.Windows.Forms.LinkLabel();
             this.btnMetadata = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnSearch = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnLoadProfile = new MaterialSkin.Controls.MaterialFlatButton();
@@ -66,15 +63,25 @@
             this.btnConnect = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnDownload = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnSetDlDir = new MaterialSkin.Controls.MaterialFlatButton();
+            this.lblLibraryContentSections = new MaterialSkin.Controls.MaterialLabel();
+            this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
+            this.lblViewFullLog = new System.Windows.Forms.LinkLabel();
+            this.cxtEpisodes = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.itmDownloadThisEpisode = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmDownloadAllEpisodes = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvEpisodes = new PlexDL.Components.FlatDataGridView();
             this.dgvSeasons = new PlexDL.Components.FlatDataGridView();
             this.dgvContent = new PlexDL.Components.FlatDataGridView();
             this.dgvLibrary = new PlexDL.Components.FlatDataGridView();
+            this.cxtLibrarySections = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.dgvServers = new PlexDL.Components.FlatDataGridView();
+            this.itmManuallyLoadSection = new System.Windows.Forms.ToolStripMenuItem();
+            this.cxtEpisodes.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).BeginInit();
+            this.cxtLibrarySections.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,12 +114,12 @@
             this.lblProgress.AutoSize = true;
             this.lblProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProgress.Depth = 0;
-            this.lblProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.lblProgress.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProgress.Location = new System.Drawing.Point(22, 137);
             this.lblProgress.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(30, 18);
+            this.lblProgress.Size = new System.Drawing.Size(33, 19);
             this.lblProgress.TabIndex = 8;
             this.lblProgress.Text = "Idle";
             this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -122,12 +129,12 @@
             this.lblLog.AutoSize = true;
             this.lblLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLog.Depth = 0;
-            this.lblLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.lblLog.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLog.Location = new System.Drawing.Point(22, 242);
             this.lblLog.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblLog.Name = "lblLog";
-            this.lblLog.Size = new System.Drawing.Size(33, 18);
+            this.lblLog.Size = new System.Drawing.Size(34, 19);
             this.lblLog.TabIndex = 14;
             this.lblLog.Text = "Log";
             this.lblLog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -137,12 +144,12 @@
             this.lblProfile.AutoSize = true;
             this.lblProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProfile.Depth = 0;
-            this.lblProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.lblProfile.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblProfile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProfile.Location = new System.Drawing.Point(22, 171);
             this.lblProfile.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblProfile.Name = "lblProfile";
-            this.lblProfile.Size = new System.Drawing.Size(39, 18);
+            this.lblProfile.Size = new System.Drawing.Size(40, 19);
             this.lblProfile.TabIndex = 15;
             this.lblProfile.Text = "Data";
             this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -174,12 +181,12 @@
             this.lblLibraryContent.AutoSize = true;
             this.lblLibraryContent.BackColor = System.Drawing.Color.White;
             this.lblLibraryContent.Depth = 0;
-            this.lblLibraryContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.lblLibraryContent.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblLibraryContent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLibraryContent.Location = new System.Drawing.Point(731, 72);
             this.lblLibraryContent.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblLibraryContent.Name = "lblLibraryContent";
-            this.lblLibraryContent.Size = new System.Drawing.Size(108, 18);
+            this.lblLibraryContent.Size = new System.Drawing.Size(111, 19);
             this.lblLibraryContent.TabIndex = 19;
             this.lblLibraryContent.Text = "Library Content";
             this.lblLibraryContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -189,49 +196,15 @@
             this.lblLibrarySections.AutoSize = true;
             this.lblLibrarySections.BackColor = System.Drawing.Color.White;
             this.lblLibrarySections.Depth = 0;
-            this.lblLibrarySections.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.lblLibrarySections.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblLibrarySections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLibrarySections.Location = new System.Drawing.Point(394, 72);
             this.lblLibrarySections.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblLibrarySections.Name = "lblLibrarySections";
-            this.lblLibrarySections.Size = new System.Drawing.Size(129, 18);
+            this.lblLibrarySections.Size = new System.Drawing.Size(133, 19);
             this.lblLibrarySections.TabIndex = 18;
             this.lblLibrarySections.Text = "Server Information";
             this.lblLibrarySections.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblLibraryContentSections
-            // 
-            this.lblLibraryContentSections.AutoSize = true;
-            this.lblLibraryContentSections.BackColor = System.Drawing.Color.White;
-            this.lblLibraryContentSections.Depth = 0;
-            this.lblLibraryContentSections.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.lblLibraryContentSections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblLibraryContentSections.Location = new System.Drawing.Point(1025, 72);
-            this.lblLibraryContentSections.MouseState = MaterialSkin.MouseState.HOVER;
-            this.lblLibraryContentSections.Name = "lblLibraryContentSections";
-            this.lblLibraryContentSections.Size = new System.Drawing.Size(170, 18);
-            this.lblLibraryContentSections.TabIndex = 29;
-            this.lblLibraryContentSections.Text = "Library Content Sections";
-            this.lblLibraryContentSections.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // wkrGetMetadata
-            // 
-            this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.wkrGetMetadata_DoWork);
-            // 
-            // lblViewFullLog
-            // 
-            this.lblViewFullLog.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblViewFullLog.AutoSize = true;
-            this.lblViewFullLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblViewFullLog.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblViewFullLog.Location = new System.Drawing.Point(208, 246);
-            this.lblViewFullLog.Name = "lblViewFullLog";
-            this.lblViewFullLog.Size = new System.Drawing.Size(70, 13);
-            this.lblViewFullLog.TabIndex = 30;
-            this.lblViewFullLog.TabStop = true;
-            this.lblViewFullLog.Text = "View Full Log";
-            this.lblViewFullLog.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblViewFullLog.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblViewFullLog_LinkClicked);
             // 
             // btnMetadata
             // 
@@ -391,6 +364,65 @@
             this.btnSetDlDir.UseVisualStyleBackColor = false;
             this.btnSetDlDir.Click += new System.EventHandler(this.btnSetDlDir_Click);
             // 
+            // lblLibraryContentSections
+            // 
+            this.lblLibraryContentSections.AutoSize = true;
+            this.lblLibraryContentSections.BackColor = System.Drawing.Color.White;
+            this.lblLibraryContentSections.Depth = 0;
+            this.lblLibraryContentSections.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblLibraryContentSections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblLibraryContentSections.Location = new System.Drawing.Point(1025, 72);
+            this.lblLibraryContentSections.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblLibraryContentSections.Name = "lblLibraryContentSections";
+            this.lblLibraryContentSections.Size = new System.Drawing.Size(174, 19);
+            this.lblLibraryContentSections.TabIndex = 29;
+            this.lblLibraryContentSections.Text = "Library Content Sections";
+            this.lblLibraryContentSections.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // wkrGetMetadata
+            // 
+            this.wkrGetMetadata.DoWork += new System.ComponentModel.DoWorkEventHandler(this.wkrGetMetadata_DoWork);
+            // 
+            // lblViewFullLog
+            // 
+            this.lblViewFullLog.ActiveLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblViewFullLog.AutoSize = true;
+            this.lblViewFullLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblViewFullLog.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblViewFullLog.Location = new System.Drawing.Point(208, 246);
+            this.lblViewFullLog.Name = "lblViewFullLog";
+            this.lblViewFullLog.Size = new System.Drawing.Size(70, 13);
+            this.lblViewFullLog.TabIndex = 30;
+            this.lblViewFullLog.TabStop = true;
+            this.lblViewFullLog.Text = "View Full Log";
+            this.lblViewFullLog.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblViewFullLog.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblViewFullLog_LinkClicked);
+            // 
+            // cxtEpisodes
+            // 
+            this.cxtEpisodes.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtEpisodes.Depth = 0;
+            this.cxtEpisodes.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmDownloadThisEpisode,
+            this.itmDownloadAllEpisodes});
+            this.cxtEpisodes.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cxtEpisodes.Name = "cxtEpisodes";
+            this.cxtEpisodes.Size = new System.Drawing.Size(197, 48);
+            // 
+            // itmDownloadThisEpisode
+            // 
+            this.itmDownloadThisEpisode.Name = "itmDownloadThisEpisode";
+            this.itmDownloadThisEpisode.Size = new System.Drawing.Size(196, 22);
+            this.itmDownloadThisEpisode.Text = "Download This Episode";
+            this.itmDownloadThisEpisode.Click += new System.EventHandler(this.itmDownloadThisEpisode_Click);
+            // 
+            // itmDownloadAllEpisodes
+            // 
+            this.itmDownloadAllEpisodes.Name = "itmDownloadAllEpisodes";
+            this.itmDownloadAllEpisodes.Size = new System.Drawing.Size(196, 22);
+            this.itmDownloadAllEpisodes.Text = "Download All Episodes";
+            this.itmDownloadAllEpisodes.Click += new System.EventHandler(this.itmDownloadAllEpisodes_Click);
+            // 
             // dgvEpisodes
             // 
             this.dgvEpisodes.AllowUserToAddRows = false;
@@ -513,6 +545,7 @@
             this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvContent.Size = new System.Drawing.Size(320, 408);
             this.dgvContent.TabIndex = 2;
+            this.dgvContent.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvContent_ColumnHeaderMouseClick);
             this.dgvContent.SelectionChanged += new System.EventHandler(this.dgvContent_OnRowChange);
             // 
             // dgvLibrary
@@ -535,6 +568,7 @@
             dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvLibrary.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvLibrary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvLibrary.ContextMenuStrip = this.cxtLibrarySections;
             dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -556,6 +590,17 @@
             this.dgvLibrary.TabIndex = 3;
             this.dgvLibrary.SelectionChanged += new System.EventHandler(this.dgvLibrary_OnRowChange);
             this.dgvLibrary.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvLibrary_Paint);
+            // 
+            // cxtLibrarySections
+            // 
+            this.cxtLibrarySections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtLibrarySections.Depth = 0;
+            this.cxtLibrarySections.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmManuallyLoadSection});
+            this.cxtLibrarySections.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cxtLibrarySections.Name = "cxtLibrarySections";
+            this.cxtLibrarySections.Size = new System.Drawing.Size(195, 48);
+            this.cxtLibrarySections.Opening += new System.ComponentModel.CancelEventHandler(this.cxtLibrarySections_Opening);
             // 
             // dgvServers
             // 
@@ -598,6 +643,13 @@
             this.dgvServers.TabIndex = 31;
             this.dgvServers.SelectionChanged += new System.EventHandler(this.dgvServers_OnRowChange);
             // 
+            // itmManuallyLoadSection
+            // 
+            this.itmManuallyLoadSection.Name = "itmManuallyLoadSection";
+            this.itmManuallyLoadSection.Size = new System.Drawing.Size(194, 22);
+            this.itmManuallyLoadSection.Text = "Manually Load Section";
+            this.itmManuallyLoadSection.Click += new System.EventHandler(this.itmManuallyLoadSection_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -635,10 +687,12 @@
             this.Text = "PlexDL by BRH Media";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.cxtEpisodes.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).EndInit();
+            this.cxtLibrarySections.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -677,6 +731,11 @@
         private Components.FlatDataGridView dgvSeasons;
         private Components.FlatDataGridView dgvEpisodes;
         private MaterialSkin.Controls.MaterialFlatButton btnSetDlDir;
+        private MaterialSkin.Controls.MaterialContextMenuStrip cxtEpisodes;
+        private System.Windows.Forms.ToolStripMenuItem itmDownloadThisEpisode;
+        private System.Windows.Forms.ToolStripMenuItem itmDownloadAllEpisodes;
+        private MaterialSkin.Controls.MaterialContextMenuStrip cxtLibrarySections;
+        private System.Windows.Forms.ToolStripMenuItem itmManuallyLoadSection;
     }
 }
 

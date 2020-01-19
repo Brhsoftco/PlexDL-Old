@@ -24,6 +24,8 @@ namespace PlexDL.UI
 
         public string PlayingPosition, Duration;
 
+        public bool CanFadeOut = true;
+
         public frmPlayer()
         {
             InitializeComponent();
@@ -83,7 +85,7 @@ namespace PlexDL.UI
                 }
                 else if (objHttpWebResponse.StatusCode == HttpStatusCode.Unauthorized)
                 {
-                    MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
+                    MessageBox.Show("The web server denied access to the resource. Check your token and try again.", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 //Close Steam
                 objResponseStream.Close();
@@ -117,7 +119,19 @@ namespace PlexDL.UI
 
             settings = frmMain.settings;
 
-            if (!Player.MFPresent) MessageBox.Show("MediaFoundation is not installed. The player will not be able to stream the selected content :(");
+            if (!Player.MFPresent)
+            {
+                MessageBox.Show("MediaFoundation is not installed. The player will not be able to stream the selected content :(", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CanFadeOut = false;
+                this.Close();
+            }
+
+            if (StreamingContent.StreamInformation.Container == "mkv")
+            {
+                MessageBox.Show("Matroska (mkv) playback is not supported. However, you can still download the file and watch it locally.", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                CanFadeOut = false;
+                this.Close();
+            }
 
             mPlayer = new Player(pnlPlayer);
             mPlayer.Sliders.Position.TrackBar = trkDuration;
@@ -130,7 +144,7 @@ namespace PlexDL.UI
 
         private void frmPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (settings.AnimationSpeed > 0)
+            if ((settings.AnimationSpeed > 0) && (CanFadeOut))
             {
                 e.Cancel = true;
                 t1 = new Timer();
@@ -144,7 +158,10 @@ namespace PlexDL.UI
                     e.Cancel = false;
                 }
             }
-            mPlayer.Dispose();
+            if (mPlayer != null)
+            {
+                mPlayer.Dispose();
+            }
         }
 
         private void mPlayer_ContentFinished(object sender, EventArgs e)
@@ -339,7 +356,7 @@ namespace PlexDL.UI
             }
             else
             {
-                MessageBox.Show("Index was higher than row count; could not process data.","Data Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("Index was higher than row count; could not process data.", "Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return new DownloadInfo();
             }
         }

@@ -1,27 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using MaterialSkin;
-using MaterialSkin.Controls;
-using PlexDL.UI;
+﻿using MaterialSkin.Controls;
 using PlexDL.Common.Structures;
-using PlexDL.Common;
 using PlexDL.WaitWindow;
-using System.Web;
+using System;
+using System.Linq;
 using System.Net;
-
+using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
     public partial class DirectConnect : MaterialForm
     {
         public ConnectionInformation ConnectionInfo { get; set; } = new ConnectionInformation();
+
         public DirectConnect()
         {
             InitializeComponent();
