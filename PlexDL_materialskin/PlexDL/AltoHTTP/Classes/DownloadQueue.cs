@@ -18,33 +18,37 @@ namespace PlexDL.AltoHttp
     {
         #region Variables
 
-        HttpDownloader downloader;
-        List<QueueElement> elements;
-        QueueElement currentElement;
-        int progress;
-        int downloadSpeed;
-        bool queuePaused, startEventRaised;
+        private HttpDownloader downloader;
+        private List<QueueElement> elements;
+        private QueueElement currentElement;
+        private int progress;
+        private int downloadSpeed;
+        private bool queuePaused, startEventRaised;
 
         /// <summary>
         /// Occurs when queue element's progress is changed
         /// </summary>
         public event EventHandler QueueProgressChanged;
+
         /// <summary>
         /// Occurs when the queue is completely completed
         /// </summary>
         public event EventHandler QueueCompleted;
+
         /// <summary>
         /// Occurs when the queue element is completed
         /// </summary>
         public event QueueElementCompletedEventHandler QueueElementCompleted;
+
         /// <summary>
         /// Occurs when the queue has been started
         /// </summary>
         public event EventHandler QueueElementStartedDownloading;
 
-        #endregion
+        #endregion Variables
 
         #region Constructor + Destructor
+
         /// <summary>
         /// Creates a queue and initializes resources
         /// </summary>
@@ -55,6 +59,7 @@ namespace PlexDL.AltoHttp
             downloadSpeed = 0;
             queuePaused = true;
         }
+
         /// <summary>
         /// Destructor for the object
         /// </summary>
@@ -62,18 +67,19 @@ namespace PlexDL.AltoHttp
         {
             this.Cancel();
         }
-        #endregion
+
+        #endregion Constructor + Destructor
 
         #region Events
 
-        void downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        private void downloader_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             progress = e.Progress;
             this.CurrentProgress = progress;
             downloadSpeed = e.Speed;
         }
 
-        void downloader_DownloadCompleted(object sender, EventArgs e)
+        private void downloader_DownloadCompleted(object sender, EventArgs e)
         {
             if (QueueElementCompleted != null)
                 QueueElementCompleted(this, new QueueElementCompletedEventArgs(this.CurrentIndex, currentElement));
@@ -94,9 +100,11 @@ namespace PlexDL.AltoHttp
 
             createNextDownload();
         }
-        #endregion
+
+        #endregion Events
 
         #region Properties
+
         /// <summary>
         /// Gets the number of elements in the queue
         /// </summary>
@@ -104,6 +112,7 @@ namespace PlexDL.AltoHttp
         {
             get { return elements.Count; }
         }
+
         /// <summary>
         /// Gets the index number of the element that is currently processing
         /// </summary>
@@ -118,6 +127,7 @@ namespace PlexDL.AltoHttp
                 return -1;
             }
         }
+
         /// <summary>
         /// Gets the download progress of the current download process
         /// </summary>
@@ -139,6 +149,7 @@ namespace PlexDL.AltoHttp
                 }
             }
         }
+
         /// <summary>
         /// Gets the download speed of the current download progress
         /// </summary>
@@ -146,6 +157,7 @@ namespace PlexDL.AltoHttp
         {
             get { return downloadSpeed; }
         }
+
         /// <summary>
         /// Gets the Range header value of the current download
         /// </summary>
@@ -165,9 +177,10 @@ namespace PlexDL.AltoHttp
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
+
         /// <summary>
         /// Adds new download elements into the queue
         /// </summary>
@@ -175,7 +188,6 @@ namespace PlexDL.AltoHttp
         /// <param name="destPath">The destination path to save the downloaded file</param>
         public void Add(string url, string destPath)
         {
-
             elements.Add(new QueueElement()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -183,6 +195,7 @@ namespace PlexDL.AltoHttp
                 Destination = destPath
             });
         }
+
         /// <summary>
         /// Deletes the queue element at the given index
         /// </summary>
@@ -198,6 +211,7 @@ namespace PlexDL.AltoHttp
             if (!queuePaused)
                 createNextDownload();
         }
+
         /// <summary>
         /// Deletes all elements in the queue
         /// </summary>
@@ -205,6 +219,7 @@ namespace PlexDL.AltoHttp
         {
             Cancel();
         }
+
         /// <summary>
         /// Starts the queue async
         /// </summary>
@@ -212,6 +227,7 @@ namespace PlexDL.AltoHttp
         {
             createNextDownload();
         }
+
         /// <summary>
         /// Stops and deletes all elements in the queue
         /// </summary>
@@ -223,6 +239,7 @@ namespace PlexDL.AltoHttp
             elements.Clear();
             queuePaused = true;
         }
+
         /// <summary>
         /// The queue process resumes
         /// </summary>
@@ -236,6 +253,7 @@ namespace PlexDL.AltoHttp
             downloader.ResumeAsync();
             queuePaused = false;
         }
+
         /// <summary>
         /// The queue process pauses
         /// </summary>
@@ -244,6 +262,7 @@ namespace PlexDL.AltoHttp
             downloader.Pause();
             queuePaused = true;
         }
+
         /// <summary>
         /// Removes all resources used
         /// </summary>
@@ -251,10 +270,12 @@ namespace PlexDL.AltoHttp
         {
             this.Cancel();
         }
-        #endregion
+
+        #endregion Methods
 
         #region Helper Methods
-        void createNextDownload()
+
+        private void createNextDownload()
         {
             QueueElement elt = getFirstNotCompletedElement();
             if (string.IsNullOrEmpty(elt.Url)) return;
@@ -266,7 +287,8 @@ namespace PlexDL.AltoHttp
             queuePaused = false;
             startEventRaised = false;
         }
-        QueueElement getFirstNotCompletedElement()
+
+        private QueueElement getFirstNotCompletedElement()
         {
             for (int i = 0; i < elements.Count; i++)
             {
@@ -276,6 +298,7 @@ namespace PlexDL.AltoHttp
                 QueueCompleted(this, new EventArgs());
             return new QueueElement();
         }
-        #endregion
+
+        #endregion Helper Methods
     }
 }

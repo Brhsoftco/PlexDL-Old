@@ -1,9 +1,11 @@
 ﻿using System.Windows.Forms;
+
 namespace PlexDL.Components
 {
     public class FlatDataGridView : DataGridView
     {
         public string RowsEmptyText { get; set; } = "No Data Found";
+
         public FlatDataGridView()
         {
             this.AllowUserToAddRows = false;
@@ -51,7 +53,6 @@ namespace PlexDL.Components
             this.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
         }
-
     }
 
     public class FlatDGVColumnHeaderStyle : DataGridViewCellStyle

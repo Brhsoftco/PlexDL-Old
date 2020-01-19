@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace PlexDL.AltoHttp
+﻿namespace PlexDL.AltoHttp
 {
     /// <summary>
     /// Download states
@@ -11,23 +8,28 @@ namespace PlexDL.AltoHttp
         /// <summary>
         /// Download is started
         /// </summary>
-        Started, 
+        Started,
+
         /// <summary>
         /// Download is paused
         /// </summary>
         Paused,
+
         /// <summary>
         /// Download is going on
         /// </summary>
-        Downloading, 
+        Downloading,
+
         /// <summary>
         /// Download is completed
         /// </summary>
-        Completed, 
+        Completed,
+
         /// <summary>
         /// Download is cancelled
         /// </summary>
         Cancelled,
+
         /// <summary>
         /// An error occured while downloading
         /// </summary>

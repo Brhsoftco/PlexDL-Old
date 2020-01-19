@@ -1,12 +1,10 @@
-﻿using System;
-using System.Text;
-
-namespace PlexDL.AltoHttp.Classes
+﻿namespace PlexDL.AltoHttp.Classes
 {
-    enum FromTo
+    internal enum FromTo
     {
         //Think the units like stair steps
         BytesToKb = -1,
+
         BytesToMb = -2,
         BytesToGb = -3,
         KbToBytes = 1,

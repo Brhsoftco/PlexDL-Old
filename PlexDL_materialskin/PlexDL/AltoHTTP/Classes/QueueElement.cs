@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PlexDL.AltoHttp
+﻿namespace PlexDL.AltoHttp
 {
     /// <summary>
     /// Struct to store the informations for download operations
@@ -21,27 +19,31 @@ namespace PlexDL.AltoHttp
             }
             return false;
         }
+
         /// <summary>
         /// Get the unique hash code of the object
         /// </summary>
         /// <returns></returns>
         public override int GetHashCode()
         {
-            
             return Id.GetHashCode() ^ Url.GetHashCode() ^ Destination.GetHashCode() ^ Completed.GetHashCode();
         }
+
         /// <summary>
         /// Download object id
         /// </summary>
         public string Id;
+
         /// <summary>
         /// Url source string
         /// </summary>
         public string Url;
+
         /// <summary>
         /// Destination file path to save the data
         /// </summary>
         public string Destination;
+
         /// <summary>
         /// Boolean value specifies if the download is completed
         /// </summary>

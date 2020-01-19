@@ -245,7 +245,7 @@
             this.ShowInTaskbar = false;
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "<TitleName>";
+            this.Text = "Unknown Title";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPlayer_FormClosing);
             this.Load += new System.EventHandler(this.frmPlayer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).EndInit();
