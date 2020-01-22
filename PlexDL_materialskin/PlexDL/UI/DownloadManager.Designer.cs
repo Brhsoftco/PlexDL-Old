@@ -1,7 +1,7 @@
 ﻿using PlexDL;
 namespace PlexDL.UI
 {
-    partial class frmDownloadManager
+    partial class DownloadManager
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@ namespace PlexDL.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDownloadManager));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DownloadManager));
             this.mtlControlPanel = new MaterialSkin.Controls.MaterialDivider();
             this.btnDownload = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnPause = new MaterialSkin.Controls.MaterialFlatButton();
@@ -109,7 +109,7 @@ namespace PlexDL.UI
             this.flpDownloadQueue.Size = new System.Drawing.Size(800, 330);
             this.flpDownloadQueue.TabIndex = 16;
             // 
-            // frmDownloadManager
+            // DownloadManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -122,13 +122,13 @@ namespace PlexDL.UI
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmDownloadManager";
+            this.Name = "DownloadManager";
             this.ShowInTaskbar = false;
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Download Manager";
-            this.Load += new System.EventHandler(this.frmDownloadManager_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmDownloadManager_FormClosing);
+            this.Load += new System.EventHandler(this.frmDownloadManager_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

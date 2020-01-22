@@ -8,14 +8,15 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
+using System.Diagnostics;
 
 namespace PlexDL.UI
 {
-    public partial class frmPlayer : MaterialForm
+    public partial class Player : MaterialForm
     {
         public Timer t1 = new Timer();
 
-        private Player mPlayer;
+        private PVS.MediaPlayer.Player mPlayer;
 
         public AppOptions settings;
         public PlexObject StreamingContent { get; set; }
@@ -26,7 +27,7 @@ namespace PlexDL.UI
 
         public bool CanFadeOut = true;
 
-        public frmPlayer()
+        public Player()
         {
             InitializeComponent();
             //Setup material design skin
@@ -117,9 +118,9 @@ namespace PlexDL.UI
             this.Text = FormTitle;
             //player.URL = StreamingContent.StreamUrl;
 
-            settings = frmMain.settings;
+            settings = Home.settings;
 
-            if (!Player.MFPresent)
+            if (!PVS.MediaPlayer.Player.MFPresent)
             {
                 MessageBox.Show("MediaFoundation is not installed. The player will not be able to stream the selected content :(", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 CanFadeOut = false;
@@ -128,12 +129,32 @@ namespace PlexDL.UI
 
             if (StreamingContent.StreamInformation.Container == "mkv")
             {
-                MessageBox.Show("Matroska (mkv) playback is not supported. However, you can still download the file and watch it locally.", "System Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                CanFadeOut = false;
-                this.Close();
+                DialogResult msg = MessageBox.Show("PlexDL Matroska (mkv) playback is not supported. Would you like to open the file in VLC Media Player? Note: It must already be installed", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (msg == DialogResult.No)
+                {
+                    CanFadeOut = false;
+                    this.Close();
+                }
+                else
+                {
+                    try
+                    {
+                        VLCLauncher.LaunchVLC(StreamingContent.StreamInformation);
+                        CanFadeOut = false;
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        CanFadeOut = false;
+                        MessageBox.Show("Error occurred whilst trying to launch VLC\n\n" + ex.ToString(), "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Home.recordException(ex.Message, "VLCLaunchError");
+                        this.Close();
+                    }
+                }
             }
 
-            mPlayer = new Player(pnlPlayer);
+            mPlayer = new PVS.MediaPlayer.Player(pnlPlayer);
             mPlayer.Sliders.Position.TrackBar = trkDuration;
             mPlayer.Events.MediaPositionChanged += mPlayer_MediaPositionChanged;
             mPlayer.Events.MediaEnded += mPlayer_ContentFinished;
@@ -142,13 +163,53 @@ namespace PlexDL.UI
             //MessageBox.Show("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
         }
 
+        /*
+         * PLAYER HOTKEYS:
+         * RIGHT ARROW=Skip Forward (Interval)
+         * LEFT ARROW=Skip Backward (Interval)
+         * UP ARROW=Next Title Index
+         * DOWN ARROW=Previous Title Index
+         * SPACE=Play/Pause
+         */
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (settings.Player.KeyBindings.PlayPause))
+            {
+                PlayPause();
+                return true;
+            }
+            else if (keyData == (settings.Player.KeyBindings.SkipForward))
+            {
+                SkipForward();
+                return true;
+            }
+            else if (keyData == (settings.Player.KeyBindings.SkipBackward))
+            {
+                SkipBack();
+                return true;
+            }
+            else if (keyData == (settings.Player.KeyBindings.NextTitle))
+            {
+                Stop();
+                NextTitle();
+                return true;
+            }
+            else if (keyData == (settings.Player.KeyBindings.PrevTitle))
+            {
+                Stop();
+                PrevTitle();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
         private void frmPlayer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((settings.AnimationSpeed > 0) && (CanFadeOut))
+            if ((settings.Generic.AnimationSpeed > 0) && (CanFadeOut))
             {
                 e.Cancel = true;
                 t1 = new Timer();
-                t1.Interval = settings.AnimationSpeed;
+                t1.Interval = settings.Generic.AnimationSpeed;
                 t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
                 t1.Start();
 
@@ -166,12 +227,20 @@ namespace PlexDL.UI
 
         private void mPlayer_ContentFinished(object sender, EventArgs e)
         {
-            SetIconPlay();
+            if (!settings.Player.PlayNextTitleAutomatically)
+            {
+                SetIconPlay();
+            }
+            else
+            {
+                SetIconPlay();
+                NextTitle();
+                PlayPause();
+            }
         }
 
         private void mPlayer_ContentStarted(object sender, EventArgs e)
         {
-
         }
 
         private void mPlayer_MediaPositionChanged(object sender, PositionEventArgs e)
@@ -287,6 +356,7 @@ namespace PlexDL.UI
                 mPlayer.Play(fileName);
             }
         }
+
         private void PlayWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
             if (!mPlayer.Playing)
@@ -307,11 +377,11 @@ namespace PlexDL.UI
         {
             if (incToken)
             {
-                return "http://" + settings.ServerAddress + ":" + settings.ServerPort + "/?X-Plex-Token=";
+                return "http://" + settings.ConnectionInfo.PlexAddress + ":" + settings.ConnectionInfo.PlexPort + "/?X-Plex-Token=";
             }
             else
             {
-                return "http://" + settings.ServerAddress + ":" + settings.ServerPort + "/";
+                return "http://" + settings.ConnectionInfo.PlexAddress + ":" + settings.ConnectionInfo.PlexPort + "/";
             }
         }
 
@@ -349,7 +419,7 @@ namespace PlexDL.UI
                 key = key.TrimStart('/');
                 string uri = baseUri + key + "/?X-Plex-Token=";
 
-                XmlDocument reply = GetXMLTransaction(uri, settings.Token);
+                XmlDocument reply = GetXMLTransaction(uri, settings.ConnectionInfo.PlexAccountToken);
 
                 obj = getContentDownloadInfo_Xml(reply);
                 return obj;
@@ -371,14 +441,14 @@ namespace PlexDL.UI
             DataTable part = sections.Tables["Part"];
             DataRow video = sections.Tables["Video"].Rows[0];
             string title = video["title"].ToString();
-            if (title.Length > settings.DefaultStringLength)
-                title = title.Substring(0, settings.DefaultStringLength);
+            if (title.Length > settings.Generic.DefaultStringLength)
+                title = title.Substring(0, settings.Generic.DefaultStringLength);
             string thumb = video["thumb"].ToString();
             string thumbnailFullUri = "";
             if (!(thumb == ""))
             {
                 string baseUri = getBaseUri(false).TrimEnd('/');
-                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + settings.Token;
+                thumbnailFullUri = baseUri + thumb + "?X-Plex-Token=" + settings.ConnectionInfo.PlexAccountToken;
             }
 
             DataRow partRow = part.Rows[0];
@@ -389,7 +459,7 @@ namespace PlexDL.UI
             int contentDuration = Convert.ToInt32(partRow["duration"]);
             string fileName = Common.Methods.removeIllegalCharacters(title + "." + container);
 
-            string link = getBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + settings.Token;
+            string link = getBaseUri(false).TrimEnd('/') + filePart + "/?X-Plex-Token=" + settings.ConnectionInfo.PlexAccountToken;
             obj.Link = link;
             obj.Container = container;
             obj.ByteLength = byteLength;
@@ -451,24 +521,34 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnSkipBack_Click(object sender, EventArgs e)
+        private void SkipBack()
         {
             if (mPlayer.Playing)
             {
-                decimal rewindAmount = (settings.SkipBackwardInterval) * -1;
+                decimal rewindAmount = (settings.Player.SkipBackwardInterval) * -1;
 
                 mPlayer.Position.Skip((int)rewindAmount);
             }
         }
 
-        private void btnSkipForward_Click(object sender, EventArgs e)
+        private void SkipForward()
         {
             if (mPlayer.Playing)
             {
-                decimal stepAmount = settings.SkipForwardInterval;
+                decimal stepAmount = settings.Player.SkipForwardInterval;
 
                 mPlayer.Position.Skip((int)stepAmount);
             }
+        }
+
+        private void btnSkipBack_Click(object sender, EventArgs e)
+        {
+            SkipBack();
+        }
+
+        private void btnSkipForward_Click(object sender, EventArgs e)
+        {
+            SkipForward();
         }
 
         private void Resume()
@@ -489,7 +569,7 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnPlayPause_Click(object sender, EventArgs e)
+        private void PlayPause()
         {
             if ((mPlayer.Playing) && (!mPlayer.Paused))
             {
@@ -506,6 +586,11 @@ namespace PlexDL.UI
                     Play(StreamingContent.StreamInformation.Link);
                 }
             }
+        }
+
+        private void btnPlayPause_Click(object sender, EventArgs e)
+        {
+            PlayPause();
         }
     }
 }

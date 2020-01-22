@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.UI
 {
-    partial class frmMain
+    partial class Home
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -54,34 +54,48 @@
             this.lblLibraryContent = new MaterialSkin.Controls.MaterialLabel();
             this.lblLibrarySections = new MaterialSkin.Controls.MaterialLabel();
             this.tipMain = new System.Windows.Forms.ToolTip(this.components);
-            this.btnMetadata = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnSearch = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnLoadProfile = new MaterialSkin.Controls.MaterialFlatButton();
-            this.btnSaveProfile = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnPause = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnHTTPPlay = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnConnect = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnDownload = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnSetDlDir = new MaterialSkin.Controls.MaterialFlatButton();
+            this.btnMetadata = new MaterialSkin.Controls.MaterialFlatButton();
             this.lblLibraryContentSections = new MaterialSkin.Controls.MaterialLabel();
             this.wkrGetMetadata = new libbrhscgui.Components.AbortableBackgroundWorker();
             this.lblViewFullLog = new System.Windows.Forms.LinkLabel();
             this.cxtEpisodes = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.itmDownloadThisEpisode = new System.Windows.Forms.ToolStripMenuItem();
             this.itmDownloadAllEpisodes = new System.Windows.Forms.ToolStripMenuItem();
+            this.cxtEpisodeOptions = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.itmEpisodeMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmEpisodeDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.thisEpisodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thisSeasonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cxtLibrarySections = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.itmManuallyLoadSection = new System.Windows.Forms.ToolStripMenuItem();
+            this.cxtContentOptions = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.itmContentMetadata = new System.Windows.Forms.ToolStripMenuItem();
+            this.itmContentDownload = new System.Windows.Forms.ToolStripMenuItem();
+            this.ofdMetadata = new System.Windows.Forms.OpenFileDialog();
+            this.cxtProfile = new MaterialSkin.Controls.MaterialContextMenuStrip();
+            this.loadProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveProfileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dgvEpisodes = new PlexDL.Components.FlatDataGridView();
             this.dgvSeasons = new PlexDL.Components.FlatDataGridView();
             this.dgvContent = new PlexDL.Components.FlatDataGridView();
             this.dgvLibrary = new PlexDL.Components.FlatDataGridView();
-            this.cxtLibrarySections = new MaterialSkin.Controls.MaterialContextMenuStrip();
             this.dgvServers = new PlexDL.Components.FlatDataGridView();
-            this.itmManuallyLoadSection = new System.Windows.Forms.ToolStripMenuItem();
             this.cxtEpisodes.SuspendLayout();
+            this.cxtEpisodeOptions.SuspendLayout();
+            this.cxtLibrarySections.SuspendLayout();
+            this.cxtContentOptions.SuspendLayout();
+            this.cxtProfile.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).BeginInit();
-            this.cxtLibrarySections.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,13 +128,13 @@
             this.lblProgress.AutoSize = true;
             this.lblProgress.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProgress.Depth = 0;
-            this.lblProgress.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProgress.Location = new System.Drawing.Point(22, 137);
             this.lblProgress.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(33, 19);
-            this.lblProgress.TabIndex = 8;
+            this.lblProgress.Size = new System.Drawing.Size(30, 18);
+            this.lblProgress.TabIndex = 6;
             this.lblProgress.Text = "Idle";
             this.lblProgress.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -129,13 +143,13 @@
             this.lblLog.AutoSize = true;
             this.lblLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLog.Depth = 0;
-            this.lblLog.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblLog.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblLog.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLog.Location = new System.Drawing.Point(22, 242);
             this.lblLog.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblLog.Name = "lblLog";
-            this.lblLog.Size = new System.Drawing.Size(34, 19);
-            this.lblLog.TabIndex = 14;
+            this.lblLog.Size = new System.Drawing.Size(33, 18);
+            this.lblLog.TabIndex = 11;
             this.lblLog.Text = "Log";
             this.lblLog.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -144,13 +158,13 @@
             this.lblProfile.AutoSize = true;
             this.lblProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProfile.Depth = 0;
-            this.lblProfile.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblProfile.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblProfile.Location = new System.Drawing.Point(22, 171);
             this.lblProfile.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblProfile.Name = "lblProfile";
-            this.lblProfile.Size = new System.Drawing.Size(40, 19);
-            this.lblProfile.TabIndex = 15;
+            this.lblProfile.Size = new System.Drawing.Size(39, 18);
+            this.lblProfile.TabIndex = 7;
             this.lblProfile.Text = "Data";
             this.lblProfile.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -163,7 +177,7 @@
             this.lstLog.Name = "lstLog";
             this.lstLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.lstLog.Size = new System.Drawing.Size(252, 221);
-            this.lstLog.TabIndex = 20;
+            this.lstLog.TabIndex = 13;
             this.tipMain.SetToolTip(this.lstLog, "PlexDL Log");
             // 
             // mtlDividerMain
@@ -174,20 +188,20 @@
             this.mtlDividerMain.MouseState = MaterialSkin.MouseState.HOVER;
             this.mtlDividerMain.Name = "mtlDividerMain";
             this.mtlDividerMain.Size = new System.Drawing.Size(281, 430);
-            this.mtlDividerMain.TabIndex = 21;
+            this.mtlDividerMain.TabIndex = 22;
             // 
             // lblLibraryContent
             // 
             this.lblLibraryContent.AutoSize = true;
             this.lblLibraryContent.BackColor = System.Drawing.Color.White;
             this.lblLibraryContent.Depth = 0;
-            this.lblLibraryContent.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblLibraryContent.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblLibraryContent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLibraryContent.Location = new System.Drawing.Point(731, 72);
             this.lblLibraryContent.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblLibraryContent.Name = "lblLibraryContent";
-            this.lblLibraryContent.Size = new System.Drawing.Size(111, 19);
-            this.lblLibraryContent.TabIndex = 19;
+            this.lblLibraryContent.Size = new System.Drawing.Size(108, 18);
+            this.lblLibraryContent.TabIndex = 17;
             this.lblLibraryContent.Text = "Library Content";
             this.lblLibraryContent.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -196,33 +210,15 @@
             this.lblLibrarySections.AutoSize = true;
             this.lblLibrarySections.BackColor = System.Drawing.Color.White;
             this.lblLibrarySections.Depth = 0;
-            this.lblLibrarySections.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblLibrarySections.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblLibrarySections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLibrarySections.Location = new System.Drawing.Point(394, 72);
             this.lblLibrarySections.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblLibrarySections.Name = "lblLibrarySections";
-            this.lblLibrarySections.Size = new System.Drawing.Size(133, 19);
-            this.lblLibrarySections.TabIndex = 18;
+            this.lblLibrarySections.Size = new System.Drawing.Size(129, 18);
+            this.lblLibrarySections.TabIndex = 14;
             this.lblLibrarySections.Text = "Server Information";
             this.lblLibrarySections.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnMetadata
-            // 
-            this.btnMetadata.AutoSize = true;
-            this.btnMetadata.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnMetadata.BackColor = System.Drawing.SystemColors.Control;
-            this.btnMetadata.Depth = 0;
-            this.btnMetadata.Icon = global::PlexDL.Properties.Resources.baseline_dvr_black_18dp;
-            this.btnMetadata.Location = new System.Drawing.Point(130, 196);
-            this.btnMetadata.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnMetadata.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnMetadata.Name = "btnMetadata";
-            this.btnMetadata.Primary = false;
-            this.btnMetadata.Size = new System.Drawing.Size(44, 36);
-            this.btnMetadata.TabIndex = 23;
-            this.tipMain.SetToolTip(this.btnMetadata, "View Content Metadata");
-            this.btnMetadata.UseVisualStyleBackColor = false;
-            this.btnMetadata.Click += new System.EventHandler(this.btnMetadata_Click);
             // 
             // btnSearch
             // 
@@ -236,7 +232,7 @@
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Primary = false;
             this.btnSearch.Size = new System.Drawing.Size(44, 36);
-            this.btnSearch.TabIndex = 22;
+            this.btnSearch.TabIndex = 3;
             this.tipMain.SetToolTip(this.btnSearch, "Search");
             this.btnSearch.UseVisualStyleBackColor = true;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -248,34 +244,16 @@
             this.btnLoadProfile.BackColor = System.Drawing.SystemColors.Control;
             this.btnLoadProfile.Depth = 0;
             this.btnLoadProfile.Icon = global::PlexDL.Properties.Resources.baseline_folder_open_black_18dp;
-            this.btnLoadProfile.Location = new System.Drawing.Point(78, 196);
+            this.btnLoadProfile.Location = new System.Drawing.Point(26, 196);
             this.btnLoadProfile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnLoadProfile.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnLoadProfile.Name = "btnLoadProfile";
             this.btnLoadProfile.Primary = false;
             this.btnLoadProfile.Size = new System.Drawing.Size(44, 36);
-            this.btnLoadProfile.TabIndex = 17;
-            this.tipMain.SetToolTip(this.btnLoadProfile, "Load Profile");
+            this.btnLoadProfile.TabIndex = 8;
+            this.tipMain.SetToolTip(this.btnLoadProfile, "Save/Load Profile");
             this.btnLoadProfile.UseVisualStyleBackColor = false;
-            this.btnLoadProfile.Click += new System.EventHandler(this.btnLoadProfile_Click);
-            // 
-            // btnSaveProfile
-            // 
-            this.btnSaveProfile.AutoSize = true;
-            this.btnSaveProfile.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnSaveProfile.BackColor = System.Drawing.SystemColors.Control;
-            this.btnSaveProfile.Depth = 0;
-            this.btnSaveProfile.Icon = global::PlexDL.Properties.Resources.baseline_save_black_18dp;
-            this.btnSaveProfile.Location = new System.Drawing.Point(26, 196);
-            this.btnSaveProfile.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnSaveProfile.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnSaveProfile.Name = "btnSaveProfile";
-            this.btnSaveProfile.Primary = false;
-            this.btnSaveProfile.Size = new System.Drawing.Size(44, 36);
-            this.btnSaveProfile.TabIndex = 16;
-            this.tipMain.SetToolTip(this.btnSaveProfile, "Save Profile");
-            this.btnSaveProfile.UseVisualStyleBackColor = false;
-            this.btnSaveProfile.Click += new System.EventHandler(this.btnSaveProfile_Click);
+            this.btnLoadProfile.Click += new System.EventHandler(this.btnProfile_Click);
             // 
             // btnPause
             // 
@@ -290,7 +268,7 @@
             this.btnPause.Name = "btnPause";
             this.btnPause.Primary = false;
             this.btnPause.Size = new System.Drawing.Size(44, 36);
-            this.btnPause.TabIndex = 13;
+            this.btnPause.TabIndex = 1;
             this.tipMain.SetToolTip(this.btnPause, "Pause/Resume Download");
             this.btnPause.UseVisualStyleBackColor = false;
             this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
@@ -307,7 +285,7 @@
             this.btnHTTPPlay.Name = "btnHTTPPlay";
             this.btnHTTPPlay.Primary = false;
             this.btnHTTPPlay.Size = new System.Drawing.Size(44, 36);
-            this.btnHTTPPlay.TabIndex = 12;
+            this.btnHTTPPlay.TabIndex = 2;
             this.tipMain.SetToolTip(this.btnHTTPPlay, "Stream Selected Title");
             this.btnHTTPPlay.UseVisualStyleBackColor = true;
             this.btnHTTPPlay.Click += new System.EventHandler(this.btnHTTPPlay_Click);
@@ -324,7 +302,7 @@
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Primary = false;
             this.btnConnect.Size = new System.Drawing.Size(44, 36);
-            this.btnConnect.TabIndex = 11;
+            this.btnConnect.TabIndex = 4;
             this.tipMain.SetToolTip(this.btnConnect, "Connect");
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
@@ -341,7 +319,7 @@
             this.btnDownload.Name = "btnDownload";
             this.btnDownload.Primary = true;
             this.btnDownload.Size = new System.Drawing.Size(44, 36);
-            this.btnDownload.TabIndex = 3;
+            this.btnDownload.TabIndex = 0;
             this.tipMain.SetToolTip(this.btnDownload, "Download Selected Title");
             this.btnDownload.UseVisualStyleBackColor = true;
             this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
@@ -353,29 +331,47 @@
             this.btnSetDlDir.BackColor = System.Drawing.SystemColors.Control;
             this.btnSetDlDir.Depth = 0;
             this.btnSetDlDir.Icon = global::PlexDL.Properties.Resources.baseline_video_library_black_18dp;
-            this.btnSetDlDir.Location = new System.Drawing.Point(182, 196);
+            this.btnSetDlDir.Location = new System.Drawing.Point(78, 196);
             this.btnSetDlDir.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnSetDlDir.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnSetDlDir.Name = "btnSetDlDir";
             this.btnSetDlDir.Primary = false;
             this.btnSetDlDir.Size = new System.Drawing.Size(44, 36);
-            this.btnSetDlDir.TabIndex = 32;
+            this.btnSetDlDir.TabIndex = 9;
             this.tipMain.SetToolTip(this.btnSetDlDir, "Set Download Directory");
             this.btnSetDlDir.UseVisualStyleBackColor = false;
             this.btnSetDlDir.Click += new System.EventHandler(this.btnSetDlDir_Click);
+            // 
+            // btnMetadata
+            // 
+            this.btnMetadata.AutoSize = true;
+            this.btnMetadata.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnMetadata.BackColor = System.Drawing.SystemColors.Control;
+            this.btnMetadata.Depth = 0;
+            this.btnMetadata.Icon = global::PlexDL.Properties.Resources.baseline_dvr_black_18dp;
+            this.btnMetadata.Location = new System.Drawing.Point(130, 196);
+            this.btnMetadata.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnMetadata.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnMetadata.Name = "btnMetadata";
+            this.btnMetadata.Primary = false;
+            this.btnMetadata.Size = new System.Drawing.Size(44, 36);
+            this.btnMetadata.TabIndex = 10;
+            this.tipMain.SetToolTip(this.btnMetadata, "Set Download Directory");
+            this.btnMetadata.UseVisualStyleBackColor = false;
+            this.btnMetadata.Click += new System.EventHandler(this.btnMetadata_Click);
             // 
             // lblLibraryContentSections
             // 
             this.lblLibraryContentSections.AutoSize = true;
             this.lblLibraryContentSections.BackColor = System.Drawing.Color.White;
             this.lblLibraryContentSections.Depth = 0;
-            this.lblLibraryContentSections.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblLibraryContentSections.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.lblLibraryContentSections.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.lblLibraryContentSections.Location = new System.Drawing.Point(1025, 72);
             this.lblLibraryContentSections.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblLibraryContentSections.Name = "lblLibraryContentSections";
-            this.lblLibraryContentSections.Size = new System.Drawing.Size(174, 19);
-            this.lblLibraryContentSections.TabIndex = 29;
+            this.lblLibraryContentSections.Size = new System.Drawing.Size(170, 18);
+            this.lblLibraryContentSections.TabIndex = 19;
             this.lblLibraryContentSections.Text = "Library Content Sections";
             this.lblLibraryContentSections.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -392,7 +388,7 @@
             this.lblViewFullLog.Location = new System.Drawing.Point(208, 246);
             this.lblViewFullLog.Name = "lblViewFullLog";
             this.lblViewFullLog.Size = new System.Drawing.Size(70, 13);
-            this.lblViewFullLog.TabIndex = 30;
+            this.lblViewFullLog.TabIndex = 12;
             this.lblViewFullLog.TabStop = true;
             this.lblViewFullLog.Text = "View Full Log";
             this.lblViewFullLog.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -420,8 +416,124 @@
             // 
             this.itmDownloadAllEpisodes.Name = "itmDownloadAllEpisodes";
             this.itmDownloadAllEpisodes.Size = new System.Drawing.Size(196, 22);
-            this.itmDownloadAllEpisodes.Text = "Download All Episodes";
+            this.itmDownloadAllEpisodes.Text = "Download This Season";
             this.itmDownloadAllEpisodes.Click += new System.EventHandler(this.itmDownloadAllEpisodes_Click);
+            // 
+            // cxtEpisodeOptions
+            // 
+            this.cxtEpisodeOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtEpisodeOptions.Depth = 0;
+            this.cxtEpisodeOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmEpisodeMetadata,
+            this.itmEpisodeDownload});
+            this.cxtEpisodeOptions.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cxtEpisodeOptions.Name = "cxtEpisodeOptions";
+            this.cxtEpisodeOptions.Size = new System.Drawing.Size(129, 48);
+            this.cxtEpisodeOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cxtEpisodeOptions_Opening);
+            // 
+            // itmEpisodeMetadata
+            // 
+            this.itmEpisodeMetadata.Name = "itmEpisodeMetadata";
+            this.itmEpisodeMetadata.Size = new System.Drawing.Size(128, 22);
+            this.itmEpisodeMetadata.Text = "Metadata";
+            this.itmEpisodeMetadata.Click += new System.EventHandler(this.metadataToolStripMenuItem_Click);
+            // 
+            // itmEpisodeDownload
+            // 
+            this.itmEpisodeDownload.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.thisEpisodeToolStripMenuItem,
+            this.thisSeasonToolStripMenuItem});
+            this.itmEpisodeDownload.Name = "itmEpisodeDownload";
+            this.itmEpisodeDownload.Size = new System.Drawing.Size(128, 22);
+            this.itmEpisodeDownload.Text = "Download";
+            // 
+            // thisEpisodeToolStripMenuItem
+            // 
+            this.thisEpisodeToolStripMenuItem.Name = "thisEpisodeToolStripMenuItem";
+            this.thisEpisodeToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.thisEpisodeToolStripMenuItem.Text = "This Episode";
+            this.thisEpisodeToolStripMenuItem.Click += new System.EventHandler(this.thisEpisodeToolStripMenuItem_Click);
+            // 
+            // thisSeasonToolStripMenuItem
+            // 
+            this.thisSeasonToolStripMenuItem.Name = "thisSeasonToolStripMenuItem";
+            this.thisSeasonToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.thisSeasonToolStripMenuItem.Text = "This Season";
+            this.thisSeasonToolStripMenuItem.Click += new System.EventHandler(this.thisSeasonToolStripMenuItem_Click);
+            // 
+            // cxtLibrarySections
+            // 
+            this.cxtLibrarySections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtLibrarySections.Depth = 0;
+            this.cxtLibrarySections.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmManuallyLoadSection});
+            this.cxtLibrarySections.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cxtLibrarySections.Name = "cxtLibrarySections";
+            this.cxtLibrarySections.Size = new System.Drawing.Size(195, 26);
+            this.cxtLibrarySections.Opening += new System.ComponentModel.CancelEventHandler(this.cxtLibrarySections_Opening);
+            // 
+            // itmManuallyLoadSection
+            // 
+            this.itmManuallyLoadSection.Name = "itmManuallyLoadSection";
+            this.itmManuallyLoadSection.Size = new System.Drawing.Size(194, 22);
+            this.itmManuallyLoadSection.Text = "Manually Load Section";
+            this.itmManuallyLoadSection.Click += new System.EventHandler(this.itmManuallyLoadSection_Click);
+            // 
+            // cxtContentOptions
+            // 
+            this.cxtContentOptions.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtContentOptions.Depth = 0;
+            this.cxtContentOptions.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.itmContentMetadata,
+            this.itmContentDownload});
+            this.cxtContentOptions.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cxtContentOptions.Name = "cxtEpisodeOptions";
+            this.cxtContentOptions.Size = new System.Drawing.Size(129, 48);
+            this.cxtContentOptions.Opening += new System.ComponentModel.CancelEventHandler(this.cxtContentOptions_Opening);
+            // 
+            // itmContentMetadata
+            // 
+            this.itmContentMetadata.Name = "itmContentMetadata";
+            this.itmContentMetadata.Size = new System.Drawing.Size(128, 22);
+            this.itmContentMetadata.Text = "Metadata";
+            this.itmContentMetadata.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // itmContentDownload
+            // 
+            this.itmContentDownload.Name = "itmContentDownload";
+            this.itmContentDownload.Size = new System.Drawing.Size(128, 22);
+            this.itmContentDownload.Text = "Download";
+            this.itmContentDownload.Click += new System.EventHandler(this.itmContentDownload_Click);
+            // 
+            // ofdMetadata
+            // 
+            this.ofdMetadata.Filter = "PlexMovie XML|*.pmxml";
+            this.ofdMetadata.Title = "Load Metadata File";
+            // 
+            // cxtProfile
+            // 
+            this.cxtProfile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.cxtProfile.Depth = 0;
+            this.cxtProfile.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadProfileToolStripMenuItem,
+            this.saveProfileToolStripMenuItem});
+            this.cxtProfile.MouseState = MaterialSkin.MouseState.HOVER;
+            this.cxtProfile.Name = "cxtProfile";
+            this.cxtProfile.Size = new System.Drawing.Size(138, 48);
+            // 
+            // loadProfileToolStripMenuItem
+            // 
+            this.loadProfileToolStripMenuItem.Name = "loadProfileToolStripMenuItem";
+            this.loadProfileToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.loadProfileToolStripMenuItem.Text = "Load Profile";
+            this.loadProfileToolStripMenuItem.Click += new System.EventHandler(this.loadProfileToolStripMenuItem_Click);
+            // 
+            // saveProfileToolStripMenuItem
+            // 
+            this.saveProfileToolStripMenuItem.Name = "saveProfileToolStripMenuItem";
+            this.saveProfileToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.saveProfileToolStripMenuItem.Text = "Save Profile";
+            this.saveProfileToolStripMenuItem.Click += new System.EventHandler(this.saveProfileToolStripMenuItem_Click);
             // 
             // dgvEpisodes
             // 
@@ -443,6 +555,7 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvEpisodes.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvEpisodes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvEpisodes.ContextMenuStrip = this.cxtEpisodeOptions;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -461,7 +574,7 @@
             this.dgvEpisodes.RowsEmptyText = "No TV Episodes Found";
             this.dgvEpisodes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvEpisodes.Size = new System.Drawing.Size(320, 201);
-            this.dgvEpisodes.TabIndex = 0;
+            this.dgvEpisodes.TabIndex = 21;
             this.dgvEpisodes.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvEpisodes_Paint);
             // 
             // dgvSeasons
@@ -502,7 +615,7 @@
             this.dgvSeasons.RowsEmptyText = "No TV Seasons Found";
             this.dgvSeasons.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvSeasons.Size = new System.Drawing.Size(320, 201);
-            this.dgvSeasons.TabIndex = 1;
+            this.dgvSeasons.TabIndex = 20;
             this.dgvSeasons.SelectionChanged += new System.EventHandler(this.dgvSeasons_OnRowChange);
             this.dgvSeasons.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvSeasons_Paint);
             // 
@@ -526,6 +639,7 @@
             dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvContent.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvContent.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvContent.ContextMenuStrip = this.cxtContentOptions;
             dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -544,7 +658,7 @@
             this.dgvContent.RowsEmptyText = "No Library Content Found";
             this.dgvContent.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvContent.Size = new System.Drawing.Size(320, 408);
-            this.dgvContent.TabIndex = 2;
+            this.dgvContent.TabIndex = 18;
             this.dgvContent.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvContent_ColumnHeaderMouseClick);
             this.dgvContent.SelectionChanged += new System.EventHandler(this.dgvContent_OnRowChange);
             // 
@@ -587,20 +701,9 @@
             this.dgvLibrary.RowsEmptyText = "No Library Sections Found";
             this.dgvLibrary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvLibrary.Size = new System.Drawing.Size(320, 201);
-            this.dgvLibrary.TabIndex = 3;
+            this.dgvLibrary.TabIndex = 16;
             this.dgvLibrary.SelectionChanged += new System.EventHandler(this.dgvLibrary_OnRowChange);
             this.dgvLibrary.Paint += new System.Windows.Forms.PaintEventHandler(this.dgvLibrary_Paint);
-            // 
-            // cxtLibrarySections
-            // 
-            this.cxtLibrarySections.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.cxtLibrarySections.Depth = 0;
-            this.cxtLibrarySections.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.itmManuallyLoadSection});
-            this.cxtLibrarySections.MouseState = MaterialSkin.MouseState.HOVER;
-            this.cxtLibrarySections.Name = "cxtLibrarySections";
-            this.cxtLibrarySections.Size = new System.Drawing.Size(195, 48);
-            this.cxtLibrarySections.Opening += new System.ComponentModel.CancelEventHandler(this.cxtLibrarySections_Opening);
             // 
             // dgvServers
             // 
@@ -640,21 +743,15 @@
             this.dgvServers.RowsEmptyText = "No Servers Found";
             this.dgvServers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvServers.Size = new System.Drawing.Size(320, 201);
-            this.dgvServers.TabIndex = 31;
+            this.dgvServers.TabIndex = 15;
             this.dgvServers.SelectionChanged += new System.EventHandler(this.dgvServers_OnRowChange);
             // 
-            // itmManuallyLoadSection
-            // 
-            this.itmManuallyLoadSection.Name = "itmManuallyLoadSection";
-            this.itmManuallyLoadSection.Size = new System.Drawing.Size(194, 22);
-            this.itmManuallyLoadSection.Text = "Manually Load Section";
-            this.itmManuallyLoadSection.Click += new System.EventHandler(this.itmManuallyLoadSection_Click);
-            // 
-            // frmMain
+            // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1284, 514);
+            this.Controls.Add(this.btnMetadata);
             this.Controls.Add(this.btnSetDlDir);
             this.Controls.Add(this.dgvEpisodes);
             this.Controls.Add(this.dgvSeasons);
@@ -663,11 +760,9 @@
             this.Controls.Add(this.dgvServers);
             this.Controls.Add(this.lblViewFullLog);
             this.Controls.Add(this.lblLibraryContentSections);
-            this.Controls.Add(this.btnMetadata);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.lstLog);
             this.Controls.Add(this.btnLoadProfile);
-            this.Controls.Add(this.btnSaveProfile);
             this.Controls.Add(this.lblProfile);
             this.Controls.Add(this.lblLog);
             this.Controls.Add(this.btnPause);
@@ -681,18 +776,21 @@
             this.Controls.Add(this.lblLibrarySections);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "frmMain";
+            this.Name = "Home";
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PlexDL by BRH Media";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.cxtEpisodes.ResumeLayout(false);
+            this.cxtEpisodeOptions.ResumeLayout(false);
+            this.cxtLibrarySections.ResumeLayout(false);
+            this.cxtContentOptions.ResumeLayout(false);
+            this.cxtProfile.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvEpisodes)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSeasons)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvContent)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvLibrary)).EndInit();
-            this.cxtLibrarySections.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvServers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -712,7 +810,6 @@
         private MaterialSkin.Controls.MaterialFlatButton btnHTTPPlay;
         public MaterialSkin.Controls.MaterialLabel lblLog;
         public MaterialSkin.Controls.MaterialLabel lblProfile;
-        private MaterialSkin.Controls.MaterialFlatButton btnSaveProfile;
         private MaterialSkin.Controls.MaterialFlatButton btnLoadProfile;
         private System.Windows.Forms.ListBox lstLog;
         private MaterialSkin.Controls.MaterialDivider mtlDividerMain;
@@ -720,7 +817,6 @@
         public MaterialSkin.Controls.MaterialLabel lblLibraryContent;
         public MaterialSkin.Controls.MaterialLabel lblLibrarySections;
         private System.Windows.Forms.ToolTip tipMain;
-        private MaterialSkin.Controls.MaterialFlatButton btnMetadata;
         public MaterialSkin.Controls.MaterialLabel lblLibraryContentSections;
         private MaterialSkin.Controls.MaterialFlatButton btnPause;
         private libbrhscgui.Components.AbortableBackgroundWorker wkrGetMetadata;
@@ -736,6 +832,19 @@
         private System.Windows.Forms.ToolStripMenuItem itmDownloadAllEpisodes;
         private MaterialSkin.Controls.MaterialContextMenuStrip cxtLibrarySections;
         private System.Windows.Forms.ToolStripMenuItem itmManuallyLoadSection;
+        private MaterialSkin.Controls.MaterialContextMenuStrip cxtEpisodeOptions;
+        private System.Windows.Forms.ToolStripMenuItem itmEpisodeMetadata;
+        private System.Windows.Forms.ToolStripMenuItem itmEpisodeDownload;
+        private System.Windows.Forms.ToolStripMenuItem thisEpisodeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thisSeasonToolStripMenuItem;
+        private MaterialSkin.Controls.MaterialContextMenuStrip cxtContentOptions;
+        private System.Windows.Forms.ToolStripMenuItem itmContentMetadata;
+        private System.Windows.Forms.ToolStripMenuItem itmContentDownload;
+        private MaterialSkin.Controls.MaterialFlatButton btnMetadata;
+        private System.Windows.Forms.OpenFileDialog ofdMetadata;
+        private MaterialSkin.Controls.MaterialContextMenuStrip cxtProfile;
+        private System.Windows.Forms.ToolStripMenuItem loadProfileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveProfileToolStripMenuItem;
     }
 }
 

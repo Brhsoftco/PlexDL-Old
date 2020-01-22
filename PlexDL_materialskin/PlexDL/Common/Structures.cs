@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace PlexDL.Common.Structures
 {
@@ -14,7 +16,7 @@ namespace PlexDL.Common.Structures
             TVShowDirectoryLayout dirLayout = new TVShowDirectoryLayout();
             if (layout == DownloadLayouts.PlexStandardLayout)
             {
-                string basePath = settings.DownloadDirectory + @"\TV\";
+                string basePath = settings.Generic.DownloadDirectory + @"\TV\";
                 string season = show.Season;
                 string title = Methods.removeIllegalCharacters(show.TVShowName);
                 string seasonPath = basePath + title + @"\" + season;
@@ -45,6 +47,9 @@ namespace PlexDL.Common.Structures
     {
     }
 
+    [XmlInclude(typeof(PlexMovie))]
+    [XmlInclude(typeof(PlexTVShow))]
+    [Serializable]
     public class PlexObject
     {
         public DownloadInfo StreamInformation { get; set; } = new DownloadInfo();
@@ -53,14 +58,16 @@ namespace PlexDL.Common.Structures
         public string StreamPosterUri { get; set; } = "";
         public string ContentGenre { get; set; } = "";
         public long ContentDuration { get; set; } = 0;
+        public List<PlexActor> Actors { get; set; } = new List<PlexActor>();
     }
-
+    
+    [Serializable]
     public class PlexMovie : PlexObject
     {
-        public List<PlexActor> Actors { get; set; } = new List<PlexActor>();
-        public System.Data.DataTable TitlesTable { get; set; } = new System.Data.DataTable();
+        //used as an easier-to-read class. It doesn't serve a real purpose.
     }
 
+    [Serializable]
     public class PlexTVShow : PlexObject
     {
         public string TVShowName { get; set; } = "";
@@ -90,14 +97,6 @@ namespace PlexDL.Common.Structures
         public int PlexPort { get; set; } = 32400;
         public string PlexAddress { get; set; } = "";
         public string PlexAccountToken { get; set; } = "";
-    }
-
-    public class SearchOptions
-    {
-        public string SearchColumn { get; set; } = "title";
-        public string SearchTerm { get; set; } = "";
-
-        public System.Data.DataTable SearchCollection { get; set; }
     }
 
     public class DownloadInfo

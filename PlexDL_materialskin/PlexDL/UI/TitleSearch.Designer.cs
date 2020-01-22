@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.UI
 {
-    partial class frmSearch
+    partial class SearchForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,90 +28,153 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.txtSearchTerm = new System.Windows.Forms.TextBox();
-            this.gbSearchMain = new System.Windows.Forms.GroupBox();
-            this.btnStartSearch = new System.Windows.Forms.Button();
-            this.gbSearchColumn = new System.Windows.Forms.GroupBox();
             this.cbxSearchColumn = new System.Windows.Forms.ComboBox();
-            this.gbSearchMain.SuspendLayout();
-            this.gbSearchColumn.SuspendLayout();
+            this.txtSearchTerm = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.chkDirectMatch = new MaterialSkin.Controls.MaterialCheckBox();
+            this.mtlMain = new MaterialSkin.Controls.MaterialDivider();
+            this.btnStartSearch = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.lblSearchField = new MaterialSkin.Controls.MaterialLabel();
+            this.btnCancelSearch = new MaterialSkin.Controls.MaterialRaisedButton();
             this.SuspendLayout();
-            // 
-            // txtSearchTerm
-            // 
-            this.txtSearchTerm.Location = new System.Drawing.Point(6, 19);
-            this.txtSearchTerm.Name = "txtSearchTerm";
-            this.txtSearchTerm.Size = new System.Drawing.Size(212, 20);
-            this.txtSearchTerm.TabIndex = 2;
-            // 
-            // gbSearchMain
-            // 
-            this.gbSearchMain.Controls.Add(this.btnStartSearch);
-            this.gbSearchMain.Controls.Add(this.txtSearchTerm);
-            this.gbSearchMain.Location = new System.Drawing.Point(5, 4);
-            this.gbSearchMain.Name = "gbSearchMain";
-            this.gbSearchMain.Size = new System.Drawing.Size(310, 51);
-            this.gbSearchMain.TabIndex = 3;
-            this.gbSearchMain.TabStop = false;
-            this.gbSearchMain.Text = "Enter Search Term";
-            // 
-            // btnStartSearch
-            // 
-            this.btnStartSearch.Location = new System.Drawing.Point(224, 17);
-            this.btnStartSearch.Name = "btnStartSearch";
-            this.btnStartSearch.Size = new System.Drawing.Size(75, 23);
-            this.btnStartSearch.TabIndex = 3;
-            this.btnStartSearch.Text = "Go";
-            this.btnStartSearch.UseVisualStyleBackColor = true;
-            this.btnStartSearch.Click += new System.EventHandler(this.btnStartSearch_Click);
-            // 
-            // gbSearchColumn
-            // 
-            this.gbSearchColumn.Controls.Add(this.cbxSearchColumn);
-            this.gbSearchColumn.Location = new System.Drawing.Point(5, 61);
-            this.gbSearchColumn.Name = "gbSearchColumn";
-            this.gbSearchColumn.Size = new System.Drawing.Size(310, 50);
-            this.gbSearchColumn.TabIndex = 4;
-            this.gbSearchColumn.TabStop = false;
-            this.gbSearchColumn.Text = "Search Column";
             // 
             // cbxSearchColumn
             // 
+            this.cbxSearchColumn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxSearchColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbxSearchColumn.FormattingEnabled = true;
-            this.cbxSearchColumn.Location = new System.Drawing.Point(7, 19);
+            this.cbxSearchColumn.Location = new System.Drawing.Point(24, 179);
             this.cbxSearchColumn.Name = "cbxSearchColumn";
-            this.cbxSearchColumn.Size = new System.Drawing.Size(292, 21);
-            this.cbxSearchColumn.TabIndex = 0;
+            this.cbxSearchColumn.Size = new System.Drawing.Size(331, 21);
+            this.cbxSearchColumn.TabIndex = 2;
             // 
-            // frmSearch
+            // txtSearchTerm
+            // 
+            this.txtSearchTerm.BackColor = System.Drawing.Color.White;
+            this.txtSearchTerm.Depth = 0;
+            this.txtSearchTerm.Hint = "Search Term";
+            this.txtSearchTerm.Location = new System.Drawing.Point(24, 95);
+            this.txtSearchTerm.MaxLength = 32767;
+            this.txtSearchTerm.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtSearchTerm.Name = "txtSearchTerm";
+            this.txtSearchTerm.PasswordChar = '\0';
+            this.txtSearchTerm.SelectedText = "";
+            this.txtSearchTerm.SelectionLength = 0;
+            this.txtSearchTerm.SelectionStart = 0;
+            this.txtSearchTerm.Size = new System.Drawing.Size(331, 23);
+            this.txtSearchTerm.TabIndex = 0;
+            this.txtSearchTerm.TabStop = false;
+            this.txtSearchTerm.UseSystemPasswordChar = false;
+            // 
+            // chkDirectMatch
+            // 
+            this.chkDirectMatch.AutoSize = true;
+            this.chkDirectMatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.chkDirectMatch.Depth = 0;
+            this.chkDirectMatch.Font = new System.Drawing.Font("Roboto", 10F);
+            this.chkDirectMatch.Location = new System.Drawing.Point(24, 121);
+            this.chkDirectMatch.Margin = new System.Windows.Forms.Padding(0);
+            this.chkDirectMatch.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.chkDirectMatch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.chkDirectMatch.Name = "chkDirectMatch";
+            this.chkDirectMatch.Ripple = true;
+            this.chkDirectMatch.Size = new System.Drawing.Size(109, 30);
+            this.chkDirectMatch.TabIndex = 1;
+            this.chkDirectMatch.Text = "Direct Match";
+            this.chkDirectMatch.UseVisualStyleBackColor = false;
+            // 
+            // mtlMain
+            // 
+            this.mtlMain.BackColor = System.Drawing.SystemColors.Control;
+            this.mtlMain.Depth = 0;
+            this.mtlMain.Location = new System.Drawing.Point(12, 75);
+            this.mtlMain.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mtlMain.Name = "mtlMain";
+            this.mtlMain.Size = new System.Drawing.Size(355, 187);
+            this.mtlMain.TabIndex = 0;
+            this.mtlMain.Text = "materialDivider1";
+            // 
+            // btnStartSearch
+            // 
+            this.btnStartSearch.AutoSize = true;
+            this.btnStartSearch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnStartSearch.Depth = 0;
+            this.btnStartSearch.Icon = null;
+            this.btnStartSearch.Location = new System.Drawing.Point(282, 215);
+            this.btnStartSearch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnStartSearch.Name = "btnStartSearch";
+            this.btnStartSearch.Primary = true;
+            this.btnStartSearch.Size = new System.Drawing.Size(73, 36);
+            this.btnStartSearch.TabIndex = 4;
+            this.btnStartSearch.Text = "Search";
+            this.btnStartSearch.UseVisualStyleBackColor = true;
+            this.btnStartSearch.Click += new System.EventHandler(this.btnStartSearch_Click);
+            // 
+            // lblSearchField
+            // 
+            this.lblSearchField.AutoSize = true;
+            this.lblSearchField.Depth = 0;
+            this.lblSearchField.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblSearchField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblSearchField.Location = new System.Drawing.Point(20, 157);
+            this.lblSearchField.MouseState = MaterialSkin.MouseState.HOVER;
+            this.lblSearchField.Name = "lblSearchField";
+            this.lblSearchField.Size = new System.Drawing.Size(91, 19);
+            this.lblSearchField.TabIndex = 3;
+            this.lblSearchField.Text = "Search Field";
+            // 
+            // btnCancelSearch
+            // 
+            this.btnCancelSearch.AutoSize = true;
+            this.btnCancelSearch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCancelSearch.Depth = 0;
+            this.btnCancelSearch.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancelSearch.Icon = null;
+            this.btnCancelSearch.Location = new System.Drawing.Point(203, 215);
+            this.btnCancelSearch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnCancelSearch.Name = "btnCancelSearch";
+            this.btnCancelSearch.Primary = true;
+            this.btnCancelSearch.Size = new System.Drawing.Size(73, 36);
+            this.btnCancelSearch.TabIndex = 3;
+            this.btnCancelSearch.Text = "Cancel";
+            this.btnCancelSearch.UseVisualStyleBackColor = true;
+            this.btnCancelSearch.Click += new System.EventHandler(this.btnCancelSearch_Click);
+            // 
+            // SearchForm
             // 
             this.AcceptButton = this.btnStartSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(322, 116);
-            this.Controls.Add(this.gbSearchColumn);
-            this.Controls.Add(this.gbSearchMain);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.CancelButton = this.btnCancelSearch;
+            this.ClientSize = new System.Drawing.Size(379, 274);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnCancelSearch);
+            this.Controls.Add(this.lblSearchField);
+            this.Controls.Add(this.btnStartSearch);
+            this.Controls.Add(this.chkDirectMatch);
+            this.Controls.Add(this.cbxSearchColumn);
+            this.Controls.Add(this.txtSearchTerm);
+            this.Controls.Add(this.mtlMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmSearch";
+            this.Name = "SearchForm";
             this.ShowIcon = false;
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Search for Content";
             this.Load += new System.EventHandler(this.frmSearch_Load);
-            this.gbSearchMain.ResumeLayout(false);
-            this.gbSearchMain.PerformLayout();
-            this.gbSearchColumn.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.TextBox txtSearchTerm;
-        private System.Windows.Forms.GroupBox gbSearchMain;
-        private System.Windows.Forms.Button btnStartSearch;
-        private System.Windows.Forms.GroupBox gbSearchColumn;
         private System.Windows.Forms.ComboBox cbxSearchColumn;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtSearchTerm;
+        private MaterialSkin.Controls.MaterialCheckBox chkDirectMatch;
+        private MaterialSkin.Controls.MaterialDivider mtlMain;
+        private MaterialSkin.Controls.MaterialRaisedButton btnStartSearch;
+        private MaterialSkin.Controls.MaterialLabel lblSearchField;
+        private MaterialSkin.Controls.MaterialRaisedButton btnCancelSearch;
     }
 }

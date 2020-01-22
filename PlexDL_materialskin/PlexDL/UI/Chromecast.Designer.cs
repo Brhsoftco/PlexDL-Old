@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.UI
 {
-    partial class frmChromecast
+    partial class Chromecast
     {
         /// <summary>
         /// Required designer variable.
@@ -163,7 +163,7 @@
             this.lstChromecasts.TabIndex = 9;
             this.lstChromecasts.SelectedIndexChanged += new System.EventHandler(this.lstChromecasts_SelectedIndexChanged);
             // 
-            // frmChromecast
+            // Chromecast
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -177,7 +177,7 @@
             this.Controls.Add(this.lblAddress);
             this.Controls.Add(this.materialLabel1);
             this.Controls.Add(this.btnSearch);
-            this.Name = "frmChromecast";
+            this.Name = "Chromecast";
             this.Text = "Cast <Title>";
             this.ResumeLayout(false);
             this.PerformLayout();

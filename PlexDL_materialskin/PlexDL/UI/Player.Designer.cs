@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.UI
 {
-    partial class frmPlayer
+    partial class Player
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPlayer));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Player));
             this.pnlPlayer = new System.Windows.Forms.Panel();
             this.btnExit = new MaterialSkin.Controls.MaterialFlatButton();
             this.tmrCopied = new System.Windows.Forms.Timer(this.components);
@@ -67,7 +67,7 @@
             this.btnExit.Name = "btnExit";
             this.btnExit.Primary = false;
             this.btnExit.Size = new System.Drawing.Size(103, 36);
-            this.btnExit.TabIndex = 1;
+            this.btnExit.TabIndex = 9;
             this.btnExit.Text = "Exit Player";
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
@@ -98,7 +98,7 @@
             this.lblTotalDuration.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblTotalDuration.Name = "lblTotalDuration";
             this.lblTotalDuration.Size = new System.Drawing.Size(65, 19);
-            this.lblTotalDuration.TabIndex = 6;
+            this.lblTotalDuration.TabIndex = 8;
             this.lblTotalDuration.Text = "00:00:00";
             this.lblTotalDuration.Click += new System.EventHandler(this.materialLabel1_Click);
             // 
@@ -113,7 +113,7 @@
             this.lblTimeSoFar.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblTimeSoFar.Name = "lblTimeSoFar";
             this.lblTimeSoFar.Size = new System.Drawing.Size(65, 19);
-            this.lblTimeSoFar.TabIndex = 7;
+            this.lblTimeSoFar.TabIndex = 6;
             this.lblTimeSoFar.Text = "00:00:00";
             // 
             // trkDuration
@@ -123,7 +123,7 @@
             this.trkDuration.Location = new System.Drawing.Point(393, 800);
             this.trkDuration.Name = "trkDuration";
             this.trkDuration.Size = new System.Drawing.Size(694, 19);
-            this.trkDuration.TabIndex = 8;
+            this.trkDuration.TabIndex = 7;
             this.trkDuration.TickStyle = System.Windows.Forms.TickStyle.None;
             // 
             // btnNextTitle
@@ -138,7 +138,7 @@
             this.btnNextTitle.Name = "btnNextTitle";
             this.btnNextTitle.Primary = false;
             this.btnNextTitle.Size = new System.Drawing.Size(44, 36);
-            this.btnNextTitle.TabIndex = 12;
+            this.btnNextTitle.TabIndex = 5;
             this.btnNextTitle.UseVisualStyleBackColor = true;
             this.btnNextTitle.Click += new System.EventHandler(this.btnNextTitle_Click);
             // 
@@ -154,7 +154,7 @@
             this.btnStop.Name = "btnStop";
             this.btnStop.Primary = false;
             this.btnStop.Size = new System.Drawing.Size(44, 36);
-            this.btnStop.TabIndex = 11;
+            this.btnStop.TabIndex = 1;
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
@@ -170,7 +170,7 @@
             this.btnSkipForward.Name = "btnSkipForward";
             this.btnSkipForward.Primary = false;
             this.btnSkipForward.Size = new System.Drawing.Size(44, 36);
-            this.btnSkipForward.TabIndex = 10;
+            this.btnSkipForward.TabIndex = 4;
             this.btnSkipForward.UseVisualStyleBackColor = true;
             this.btnSkipForward.Click += new System.EventHandler(this.btnSkipForward_Click);
             // 
@@ -186,7 +186,7 @@
             this.btnSkipBack.Name = "btnSkipBack";
             this.btnSkipBack.Primary = false;
             this.btnSkipBack.Size = new System.Drawing.Size(44, 36);
-            this.btnSkipBack.TabIndex = 9;
+            this.btnSkipBack.TabIndex = 3;
             this.btnSkipBack.UseVisualStyleBackColor = true;
             this.btnSkipBack.Click += new System.EventHandler(this.btnSkipBack_Click);
             // 
@@ -202,7 +202,7 @@
             this.btnPlayPause.Name = "btnPlayPause";
             this.btnPlayPause.Primary = false;
             this.btnPlayPause.Size = new System.Drawing.Size(44, 36);
-            this.btnPlayPause.TabIndex = 3;
+            this.btnPlayPause.TabIndex = 0;
             this.btnPlayPause.UseVisualStyleBackColor = true;
             this.btnPlayPause.Click += new System.EventHandler(this.btnPlayPause_Click);
             // 
@@ -218,11 +218,11 @@
             this.btnPrevTitle.Name = "btnPrevTitle";
             this.btnPrevTitle.Primary = false;
             this.btnPrevTitle.Size = new System.Drawing.Size(44, 36);
-            this.btnPrevTitle.TabIndex = 13;
+            this.btnPrevTitle.TabIndex = 2;
             this.btnPrevTitle.UseVisualStyleBackColor = true;
             this.btnPrevTitle.Click += new System.EventHandler(this.btnPrevTitle_Click);
             // 
-            // frmPlayer
+            // Player
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -241,7 +241,7 @@
             this.Controls.Add(this.pnlPlayer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "frmPlayer";
+            this.Name = "Player";
             this.ShowInTaskbar = false;
             this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
