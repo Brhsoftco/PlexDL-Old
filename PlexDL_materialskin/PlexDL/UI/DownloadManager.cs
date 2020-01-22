@@ -6,11 +6,11 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class frmDownloadManager : MaterialForm
+    public partial class DownloadManager : MaterialForm
     {
         public static List<DownloadInfo> Queue { get; set; } = new List<DownloadInfo>();
 
-        public frmDownloadManager()
+        public DownloadManager()
         {
             InitializeComponent();
         }

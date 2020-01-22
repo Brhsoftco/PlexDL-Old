@@ -1,7 +1,36 @@
-﻿namespace PlexDL.Common
+﻿using PlexDL.Common.Structures;
+using PlexDL.UI;
+using System;
+using System.IO;
+using System.Windows.Forms;
+using System.Xml.Serialization;
+
+namespace PlexDL.Common
 {
-    public class Methods
+    public static class Methods
     {
+        public static PlexObject MetadataFromFile(string fileName)
+        {
+            try
+            {
+                PlexObject subReq = null;
+
+                XmlSerializer serializer = new XmlSerializer(typeof(PlexObject));
+
+                StreamReader reader = new StreamReader(fileName);
+                subReq = (PlexObject)serializer.Deserialize(reader);
+                reader.Close();
+
+                return subReq;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred\n\n" + ex.ToString(), "Metadata Load Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Home.recordException(ex.Message, "XMLMetadataLoadError");
+                return new PlexObject();
+            }
+        }
+
         public static string CalculateTime(double Time)
         {
             string mm, ss, CalculatedTime;

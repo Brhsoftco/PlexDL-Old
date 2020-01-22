@@ -7,10 +7,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Text;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -19,17 +22,28 @@ using System.Xml.Serialization;
 
 namespace PlexDL.UI
 {
-    public partial class frmMain : MaterialForm
+    public partial class Home : MaterialForm
     {
         #region GlobalVariables
 
         #region GlobalComponentVariables
 
+        private readonly PrivateFontCollection privateFontCollection = new PrivateFontCollection();
+
         public readonly UserInteraction objUI = new UserInteraction();
         public Timer t1 = new Timer();
-        public frmDownloadManager DownloadManager = new frmDownloadManager();
+        public DownloadManager DownloadManager = new DownloadManager();
         public User user = new User();
         public Server svr;
+
+        #region Fonts
+
+        public static Font ROBOTO_MEDIUM_12;
+        public static Font ROBOTO_REGULAR_11;
+        public static Font ROBOTO_MEDIUM_11;
+        public static Font ROBOTO_MEDIUM_10;
+
+        #endregion Fonts
 
         #endregion GlobalComponentVariables
 
@@ -52,6 +66,7 @@ namespace PlexDL.UI
         public bool DownloadAllEpisodes = false;
         public bool downloadIsRunning = false;
         public bool downloadIsPaused = false;
+        public bool engineIsRunning = false;
         public bool msgAlreadyShown = false;
         public bool doNotAttemptAgain = false;
 
@@ -91,8 +106,12 @@ namespace PlexDL.UI
         public DataTable seriesTable = null;
         public DataTable episodesTable = null;
         public DataTable gSectionsTable = null;
+        public DataTable contentViewTable = null;
 
         public DataView contentView = null;
+        public DataView episodesView = null;
+        public DataView seasonsView = null;
+        public DataView sectionsView = null;
 
         #endregion GlobalDataTableVariables
 
@@ -108,7 +127,7 @@ namespace PlexDL.UI
 
         #region FormInitialiser
 
-        public frmMain()
+        public Home()
         {
             InitializeComponent();
 
@@ -162,12 +181,35 @@ namespace PlexDL.UI
 
         #region PlexMovieBuilders
 
+        [System.Runtime.InteropServices.DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pvd, [In] ref uint pcFonts);
+
+        public int GetTableIndexFromDGV(DataGridView dgv, DataTable table = null)
+        {
+            DataGridViewRow sel = dgv.SelectedRows[0];
+            string titleValue = "";
+            if (table == null)
+                table = returnCorrectTable();
+            foreach (DataRow r in table.Rows)
+            {
+                if (dgv.Columns.Contains("title"))
+                {
+                    titleValue = sel.Cells["title"].Value.ToString();
+                    if (r["title"].ToString() == titleValue)
+                    {
+                        return table.Rows.IndexOf(r);
+                    }
+                }
+            }
+            return 0;
+        }
+
         private PlexMovie GetObjectFromSelection()
         {
             PlexMovie obj = new PlexMovie();
             if (dgvContent.SelectedRows.Count == 1)
             {
-                int index = dgvContent.CurrentCell.RowIndex;
+                int index = GetTableIndexFromDGV(dgvContent);
                 obj = GetObjectFromIndex(index);
             }
             return obj;
@@ -176,9 +218,9 @@ namespace PlexDL.UI
         private PlexTVShow GetTVObjectFromSelection()
         {
             PlexTVShow obj = new PlexTVShow();
-            if (dgvContent.SelectedRows.Count == 1)
+            if ((dgvContent.SelectedRows.Count == 1) && (dgvEpisodes.SelectedRows.Count == 1))
             {
-                int index = dgvEpisodes.CurrentCell.RowIndex;
+                int index = GetTableIndexFromDGV(dgvEpisodes, episodesTable);
                 obj = GetTVObjectFromIndex(index);
             }
             return obj;
@@ -194,9 +236,11 @@ namespace PlexDL.UI
                 addToLog("Grabbing Titles");
                 DataRow infRow;
 
+                //MessageBox.Show(index.ToString());
+
                 metadata = GetEpisodeMetadata(index);
 
-                infRow = returnCorrectTable().Rows[index];
+                infRow = episodesTable.DefaultView[index].Row;
 
                 DownloadInfo dlInfo = getContentDownloadInfo_Xml(metadata);
 
@@ -215,26 +259,32 @@ namespace PlexDL.UI
             return obj;
         }
 
+        public int GetIndexFromPrimary(string primary)
+        {
+            DataTable table = returnCorrectTable();
+            DataRow row = table.Rows.Find(primary);
+            return table.Rows.IndexOf(row);
+        }
+
         private PlexMovie GetObjectFromIndex(int index)
         {
             PlexMovie obj = new PlexMovie();
             XmlDocument metadata;
             if (dgvContent.SelectedRows.Count == 1)
             {
+                string sel = dgvContent.SelectedRows[0].Cells[0].Value.ToString();
+                //MessageBox.Show("Primary Key:"+returnCorrectTable().PrimaryKey[0].ColumnName);
+                //MessageBox.Show("Proper:" + GetIndexFromPrimary(sel) + "\nActual:" + index);
                 addToLog("Content Parse Started");
                 addToLog("Grabbing Titles");
                 DataRow infRow;
 
                 if (IsTVShow)
-                {
                     metadata = GetEpisodeMetadata(index);
-                }
                 else
-                {
                     metadata = GetContentMetadata(index);
-                }
 
-                infRow = returnCorrectTable().Rows[index];
+                infRow = GetDataRowContent(index, false);
 
                 DownloadInfo dlInfo = getContentDownloadInfo_Xml(metadata);
 
@@ -247,14 +297,6 @@ namespace PlexDL.UI
                 obj.StreamPosterUri = getContentThumbnailUri(metadata);
 
                 obj.StreamResolution = getContentResolution(metadata);
-                if (IsFiltered)
-                {
-                    obj.TitlesTable = filteredTable;
-                }
-                else
-                {
-                    obj.TitlesTable = titlesTable;
-                }
                 obj.StreamIndex = index;
             }
             return obj;
@@ -385,6 +427,7 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
+                recordException(ex.Message, "XMLTransactionError");
                 recordTransaction(fullUri, "Undetermined");
                 MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 doNotAttemptAgain = true;
@@ -411,7 +454,7 @@ namespace PlexDL.UI
 
             DataRow result;
 
-            result = seriesTable.Rows[index];
+            result = GetDataRowSeries(index);
 
             string key = result["key"].ToString();
             string baseUri = getBaseUri(false);
@@ -423,20 +466,45 @@ namespace PlexDL.UI
             return reply;
         }
 
+        public DataRow GetDataRowContent(int index, bool directTable)
+        {
+            if (!directTable)
+                return GetDataRowTbl(returnCorrectTable(), index);
+            else
+            {
+                if (IsFiltered)
+                {
+                    return GetDataRowTbl(filteredTable, index);
+                }
+                else
+                {
+                    return GetDataRowTbl(titlesTable, index);
+                }
+            }
+        }
+
+        public DataRow GetDataRowSeries(int index)
+        {
+            return GetDataRowTbl(seriesTable, index);
+        }
+
+        public DataRow GetDataRowEpisodes(int index)
+        {
+            return GetDataRowTbl(episodesTable, index);
+        }
+
+        public DataRow GetDataRowLibrary(int index)
+        {
+            return GetDataRowTbl(gSectionsTable, index);
+        }
+
         public XmlDocument GetContentMetadata(int index)
         {
             addToLog("Sorting existing data");
 
             DataRow result;
 
-            if (IsFiltered)
-            {
-                result = filteredTable.Rows[index];
-            }
-            else
-            {
-                result = titlesTable.Rows[index];
-            }
+            result = GetDataRowContent(index, false);
 
             string key = result["key"].ToString();
             string baseUri = getBaseUri(false);
@@ -454,7 +522,7 @@ namespace PlexDL.UI
 
             DataRow result;
 
-            result = episodesTable.Rows[index];
+            result = GetDataRowEpisodes(index);
 
             string key = result["key"].ToString();
             string baseUri = getBaseUri(false);
@@ -476,14 +544,7 @@ namespace PlexDL.UI
 
             DataRow result;
 
-            if (IsFiltered)
-            {
-                result = filteredTable.Rows[index];
-            }
-            else
-            {
-                result = titlesTable.Rows[index];
-            }
+            result = GetDataRowContent(index, true);
 
             string key = result["key"].ToString();
             string baseUri = getBaseUri(false);
@@ -502,7 +563,7 @@ namespace PlexDL.UI
             addToLog("Sorting existing data");
 
             DataRow result;
-            result = seriesTable.Rows[index];
+            result = GetDataRowSeries(index);
 
             string key = result["key"].ToString();
             string baseUri = getBaseUri(false);
@@ -635,15 +696,16 @@ namespace PlexDL.UI
             return fullUri;
         }
 
-        private DataTable returnCorrectTable()
+        private DataTable returnCorrectTable(bool directTable = false)
         {
-            if (IsTVShow)
-            {
+            if (IsTVShow && !directTable)
                 return episodesTable;
-            }
             else
             {
-                return titlesTable;
+                if (IsFiltered)
+                    return filteredTable;
+                else
+                    return titlesTable;
             }
         }
 
@@ -666,11 +728,11 @@ namespace PlexDL.UI
         {
             if (incToken)
             {
-                return "http://" + settings.ServerAddress + ":" + settings.ServerPort + "/?X-Plex-Token=";
+                return "http://" + settings.ConnectionInfo.PlexAddress + ":" + settings.ConnectionInfo.PlexPort + "/?X-Plex-Token=";
             }
             else
             {
-                return "http://" + settings.ServerAddress + ":" + settings.ServerPort + "/";
+                return "http://" + settings.ConnectionInfo.PlexAddress + ":" + settings.ConnectionInfo.PlexPort + "/";
             }
         }
 
@@ -715,7 +777,7 @@ namespace PlexDL.UI
 
         public void saveProfile()
         {
-            if (!(settings.ServerAddress == ""))
+            if (settings.ConnectionInfo.PlexAccountToken != "")
             {
                 if (sfdSaveProfile.ShowDialog() == DialogResult.OK)
                 {
@@ -724,7 +786,7 @@ namespace PlexDL.UI
             }
             else
             {
-                MessageBox.Show("You need to specify the server's IP address before saving a profile", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You need to specify an account token before saving a profile", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -757,6 +819,7 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
+                recordException(ex.Message, "SaveProfileError");
                 if (!silent)
                 {
                     MessageBox.Show(ex.ToString(), "Error in saving XML Profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -764,6 +827,8 @@ namespace PlexDL.UI
                 return;
             }
         }
+
+
 
         public void doLoadProfile(string fileName, bool silent = false)
         {
@@ -787,6 +852,7 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
+                recordException(ex.Message, "LoadProfileError");
                 if (!silent)
                 {
                     MessageBox.Show(ex.ToString(), "Error in loading XML Profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -822,18 +888,16 @@ namespace PlexDL.UI
         {
             try
             {
-                using (frmConnect frm = new frmConnect())
+                using (Connect frm = new Connect())
                 {
                     ConnectionInformation existingInfo = new ConnectionInformation();
-                    existingInfo.PlexAccountToken = settings.Token;
+                    existingInfo.PlexAccountToken = settings.ConnectionInfo.PlexAccountToken;
                     frm.ConnectionInfo = existingInfo;
                     if (frm.ShowDialog() == DialogResult.OK)
                     {
                         ConnectionInformation result = frm.ConnectionInfo;
-                        settings.ServerAddress = result.PlexAddress;
-                        settings.ServerPort = result.PlexPort;
-                        settings.Token = result.PlexAccountToken;
-                        user.authenticationToken = settings.Token;
+                        settings.ConnectionInfo = result;
+                        user.authenticationToken = result.PlexAccountToken;
                         object serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Servers");
                         List<Server> servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
@@ -846,13 +910,12 @@ namespace PlexDL.UI
                                     frmDir.ConnectionInfo.PlexAccountToken = user.authenticationToken;
                                     if (frmDir.ShowDialog() == DialogResult.OK)
                                     {
-                                        settings.ServerAddress = frmDir.ConnectionInfo.PlexAddress;
-                                        settings.ServerPort = frmDir.ConnectionInfo.PlexPort;
+                                        settings.ConnectionInfo = frmDir.ConnectionInfo;
                                         Server s = new Server()
                                         {
                                             accessToken = user.authenticationToken,
-                                            address = settings.ServerAddress,
-                                            port = settings.ServerPort,
+                                            address = settings.ConnectionInfo.PlexAddress,
+                                            port = settings.ConnectionInfo.PlexPort,
                                             name = "DirectConnect"
                                         };
                                         servers.Add(s);
@@ -876,6 +939,7 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
+                recordException(ex.Message, "ConnectionError");
                 MessageBox.Show("Connection Error:\n\n" + ex.ToString(), "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ResetContentGridViews();
                 SetConnect();
@@ -891,13 +955,19 @@ namespace PlexDL.UI
                 string address = s.address;
                 int port = s.port;
 
-                settings.ServerAddress = address;
-                settings.ServerPort = port;
-                settings.Token = getToken();
+                ConnectionInformation connectInfo = new ConnectionInformation()
+                {
+                    PlexAccountToken = getToken(),
+                    PlexAddress = address,
+                    PlexPort = port
+                };
+
+                settings.ConnectionInfo = connectInfo;
+
                 string uri = getBaseUri(true);
                 XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(GetXMLTransactionWorker, "Connecting", new object[] { uri });
                 connected = true;
-                if (settings.ShowConnectionSuccess)
+                if (settings.Generic.ShowConnectionSuccess)
                 {
                     MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -919,84 +989,97 @@ namespace PlexDL.UI
 
         #region UpdateWorkers
 
+        private DataRow GetDataRowTbl(DataTable table, int index)
+        {
+            return table.Rows[index];
+        }
+
         private void populateLibraryWorker(XmlDocument doc)
         {
-            try
+            if (doc != null)
             {
-                DGVServersEnabled(false);
-                addToLog("Library population requested");
-                string libraryDir = getLibraryKey(doc).TrimEnd('/');
-                string baseUri = getBaseUri(false);
-                string uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
-                //MessageBox.Show(uriSectionKey + token);
-                System.Xml.XmlDocument xmlSectionKey = GetXMLTransaction(uriSectionKey);
-
-                string sectionDir = getSectionKey(xmlSectionKey).TrimEnd('/');
-                string uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
-                //MessageBox.Show(uriSections+token);
-                System.Xml.XmlDocument xmlSections = GetXMLTransaction(uriSections);
-
-                addToLog("Creating new datasets");
-                DataSet sections = new DataSet();
-                sections.ReadXml(new XmlNodeReader(xmlSections));
-
-                DataTable sectionsTable;
-                sectionsTable = sections.Tables["Directory"];
-                gSectionsTable = sectionsTable;
-
-                addToLog("Binding to grid");
-                renderLibraryView(sectionsTable);
-
-                libraryFilled = true;
-
-                uri = baseUri + libraryDir + "/" + sectionDir + "/";
-
-                addToLog("Requesting ibrary contents");
-
-                int index = dgvLibrary.CurrentCell.RowIndex;
-                DataRow r = sectionsTable.Rows[index];
-                string key = r["key"].ToString();
-                string contentUri = uri + key + "/all/?X-Plex-Token=";
-                XmlDocument contentXml = GetXMLTransaction(contentUri);
-
-                contentXmlDoc = contentXml;
-
-                //update content view, because when we updated this list, we selected the first row automatically.
-                if (dgvLibrary.SelectedRows.Count == 1)
+                try
                 {
-                    string type = r["type"].ToString();
-                    if (type == "show")
+                    DGVServersEnabled(false);
+                    addToLog("Library population requested");
+                    string libraryDir = getLibraryKey(doc).TrimEnd('/');
+                    string baseUri = getBaseUri(false);
+                    string uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
+                    //MessageBox.Show(uriSectionKey + token);
+                    System.Xml.XmlDocument xmlSectionKey = GetXMLTransaction(uriSectionKey);
+
+                    string sectionDir = getSectionKey(xmlSectionKey).TrimEnd('/');
+                    string uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
+                    //MessageBox.Show(uriSections+token);
+                    System.Xml.XmlDocument xmlSections = GetXMLTransaction(uriSections);
+
+                    addToLog("Creating new datasets");
+                    DataSet sections = new DataSet();
+                    sections.ReadXml(new XmlNodeReader(xmlSections));
+
+                    DataTable sectionsTable;
+                    sectionsTable = sections.Tables["Directory"];
+                    gSectionsTable = sectionsTable;
+
+                    addToLog("Binding to grid");
+                    renderLibraryView(sectionsTable);
+                    libraryFilled = true;
+                    uri = baseUri + libraryDir + "/" + sectionDir + "/";
+                    //we can render the content view if a row is already selected
+                    if (dgvLibrary.SelectedRows.Count == 1)
                     {
-                        updateContentView(contentXml, true);
-                    }
-                    else if (type == "movie")
-                    {
-                        updateContentView(contentXml, false);
-                    }
-                }
-                DGVServersEnabled(true);
-            }
-            catch (WebException ex)
-            {
-                if (ex.Status == WebExceptionStatus.ProtocolError)
-                {
-                    var response = ex.Response as HttpWebResponse;
-                    recordTransaction(response.ResponseUri.ToString(), ((int)response.StatusCode).ToString());
-                    if (response != null)
-                    {
-                        switch ((int)response.StatusCode)
+                        addToLog("Requesting ibrary contents");
+
+                        int index = dgvLibrary.CurrentCell.RowIndex;
+                        DataRow r = sectionsTable.DefaultView[index].Row;
+                        string key = r["key"].ToString();
+                        string contentUri = uri + key + "/all/?X-Plex-Token=";
+                        XmlDocument contentXml = GetXMLTransaction(contentUri);
+
+                        contentXmlDoc = contentXml;
+
+                        //update content view, because when we updated this list, we selected the first row automatically.
+
+                        string type = r["type"].ToString();
+                        if (type == "show")
                         {
-                            case 401:
-                                MessageBox.Show("The web server denied access to the resource. Check your token and try again. (401)");
-                                break;
+                            updateContentView(contentXml, true);
+                        }
+                        else if (type == "movie")
+                        {
+                            updateContentView(contentXml, false);
+                        }
+                    }
+                    DGVServersEnabled(true);
+                }
+                catch (WebException ex)
+                {
+                    recordException(ex.Message, "LibPopError");
+                    DGVServersEnabled(true);
+                    if (ex.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        var response = ex.Response as HttpWebResponse;
+                        recordTransaction(response.ResponseUri.ToString(), ((int)response.StatusCode).ToString());
+                        if (response != null)
+                        {
+                            switch ((int)response.StatusCode)
+                            {
+                                case 401:
+                                    MessageBox.Show("The web server denied access to the resource. Check your token and try again. (401)");
+                                    break;
 
-                            case 404:
-                                MessageBox.Show("The web server couldn't serve the request because it couldn't find the resource specified. (404)");
-                                break;
+                                case 404:
+                                    MessageBox.Show("The web server couldn't serve the request because it couldn't find the resource specified. (404)");
+                                    break;
 
-                            case 400:
-                                MessageBox.Show("The web server couldn't serve the request because the request was bad. (400)");
-                                break;
+                                case 400:
+                                    MessageBox.Show("The web server couldn't serve the request because the request was bad. (400)");
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            // no http status code available
                         }
                     }
                     else
@@ -1004,15 +1087,13 @@ namespace PlexDL.UI
                         // no http status code available
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    // no http status code available
+                    recordException(ex.Message, "LibPopError");
+                    DGVServersEnabled(true);
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
         }
 
@@ -1136,12 +1217,12 @@ namespace PlexDL.UI
 
         private void wkrGetMetadata_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (!System.IO.Directory.Exists(settings.DownloadDirectory))
-                System.IO.Directory.CreateDirectory(settings.DownloadDirectory);
-            if (!System.IO.Directory.Exists(settings.DownloadDirectory + @"\TV"))
-                System.IO.Directory.CreateDirectory(settings.DownloadDirectory + @"\TV");
-            if (!System.IO.Directory.Exists(settings.DownloadDirectory + @"\Movies"))
-                System.IO.Directory.CreateDirectory(settings.DownloadDirectory + @"\Movies");
+            if (!System.IO.Directory.Exists(settings.Generic.DownloadDirectory))
+                System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory);
+            if (!System.IO.Directory.Exists(settings.Generic.DownloadDirectory + @"\TV"))
+                System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory + @"\TV");
+            if (!System.IO.Directory.Exists(settings.Generic.DownloadDirectory + @"\Movies"))
+                System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory + @"\Movies");
             if (IsTVShow)
             {
                 if (DownloadAllEpisodes)
@@ -1183,12 +1264,12 @@ namespace PlexDL.UI
                 });
                 PlexMovie movie = GetObjectFromSelection();
                 DownloadInfo dlInfo = movie.StreamInformation;
-                dlInfo.DownloadPath = settings.DownloadDirectory + @"\Movies";
+                dlInfo.DownloadPath = settings.Generic.DownloadDirectory + @"\Movies";
                 queue.Add(dlInfo);
             }
             this.BeginInvoke((MethodInvoker)delegate
             {
-                StartDownload(queue, settings.DownloadDirectory);
+                StartDownload(queue, settings.Generic.DownloadDirectory);
             });
         }
 
@@ -1241,39 +1322,52 @@ namespace PlexDL.UI
             //Copy column captions into DataGridView
             foreach (DataGridViewColumn col in dgv.Columns)
             {
-                col.HeaderText = table.Columns[col.HeaderText].Caption;
+                if (table.Columns[col.Name].Caption != null)
+                    col.HeaderText = table.Columns[col.Name].Caption;
             }
+        }
+
+        private List<string> OrderMatch(List<string> ordered, List<string> unordered)
+        {
+            List<string> newList = new List<string>();
+            newList = unordered.OrderBy(d => ordered.IndexOf(d)).ToList();
+            return newList;
         }
 
         private void renderContentView(DataTable content)
         {
-            contentView = new DataView(content);
-
-            List<string> currentColumns = new List<string>();
-            List<string> currentCaption = new List<string>();
-            List<string> wantedColumns = new List<string>() { "title", "studio", "year", "contentRating" };
-            List<string> wantedCaption = new List<string>() { "Title", "Studio", "Year", "Rating" };
-
-            DataTable dgvBind = new DataTable();
-
-            //check if appropriate columns are part of the table; then we can verify and add them to the view.
-            foreach (DataColumn c in content.Columns)
-            {
-                if (wantedColumns.Contains(c.ColumnName))
-                {
-                    int index = wantedColumns.IndexOf(c.ColumnName);
-                    string caption = wantedCaption[index];
-                    c.Caption = caption;
-                    currentCaption.Add(caption);
-                    currentColumns.Add(c.ColumnName);
-                }
-            }
-
-            dgvBind = contentView.ToTable(false, currentColumns.ToArray());
-
-            int i = 0;
             if (!(content == null))
             {
+                ClearTVViews();
+
+                contentView = new DataView(content);
+
+                List<string> currentColumns = new List<string>();
+                List<string> currentCaption = new List<string>();
+                List<string> wantedColumns = settings.DataDisplay.ContentView.ContentDisplayColumns;
+                List<string> wantedCaption = settings.DataDisplay.ContentView.ContentDisplayCaption;
+
+                DataTable dgvBind = new DataTable();
+
+                //check if appropriate columns are part of the table; then we can verify and add them to the view.
+                foreach (DataColumn c in content.Columns)
+                {
+                    if (wantedColumns.Contains(c.ColumnName))
+                    {
+                        int index = wantedColumns.IndexOf(c.ColumnName);
+                        string caption = wantedCaption[index];
+                        c.Caption = caption;
+                        currentCaption.Add(caption);
+                        currentColumns.Add(c.ColumnName);
+                    }
+                }
+
+                currentColumns = OrderMatch(wantedColumns, currentColumns);
+
+                dgvBind = contentView.ToTable(false, currentColumns.ToArray());
+
+                contentViewTable = dgvBind;
+
                 if (dgvContent.InvokeRequired)
                 {
                     dgvContent.BeginInvoke((MethodInvoker)delegate
@@ -1294,87 +1388,97 @@ namespace PlexDL.UI
 
         private void renderSeriesView(DataTable content)
         {
-            DataColumn Title = new DataColumn("Season", typeof(string));
-            DataColumn TVShow = new DataColumn("TV Show", typeof(string));
-
-            DataTable dgvBind = new DataTable("Seasons");
-            dgvBind.Columns.Add(Title);
-            dgvBind.Columns.Add(TVShow);
-
-            int i = 0;
-            foreach (DataRow r1 in content.Rows)
+            if (!(content == null))
             {
-                i += 1;
+                seasonsView = new DataView(content);
 
-                string tvshow = "";
-                string title = "";
-                if (content.Columns.Contains("title"))
-                    if (!(r1["title"] == null))
-                        title = r1["title"].ToString();
-                if (content.Columns.Contains("parentTitle"))
-                    if (!(r1["parentTitle"] == null))
-                        tvshow = r1["parentTitle"].ToString();
+                List<string> currentColumns = new List<string>();
+                List<string> currentCaption = new List<string>();
+                List<string> wantedColumns = settings.DataDisplay.SeriesView.SeriesDisplayColumns;
+                List<string> wantedCaption = settings.DataDisplay.SeriesView.SeriesDisplayCaption;
 
-                dgvBind.Rows.Add(title, tvshow);
-            }
-            if (dgvSeasons.InvokeRequired)
-            {
-                dgvSeasons.BeginInvoke((MethodInvoker)delegate
+                DataTable dgvBind = new DataTable();
+
+                //check if appropriate columns are part of the table; then we can verify and add them to the view.
+                foreach (DataColumn c in content.Columns)
+                {
+                    if (wantedColumns.Contains(c.ColumnName))
+                    {
+                        int index = wantedColumns.IndexOf(c.ColumnName);
+                        string caption = wantedCaption[index];
+                        c.Caption = caption;
+                        currentCaption.Add(caption);
+                        currentColumns.Add(c.ColumnName);
+                    }
+                }
+
+                currentColumns = OrderMatch(wantedColumns, currentColumns);
+
+                dgvBind = seasonsView.ToTable(false, currentColumns.ToArray());
+
+                if (dgvSeasons.InvokeRequired)
+                {
+                    dgvSeasons.BeginInvoke((MethodInvoker)delegate
+                    {
+                        dgvSeasons.DataSource = dgvBind;
+                        SetHeaderText(dgvSeasons, content);
+                        dgvSeasons.Refresh();
+                    });
+                }
+                else
                 {
                     dgvSeasons.DataSource = dgvBind;
+                    SetHeaderText(dgvSeasons, content);
                     dgvSeasons.Refresh();
-                });
-            }
-            else
-            {
-                dgvSeasons.DataSource = dgvBind;
-                dgvSeasons.Refresh();
+                }
             }
         }
 
         private void renderEpisodesView(DataTable content)
         {
-            DataColumn Title = new DataColumn("Title", typeof(string));
-            DataColumn Year = new DataColumn("Year", typeof(string));
-            DataColumn Rating = new DataColumn("Rating", typeof(string));
-
-            DataTable dgvBind = new DataTable("Episodes");
-            dgvBind.Columns.Add(Title);
-            dgvBind.Columns.Add(Year);
-            dgvBind.Columns.Add(Rating);
-
-            int i = 0;
-            foreach (DataRow r1 in content.Rows)
+            if (!(content == null))
             {
-                i += 1;
+                episodesView = new DataView(content);
 
-                string rating = "";
-                string title = "";
-                string year = "";
-                if (content.Columns.Contains("title"))
-                    if (!(r1["title"] == null))
-                        title = r1["title"].ToString();
-                if (content.Columns.Contains("contentRating"))
-                    if (!(r1["contentRating"] == null))
-                        rating = r1["contentRating"].ToString();
-                if (content.Columns.Contains("year"))
-                    if (!(r1["year"] == null))
-                        year = r1["year"].ToString();
+                List<string> currentColumns = new List<string>();
+                List<string> currentCaption = new List<string>();
+                List<string> wantedColumns = settings.DataDisplay.EpisodesView.EpisodesDisplayColumns;
+                List<string> wantedCaption = settings.DataDisplay.EpisodesView.EpisodesDisplayCaption;
 
-                dgvBind.Rows.Add(title, year, rating);
-            }
-            if (dgvEpisodes.InvokeRequired)
-            {
-                dgvEpisodes.BeginInvoke((MethodInvoker)delegate
+                DataTable dgvBind = new DataTable();
+
+                //check if appropriate columns are part of the table; then we can verify and add them to the view.
+                foreach (DataColumn c in content.Columns)
+                {
+                    if (wantedColumns.Contains(c.ColumnName))
+                    {
+                        int index = wantedColumns.IndexOf(c.ColumnName);
+                        string caption = wantedCaption[index];
+                        c.Caption = caption;
+                        currentCaption.Add(caption);
+                        currentColumns.Add(c.ColumnName);
+                    }
+                }
+
+                currentColumns = OrderMatch(wantedColumns, currentColumns);
+
+                dgvBind = episodesView.ToTable(false, currentColumns.ToArray());
+
+                if (dgvEpisodes.InvokeRequired)
+                {
+                    dgvEpisodes.BeginInvoke((MethodInvoker)delegate
+                    {
+                        dgvEpisodes.DataSource = dgvBind;
+                        SetHeaderText(dgvEpisodes, content);
+                        dgvEpisodes.Refresh();
+                    });
+                }
+                else
                 {
                     dgvEpisodes.DataSource = dgvBind;
+                    SetHeaderText(dgvEpisodes, content);
                     dgvEpisodes.Refresh();
-                });
-            }
-            else
-            {
-                dgvEpisodes.DataSource = dgvBind;
-                dgvEpisodes.Refresh();
+                }
             }
         }
 
@@ -1441,39 +1545,49 @@ namespace PlexDL.UI
 
         private void renderLibraryView(DataTable content)
         {
-            DataColumn Title = new DataColumn("Title", typeof(string));
-            DataColumn Type = new DataColumn("Type", typeof(string));
-
-            DataTable dgvBind = new DataTable("Library");
-            dgvBind.Columns.Add(Title);
-            dgvBind.Columns.Add(Type);
-
-            int i = 0;
-            foreach (DataRow r1 in content.Rows)
+            if (!(content == null))
             {
-                i += 1;
+                sectionsView = new DataView(content);
 
-                string type = "";
-                string title = "";
-                if (!(r1["title"] == null))
-                    title = r1["title"].ToString();
-                if (!(r1["type"] == null))
-                    type = r1["type"].ToString();
+                List<string> currentColumns = new List<string>();
+                List<string> currentCaption = new List<string>();
+                List<string> wantedColumns = settings.DataDisplay.LibraryView.LibraryDisplayColumns;
+                List<string> wantedCaption = settings.DataDisplay.LibraryView.LibraryDisplayCaption;
 
-                dgvBind.Rows.Add(title, type);
-            }
-            if (dgvLibrary.InvokeRequired)
-            {
-                dgvLibrary.BeginInvoke((MethodInvoker)delegate
+                DataTable dgvBind = new DataTable();
+
+                //check if appropriate columns are part of the table; then we can verify and add them to the view.
+                foreach (DataColumn c in content.Columns)
+                {
+                    if (wantedColumns.Contains(c.ColumnName))
+                    {
+                        int index = wantedColumns.IndexOf(c.ColumnName);
+                        string caption = wantedCaption[index];
+                        c.Caption = caption;
+                        currentCaption.Add(caption);
+                        currentColumns.Add(c.ColumnName);
+                    }
+                }
+
+                currentColumns = OrderMatch(wantedColumns, currentColumns);
+
+                dgvBind = sectionsView.ToTable(false, currentColumns.ToArray());
+
+                if (dgvLibrary.InvokeRequired)
+                {
+                    dgvLibrary.BeginInvoke((MethodInvoker)delegate
+                    {
+                        dgvLibrary.DataSource = dgvBind;
+                        SetHeaderText(dgvLibrary, content);
+                        dgvLibrary.Refresh();
+                    });
+                }
+                else
                 {
                     dgvLibrary.DataSource = dgvBind;
+                    SetHeaderText(dgvLibrary, content);
                     dgvLibrary.Refresh();
-                });
-            }
-            else
-            {
-                dgvLibrary.DataSource = dgvBind;
-                dgvLibrary.Refresh();
+                }
             }
         }
 
@@ -1532,20 +1646,21 @@ namespace PlexDL.UI
 
         private void GetSearchEnum(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
+            string column = (string)e.Arguments[2];
             bool directMatch = (bool)e.Arguments[1];
             string searchKey = (string)e.Arguments[0];
             if (directMatch)
             {
                 OrderedEnumerableRowCollection<DataRow> rowCollec = titlesTable.AsEnumerable()
-                                    .Where(row => row.Field<String>("title") == searchKey)
-                                    .OrderByDescending(row => row.Field<String>("title"));
+                                    .Where(row => row.Field<String>(column) == searchKey)
+                                    .OrderByDescending(row => row.Field<String>(column));
                 e.Result = rowCollec;
             }
             else
             {
                 OrderedEnumerableRowCollection<DataRow> rowCollec = titlesTable.AsEnumerable()
-                                .Where(row => row.Field<String>("title").ToLower().Contains(searchKey.ToLower()))
-                                .OrderByDescending(row => row.Field<String>("title"));
+                                .Where(row => row.Field<String>(column).ToLower().Contains(searchKey.ToLower()))
+                                .OrderByDescending(row => row.Field<String>(column));
                 e.Result = rowCollec;
             }
         }
@@ -1562,9 +1677,24 @@ namespace PlexDL.UI
 
         #region Logging
 
+        public static void recordException(string message, string type)
+        {
+            ////Options weren't too great performance-wise, so I ended up using a stack-walk.
+            ////If there's minimal errors happening at once, this shouldn't be a problem, otherwise disable
+            ////The in-app setting to prevent this method from firing.
+            if (settings.Logging.EnableExceptionLogDel)
+            {
+                var stackTrace = new System.Diagnostics.StackTrace();
+                string function = stackTrace.GetFrame(1).GetMethod().Name;
+                string[] headers = { "DateTime", "ExceptionMessage", "OccurredIn", "ExceptionType" };
+                string[] LogEntry = { DateTime.Now.ToString(), message, function, type };
+                logDelWriter("ExceptionLog.logdel", headers, LogEntry);
+            }
+        }
+
         private static void recordTransaction(string uri, string statusCode)
         {
-            if (settings.EnableXMLTransactionLogging)
+            if (settings.Logging.EnableXMLTransactionLogDel)
             {
                 string[] headers = { "DateTime", "Uri", "StatusCode" };
                 string[] LogEntry = { DateTime.Now.ToString(), uri, statusCode };
@@ -1578,11 +1708,17 @@ namespace PlexDL.UI
             string[] headers = { "ID", "DateTime", "Entry" };
             string[] logEntryToAdd = { logIncrementer.ToString(), DateTime.Now.ToString(), logEntry };
             string logLine = ">>" + logEntry;
-            lstLog.Items.Add(logLine);
-            if (settings.EnableGenericLogDel)
+            if (lstLog.InvokeRequired)
             {
-                logDelWriter("PlexDL.logdel", headers, logEntryToAdd);
+                lstLog.BeginInvoke((MethodInvoker)delegate
+                {
+                    lstLog.Items.Add(logLine);
+                });
             }
+            else
+                lstLog.Items.Add(logLine);
+            if (settings.Logging.EnableGenericLogDel)
+                logDelWriter("PlexDL.logdel", headers, logEntryToAdd);
         }
 
         private void DGVDataError(object sender, System.Windows.Forms.DataGridViewDataErrorEventArgs e)
@@ -1675,8 +1811,8 @@ namespace PlexDL.UI
             DataTable part = sections.Tables["Part"];
             DataRow video = sections.Tables["Video"].Rows[0];
             string title = video["title"].ToString();
-            if (title.Length > settings.DefaultStringLength)
-                title = title.Substring(0, settings.DefaultStringLength);
+            if (title.Length > settings.Generic.DefaultStringLength)
+                title = title.Substring(0, settings.Generic.DefaultStringLength);
             string thumb = video["thumb"].ToString();
             string thumbnailFullUri = "";
             if (!(thumb == ""))
@@ -1715,9 +1851,10 @@ namespace PlexDL.UI
             {
                 wkrGetMetadata.Abort();
             }
-            if (downloadIsRunning)
+            if (engineIsRunning)
             {
                 engine.Cancel();
+                engine.Clear();
             }
             SetProgressLabel("Download Cancelled");
             SetDownloadStart();
@@ -1726,6 +1863,7 @@ namespace PlexDL.UI
             addToLog("Download Cancelled");
             downloadIsRunning = false;
             downloadIsPaused = false;
+            engineIsRunning = false;
             DownloadQueueCancelled = true;
             downloadsSoFar = 0;
             DownloadTotal = 0;
@@ -1747,6 +1885,7 @@ namespace PlexDL.UI
             }
             catch (WebException ex)
             {
+                recordException(ex.Message, "CheckWebError");
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
                     var errResponse = ex.Response as HttpWebResponse;
@@ -1781,6 +1920,7 @@ namespace PlexDL.UI
             //MessageBox.Show("Started!");
             addToLog("Download is Progressing");
             downloadIsRunning = true;
+            engineIsRunning = true;
             downloadIsPaused = false;
             SetPause();
         }
@@ -1789,9 +1929,9 @@ namespace PlexDL.UI
         {
             if (fbdSave.ShowDialog() == DialogResult.OK)
             {
-                settings.DownloadDirectory = fbdSave.SelectedPath;
-                MessageBox.Show("Download directory updated to " + settings.DownloadDirectory, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                addToLog("Download directory updated to " + settings.DownloadDirectory);
+                settings.Generic.DownloadDirectory = fbdSave.SelectedPath;
+                MessageBox.Show("Download directory updated to " + settings.Generic.DownloadDirectory, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                addToLog("Download directory updated to " + settings.Generic.DownloadDirectory);
             }
         }
 
@@ -1803,7 +1943,10 @@ namespace PlexDL.UI
             SetDownloadStart();
             SetProgressLabel("Download Completed");
             addToLog("Download completed");
+            engine.Clear();
             downloadIsRunning = false;
+            downloadIsPaused = false;
+            engineIsRunning = false;
         }
 
         private void StartDownload(List<DownloadInfo> queue, string location)
@@ -1912,18 +2055,30 @@ namespace PlexDL.UI
             SetStartSearch();
         }
 
+        private void SortingEnabled(DataGridView dgv, bool enabled)
+        {
+            if (enabled)
+            {
+                foreach (DataGridViewColumn c in dgv.Columns)
+                    c.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
+            else
+            {
+                foreach (DataGridViewColumn c in dgv.Columns)
+                    c.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
+
         private void DisableContentSorting()
         {
             IsContentSortingEnabled = false;
-            foreach (DataGridViewColumn c in dgvContent.Columns)
-                c.SortMode = DataGridViewColumnSortMode.NotSortable;
+            SortingEnabled(dgvContent, IsContentSortingEnabled);
         }
 
         private void EnableContentSorting()
         {
             IsContentSortingEnabled = true;
-            foreach (DataGridViewColumn c in dgvContent.Columns)
-                c.SortMode = DataGridViewColumnSortMode.Automatic;
+            SortingEnabled(dgvContent, IsContentSortingEnabled);
         }
 
         private void runTitleSearch()
@@ -1933,22 +2088,22 @@ namespace PlexDL.UI
                 addToLog("Title search requested");
                 if (dgvContent.Rows.Count > 0)
                 {
-                    InputResult ipt = objUI.showInputForm("Please enter search term", "Search Content", true, "Direct Match");
-                    if (ipt.txt == "!cancel=user")
+                    SearchOptions start = new SearchOptions() { SearchCollection = contentViewTable };
+                    SearchOptions result = SearchForm.ShowSearch(start);
+                    if ((result.SearchTerm == "") || (result.SearchColumn == ""))
                     {
-                        return;
-                    }
-                    else if (ipt.txt == "")
-                    {
-                        MessageBox.Show("Nothing was entered; search cancelled.");
                         return;
                     }
                     else
                     {
-                        GetFilteredTable(ipt.txt, ipt.chkd, false);
-                        DisableContentSorting();
-                        SetCancelSearch();
-                        PlexDL.WaitWindow.WaitWindow.Show(WorkerRenderContentView, "Rendering Content", new object[] { filteredTable });
+                        filteredTable = null;
+                        GetFilteredTable(result.SearchTerm, result.SearchColumn, result.SearchDirect, false);
+                        if (filteredTable != null)
+                        {
+                            //DisableContentSorting();
+                            SetCancelSearch();
+                            PlexDL.WaitWindow.WaitWindow.Show(WorkerRenderContentView, "Rendering Content", new object[] { filteredTable });
+                        }
                     }
                 }
                 else
@@ -1958,15 +2113,16 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
+                recordException(ex.Message, "SearchError");
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
 
-        private void GetFilteredTable(string query, bool isTVShow, bool silent = true)
+        private void GetFilteredTable(string query, string column, bool isTVShow, bool silent = true)
         {
             DataTable tblFiltered;
-            OrderedEnumerableRowCollection<DataRow> rowCollec = (OrderedEnumerableRowCollection<DataRow>)PlexDL.WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", new object[] { query, isTVShow });
+            OrderedEnumerableRowCollection<DataRow> rowCollec = (OrderedEnumerableRowCollection<DataRow>)PlexDL.WaitWindow.WaitWindow.Show(GetSearchEnum, "Filtering Records", new object[] { query, isTVShow, column });
             FilterQuery = query;
             if (rowCollec.Count() > 0)
             {
@@ -1975,12 +2131,13 @@ namespace PlexDL.UI
             else
             {
                 if (!silent)
-                    MessageBox.Show("No Result Found for '" + query + "'", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No Results Found for '" + query + "'", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             IsFiltered = true;
             filteredTable = tblFiltered;
+            //MessageBox.Show("Filtered Table:" + filteredTable.Rows.Count + "\nTitles Table:" + titlesTable.Rows.Count);
         }
 
         #endregion Search
@@ -2066,7 +2223,7 @@ namespace PlexDL.UI
         {
             if (keyData == (Keys.Control | Keys.F))
             {
-                runTitleSearch();
+                SearchProcedure();
                 return true;
             }
             else if (keyData == (Keys.Control | Keys.O))
@@ -2212,10 +2369,10 @@ namespace PlexDL.UI
             {
                 addToLog("PlexDL Exited");
 
-                if (settings.AnimationSpeed > 0)
+                if (settings.Generic.AnimationSpeed > 0)
                 {
                     t1 = new Timer();
-                    t1.Interval = settings.AnimationSpeed;
+                    t1.Interval = settings.Generic.AnimationSpeed;
                     t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
                     t1.Start();
 
@@ -2228,16 +2385,29 @@ namespace PlexDL.UI
             }
         }
 
+        private FontFamily LoadFont(byte[] fontResource)
+        {
+            int dataLength = fontResource.Length;
+            IntPtr fontPtr = Marshal.AllocCoTaskMem(dataLength);
+            Marshal.Copy(fontResource, 0, fontPtr, dataLength);
+
+            uint cFonts = 0;
+            AddFontMemResourceEx(fontPtr, (uint)fontResource.Length, IntPtr.Zero, ref cFonts);
+            privateFontCollection.AddMemoryFont(fontPtr, dataLength);
+
+            return privateFontCollection.Families.Last();
+        }
+
         private void frmMain_Load(object sender, EventArgs e)
         {
             //TEMPORARY (FOR TESTING A NEW FEATURE)
             //frmChromecast frm = new frmChromecast();
             //frm.ShowDialog();
-            if (settings.AnimationSpeed > 0)
+            if (settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0;      //first the opacity is 0
 
-                t1.Interval = settings.AnimationSpeed;  //we'll increase the opacity every 10ms
+                t1.Interval = settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
                 t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
                 t1.Start();
             }
@@ -2245,17 +2415,24 @@ namespace PlexDL.UI
             {
                 string curUser = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 
-                settings.DownloadDirectory = curUser + "\\Videos\\PlexDL";
+                settings.Generic.DownloadDirectory = curUser + "\\Videos\\PlexDL";
 
-                if (!(System.IO.Directory.Exists(settings.DownloadDirectory)))
+                if (!(System.IO.Directory.Exists(settings.Generic.DownloadDirectory)))
                 {
-                    System.IO.Directory.CreateDirectory(settings.DownloadDirectory);
+                    System.IO.Directory.CreateDirectory(settings.Generic.DownloadDirectory);
                 }
+
+                addToLog("Processing Fonts");
+                ROBOTO_MEDIUM_12 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Medium), 12f);
+                ROBOTO_MEDIUM_10 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Medium), 10f);
+                ROBOTO_REGULAR_11 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Regular), 11f);
+                ROBOTO_MEDIUM_11 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Medium), 11f);
 
                 addToLog("PlexDL Started");
             }
             catch (Exception ex)
             {
+                recordException(ex.Message, "StartupError");
                 MessageBox.Show("Startup Error:\n\n" + ex.ToString(), "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -2274,6 +2451,7 @@ namespace PlexDL.UI
             }
             catch (WebException ex)
             {
+                recordException(ex.Message, "UpdateLibraryError");
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
                     var response = ex.Response as HttpWebResponse;
@@ -2307,6 +2485,7 @@ namespace PlexDL.UI
             }
             catch (Exception ex)
             {
+                recordException(ex.Message, "UpdateLibraryError");
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
@@ -2329,8 +2508,8 @@ namespace PlexDL.UI
             if ((dgvLibrary.SelectedRows.Count == 1) && (libraryFilled))
             {
                 addToLog("Selection Changed");
-                int index = dgvLibrary.CurrentCell.RowIndex;
-                DataRow r = gSectionsTable.Rows[index];
+                int index = GetTableIndexFromDGV(dgvLibrary, gSectionsTable);
+                DataRow r = GetDataRowLibrary(index);
 
                 string key = r["key"].ToString();
                 string type = r["type"].ToString();
@@ -2342,7 +2521,6 @@ namespace PlexDL.UI
                 {
                     UpdateFromLibraryKey(key, false);
                 }
-                
             }
         }
 
@@ -2350,7 +2528,7 @@ namespace PlexDL.UI
         {
             if (dgvSeasons.SelectedRows.Count == 1)
             {
-                int index = dgvSeasons.CurrentCell.RowIndex;
+                int index = GetTableIndexFromDGV(dgvSeasons, seriesTable);
                 XmlDocument episodes = GetEpisodeXml(index);
                 updateEpisodeView(episodes);
             }
@@ -2360,12 +2538,21 @@ namespace PlexDL.UI
         {
             if (dgvContent.SelectedRows.Count == 1)
             {
-                DataGridViewRow row = dgvContent.SelectedRows[0];
-                selectedIndex = row.Cells[0].RowIndex;
+                int index = 0;
+                if (IsFiltered)
+                {
+                    index = GetTableIndexFromDGV(dgvContent, filteredTable);
+                }
+                else
+                {
+                    index = GetTableIndexFromDGV(dgvContent, titlesTable);
+                }
+
+                //MessageBox.Show(index.ToString());
 
                 if (IsTVShow)
                 {
-                    XmlDocument series = GetSeriesXml(GetSelectedIndex());
+                    XmlDocument series = GetSeriesXml(index);
                     updateSeriesView(series);
                 }
             }
@@ -2378,7 +2565,7 @@ namespace PlexDL.UI
                 int index = dgvServers.CurrentCell.RowIndex;
                 Server s = plexServers[index];
                 string address = s.address;
-                if (!(address == settings.ServerAddress))
+                if (!(address == settings.ConnectionInfo.PlexAddress))
                 {
                     doNotAttemptAgain = false;
                     //MessageBox.Show("attempted connection");
@@ -2402,6 +2589,7 @@ namespace PlexDL.UI
             }
             catch (WebException ex)
             {
+                recordException(ex.Message, "TestConnectionError");
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
                     var response = ex.Response as HttpWebResponse;
@@ -2468,6 +2656,7 @@ namespace PlexDL.UI
             }
             catch (WebException ex)
             {
+                recordException(ex.Message, "ConnectionError");
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
                     var response = ex.Response as HttpWebResponse;
@@ -2504,22 +2693,28 @@ namespace PlexDL.UI
 
         private void DoDownloadAllEpisodes()
         {
-            SetProgressLabel("Waiting");
-            DownloadAllEpisodes = true;
-            DownloadTotal = episodesTable.Rows.Count;
-            downloadIsRunning = true;
-            wkrGetMetadata.RunWorkerAsync();
-            SetDownloadCancel();
+            if (!downloadIsRunning && !engineIsRunning)
+            {
+                SetProgressLabel("Waiting");
+                DownloadAllEpisodes = true;
+                DownloadTotal = episodesTable.Rows.Count;
+                downloadIsRunning = true;
+                wkrGetMetadata.RunWorkerAsync();
+                SetDownloadCancel();
+            }
         }
 
         private void DoDownloadSelected()
         {
-            SetProgressLabel("Waiting");
-            DownloadAllEpisodes = false;
-            DownloadTotal = 1;
-            downloadIsRunning = true;
-            wkrGetMetadata.RunWorkerAsync();
-            SetDownloadCancel();
+            if (!downloadIsRunning && !engineIsRunning)
+            {
+                SetProgressLabel("Waiting");
+                DownloadAllEpisodes = false;
+                DownloadTotal = 1;
+                downloadIsRunning = true;
+                wkrGetMetadata.RunWorkerAsync();
+                SetDownloadCancel();
+            }
         }
 
         private string FetchCorrectContentColumnName(string ViewName)
@@ -2539,38 +2734,52 @@ namespace PlexDL.UI
 
         private void dgvContent_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            /*
             if (IsContentSortingEnabled)
             {
                 string name = dgvContent.SortedColumn.Name;
+                //MessageBox.Show(name);
                 if (!IsFiltered)
                 {
-                    if (dgvContent.SortOrder.ToString() == "Descending")
+                    if (dgvContent.SortOrder == SortOrder.Descending)
                     {
                         titlesTable.DefaultView.Sort = name + " DESC";
                     }
-                    else
+                    else if (dgvContent.SortOrder == SortOrder.Ascending)
                     {
                         titlesTable.DefaultView.Sort = name + " ASC";
                     }
+                    else
+                    {
+                        titlesTable.DefaultView.Sort = "";
+                    }
                     titlesTable = titlesTable.DefaultView.ToTable();
+                    //MessageBox.Show("Titles Table:" + titlesTable.Rows.Count + "\nGridView:" + dgvContent.Rows.Count);
                 }
                 else
                 {
-                    if (dgvContent.SortOrder.ToString() == "Descending")
+                    if (dgvContent.SortOrder == SortOrder.Descending)
                     {
                         filteredTable.DefaultView.Sort = name + " DESC";
                     }
-                    else
+                    else if (dgvContent.SortOrder == SortOrder.Ascending)
                     {
                         filteredTable.DefaultView.Sort = name + " ASC";
                     }
+                    else
+                    {
+                        filteredTable.DefaultView.Sort = "";
+                    }
                     filteredTable = filteredTable.DefaultView.ToTable();
+                    //MessageBox.Show("Filtered Table:" + filteredTable.Rows.Count + "\nGridView:" + dgvContent.Rows.Count);
                 }
             }
+            */
         }
 
         private void dgvEpisodes_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            /*
             if (dgvEpisodes.SortOrder.ToString() == "Descending")
             {
                 episodesTable.DefaultView.Sort = dgvEpisodes.SortedColumn.Name + " DESC";
@@ -2580,10 +2789,12 @@ namespace PlexDL.UI
                 episodesTable.DefaultView.Sort = dgvEpisodes.SortedColumn.Name + " ASC";
             }
             episodesTable = episodesTable.DefaultView.ToTable();
+            */
         }
 
         private void dgvSeasons_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
+            /*
             if (dgvSeasons.SortOrder.ToString() == "Descending")
             {
                 seriesTable.DefaultView.Sort = dgvSeasons.SortedColumn.Name + " DESC";
@@ -2593,13 +2804,14 @@ namespace PlexDL.UI
                 seriesTable.DefaultView.Sort = dgvSeasons.SortedColumn.Name + " ASC";
             }
             seriesTable = seriesTable.DefaultView.ToTable();
+            */
         }
 
         private void btnDownload_Click(object sender, EventArgs e)
         {
             if (dgvContent.SelectedRows.Count == 1)
             {
-                if (!downloadIsRunning)
+                if (!downloadIsRunning && !engineIsRunning)
                 {
                     queue = new List<DownloadInfo>();
                     if (IsTVShow)
@@ -2642,7 +2854,7 @@ namespace PlexDL.UI
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            if (downloadIsRunning)
+            if (downloadIsRunning && engineIsRunning)
             {
                 if (!downloadIsPaused)
                 {
@@ -2657,6 +2869,29 @@ namespace PlexDL.UI
                     SetPause();
                     downloadIsPaused = false;
                 }
+            }
+        }
+
+        private void StartStreaming(PlexObject stream)
+        {
+            if (settings.Player.PlaybackEngine == PlaybackMode.PVSPlayer)
+            {
+                if (!downloadIsRunning)
+                {
+                    Player frm = new Player();
+                    frm.StreamingContent = stream;
+                    frm.TitlesTable = returnCorrectTable();
+                    addToLog("Started streaming " + stream.StreamInformation.ContentTitle);
+                    frm.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("You cannot stream " + stream.StreamInformation.ContentTitle + " because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else if (settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
+            {
+                VLCLauncher.LaunchVLC(stream.StreamInformation);
             }
         }
 
@@ -2681,32 +2916,16 @@ namespace PlexDL.UI
                         return;
                     }
                 }
-                if (!downloadIsRunning)
-                {
-                    frmPlayer frm = new frmPlayer();
-                    frm.StreamingContent = result;
-                    frm.TitlesTable = returnCorrectTable();
-                    addToLog("Started streaming " + result.StreamInformation.ContentTitle);
-                    frm.ShowDialog();
-                }
-                else
-                {
-                    MessageBox.Show("You cannot stream " + result.StreamInformation.ContentTitle + " because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                StartStreaming(result);
             }
         }
 
-        private void btnSaveProfile_Click(object sender, EventArgs e)
+        private void btnProfile_Click(object sender, EventArgs e)
         {
-            saveProfile();
+            cxtProfile.Show(MousePosition);
         }
 
-        private void btnLoadProfile_Click(object sender, EventArgs e)
-        {
-            loadProfile();
-        }
-
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void SearchProcedure()
         {
             if (IsFiltered)
             {
@@ -2718,17 +2937,67 @@ namespace PlexDL.UI
             }
         }
 
-        private void btnMetadata_Click(object sender, EventArgs e)
+        private void ClearTVViews()
+        {
+            dgvSeasons.DataSource = null;
+            dgvEpisodes.DataSource = null;
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            SearchProcedure();
+        }
+
+        private void cxtEpisodeOptions_Opening(object sender, CancelEventArgs e)
+        {
+            if (dgvEpisodes.SelectedRows.Count == 0)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void cxtContentOptions_Opening(object sender, CancelEventArgs e)
+        {
+            if (dgvContent.SelectedRows.Count == 0)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void Metadata(PlexObject result = null)
         {
             if (dgvContent.SelectedRows.Count == 1)
             {
-                PlexMovie result = (PlexMovie)PlexDL.WaitWindow.WaitWindow.Show(GetObjectFromSelectionWorker, "Getting Metadata");
-                using (frmTitleInformation frm = new frmTitleInformation())
+                if (result == null)
+                {
+                    if (!IsTVShow)
+                    {
+                        result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetObjectFromSelectionWorker, "Getting Metadata");
+                    }
+                    else
+                    {
+                        result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker, "Getting Metadata");
+                    }
+                }
+                using (Metadata frm = new Metadata())
                 {
                     frm.StreamingContent = result;
                     frm.ShowDialog();
                 }
             }
+            else if (dgvContent.Rows.Count == 0)
+            {
+                using (Metadata frm = new Metadata())
+                {
+                    frm.StationaryMode = true;
+                    frm.ShowDialog();
+                }
+            }
+        }
+
+        private void btnMetadata_Click(object sender, EventArgs e)
+        {
+            Metadata();
         }
 
         #endregion ButtonClicks
@@ -2784,6 +3053,54 @@ namespace PlexDL.UI
         private void itmManuallyLoadSection_Click(object sender, EventArgs e)
         {
             ManualSectionLoad();
+        }
+
+        private void metadataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Metadata();
+        }
+
+        private void thisEpisodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DoDownloadSelected();
+        }
+
+        private void thisSeasonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DoDownloadAllEpisodes();
+            DoDownloadAllEpisodes();
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Metadata();
+        }
+
+        private void itmContentDownload_Click(object sender, EventArgs e)
+        {
+            DoDownloadSelected();
+        }
+
+        private void loadProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            loadProfile();
+        }
+
+        private void saveProfileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveProfile();
+        }
+    }
+    public static class DataTableExtensions
+    {
+        public static void SetColumnsOrder(this DataTable table, params String[] columnNames)
+        {
+            int columnIndex = 0;
+            foreach (var columnName in columnNames)
+            {
+                table.Columns[columnName].SetOrdinal(columnIndex);
+                columnIndex++;
+            }
         }
     }
 }

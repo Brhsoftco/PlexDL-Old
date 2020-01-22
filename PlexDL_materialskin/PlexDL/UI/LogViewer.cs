@@ -1,10 +1,9 @@
 ﻿using MaterialSkin.Controls;
 using System;
-using System.IO;
-using System.Windows.Forms;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
+using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
@@ -12,6 +11,7 @@ namespace PlexDL.UI
     {
         public libbrhscgui.Components.UserInteraction objUI = new libbrhscgui.Components.UserInteraction();
         public string dir = AppDomain.CurrentDomain.BaseDirectory + @"\Logs";
+
         public LogViewer()
         {
             InitializeComponent();
@@ -62,11 +62,11 @@ namespace PlexDL.UI
 
         private void LogViewer_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (frmMain.settings.AnimationSpeed > 0)
+            if (Home.settings.Generic.AnimationSpeed > 0)
             {
                 e.Cancel = true;
                 t1 = new Timer();
-                t1.Interval = frmMain.settings.AnimationSpeed;
+                t1.Interval = Home.settings.Generic.AnimationSpeed;
                 t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
                 t1.Start();
 
@@ -77,6 +77,7 @@ namespace PlexDL.UI
                 }
             }
         }
+
         public void refreshLogItems()
         {
             try
@@ -124,11 +125,11 @@ namespace PlexDL.UI
         private void LogViewer_Load(object sender, EventArgs e)
         {
             refreshLogItems();
-            if (frmMain.settings.AnimationSpeed > 0)
+            if (Home.settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0;      //first the opacity is 0
                 t1 = new Timer();
-                t1.Interval = frmMain.settings.AnimationSpeed;  //we'll increase the opacity every 10ms
+                t1.Interval = Home.settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
                 t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
                 t1.Start();
             }
@@ -203,7 +204,6 @@ namespace PlexDL.UI
                     return;
                 }
             }
-
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -263,6 +263,15 @@ namespace PlexDL.UI
                     }
                 }
                 MessageBox.Show("Could not find '" + ipt.txt + "'", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgvMain_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvMain.Rows.Count > 0)
+            {
+                string value = dgvMain.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                MessageBox.Show(value, "Cell Content", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }

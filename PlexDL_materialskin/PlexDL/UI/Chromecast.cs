@@ -3,16 +3,16 @@ using System;
 
 namespace PlexDL.UI
 {
-    public partial class frmChromecast : MaterialForm
+    public partial class Chromecast : MaterialForm
     {
         //private ObservableCollection<Chromecast> chromecasts;
 
-        public frmChromecast()
+        public Chromecast()
         {
             InitializeComponent();
         }
 
-        private async void btnSearch_Click(object sender, EventArgs e)
+        private void btnSearch_Click(object sender, EventArgs e)
         {
             /*
             lstChromecasts.Items.Clear();

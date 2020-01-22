@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class frmConnect : MaterialForm
+    public partial class Connect : MaterialForm
     {
         public ConnectionInformation ConnectionInfo { get; set; } = new ConnectionInformation();
 
@@ -16,7 +16,7 @@ namespace PlexDL.UI
 
         public bool connectionStarted = false;
 
-        public frmConnect()
+        public Connect()
         {
             InitializeComponent();
 
@@ -51,11 +51,11 @@ namespace PlexDL.UI
 
         private void frmConnect_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if ((settings.AnimationSpeed > 0) && (connectionStarted == false))
+            if ((settings.Generic.AnimationSpeed > 0) && (connectionStarted == false))
             {
                 e.Cancel = true;
                 t1 = new Timer();
-                t1.Interval = settings.AnimationSpeed;
+                t1.Interval = settings.Generic.AnimationSpeed;
                 t1.Tick += new EventHandler(fadeOut);  //this calls the fade out function
                 t1.Start();
 
@@ -117,12 +117,12 @@ namespace PlexDL.UI
         private void frmConnect_Load(object sender, EventArgs e)
         {
             connectionStarted = false;
-            settings = frmMain.settings;
-            if (settings.AnimationSpeed > 0)
+            settings = Home.settings;
+            if (settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0;      //first the opacity is 0
 
-                t1.Interval = settings.AnimationSpeed;  //we'll increase the opacity every 10ms
+                t1.Interval = settings.Generic.AnimationSpeed;  //we'll increase the opacity every 10ms
                 t1.Tick += new EventHandler(fadeIn);  //this calls the function that changes opacity
                 t1.Start();
             }

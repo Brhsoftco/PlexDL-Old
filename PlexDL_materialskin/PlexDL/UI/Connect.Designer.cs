@@ -1,6 +1,6 @@
 ﻿namespace PlexDL.UI
 {
-    partial class frmConnect 
+    partial class Connect 
     {
         /// <summary>
         /// Required designer variable.
@@ -28,23 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
+            this.mtlMain = new MaterialSkin.Controls.MaterialDivider();
             this.lblAccountToken = new MaterialSkin.Controls.MaterialLabel();
             this.txtAccountToken = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.btnConnect = new MaterialSkin.Controls.MaterialFlatButton();
             this.SuspendLayout();
             // 
-            // materialDivider1
+            // mtlMain
             // 
-            this.materialDivider1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialDivider1.Depth = 0;
-            this.materialDivider1.Location = new System.Drawing.Point(8, 72);
-            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialDivider1.Name = "materialDivider1";
-            this.materialDivider1.Size = new System.Drawing.Size(218, 113);
-            this.materialDivider1.TabIndex = 0;
-            this.materialDivider1.Text = "materialDivider1";
-            this.materialDivider1.Click += new System.EventHandler(this.materialDivider1_Click);
+            this.mtlMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.mtlMain.Depth = 0;
+            this.mtlMain.Location = new System.Drawing.Point(8, 72);
+            this.mtlMain.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mtlMain.Name = "mtlMain";
+            this.mtlMain.Size = new System.Drawing.Size(218, 113);
+            this.mtlMain.TabIndex = 0;
+            this.mtlMain.Text = "materialDivider1";
+            this.mtlMain.Click += new System.EventHandler(this.materialDivider1_Click);
             // 
             // lblAccountToken
             // 
@@ -57,7 +57,7 @@
             this.lblAccountToken.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblAccountToken.Name = "lblAccountToken";
             this.lblAccountToken.Size = new System.Drawing.Size(111, 19);
-            this.lblAccountToken.TabIndex = 5;
+            this.lblAccountToken.TabIndex = 1;
             this.lblAccountToken.Text = "Account Token";
             this.lblAccountToken.Click += new System.EventHandler(this.lblAccountToken_Click);
             // 
@@ -65,7 +65,7 @@
             // 
             this.txtAccountToken.Depth = 0;
             this.txtAccountToken.Hint = "";
-            this.txtAccountToken.Location = new System.Drawing.Point(22, 100);
+            this.txtAccountToken.Location = new System.Drawing.Point(15, 100);
             this.txtAccountToken.MaxLength = 20;
             this.txtAccountToken.MouseState = MaterialSkin.MouseState.HOVER;
             this.txtAccountToken.Name = "txtAccountToken";
@@ -73,8 +73,8 @@
             this.txtAccountToken.SelectedText = "";
             this.txtAccountToken.SelectionLength = 0;
             this.txtAccountToken.SelectionStart = 0;
-            this.txtAccountToken.Size = new System.Drawing.Size(197, 23);
-            this.txtAccountToken.TabIndex = 6;
+            this.txtAccountToken.Size = new System.Drawing.Size(204, 23);
+            this.txtAccountToken.TabIndex = 2;
             this.txtAccountToken.TabStop = false;
             this.txtAccountToken.UseSystemPasswordChar = false;
             this.txtAccountToken.Click += new System.EventHandler(this.txtAccountToken_Click);
@@ -91,12 +91,12 @@
             this.btnConnect.Name = "btnConnect";
             this.btnConnect.Primary = false;
             this.btnConnect.Size = new System.Drawing.Size(84, 36);
-            this.btnConnect.TabIndex = 7;
+            this.btnConnect.TabIndex = 3;
             this.btnConnect.Text = "Connect";
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
-            // frmConnect
+            // Connect
             // 
             this.AcceptButton = this.btnConnect;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -105,10 +105,10 @@
             this.Controls.Add(this.btnConnect);
             this.Controls.Add(this.txtAccountToken);
             this.Controls.Add(this.lblAccountToken);
-            this.Controls.Add(this.materialDivider1);
+            this.Controls.Add(this.mtlMain);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmConnect";
+            this.Name = "Connect";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Sizable = false;
@@ -123,7 +123,7 @@
 
         #endregion
 
-        private MaterialSkin.Controls.MaterialDivider materialDivider1;
+        private MaterialSkin.Controls.MaterialDivider mtlMain;
         private MaterialSkin.Controls.MaterialLabel lblAccountToken;
         private MaterialSkin.Controls.MaterialSingleLineTextField txtAccountToken;
         private MaterialSkin.Controls.MaterialFlatButton btnConnect;

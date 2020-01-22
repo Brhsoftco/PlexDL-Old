@@ -76,6 +76,7 @@ namespace PlexDL.WaitWindow
             this.Text = "Please Wait";
             this.ResumeLayout(false);
             this.PerformLayout();
+            this.ControlBox = false;
 
 		}
         public MaterialSkin.Controls.MaterialLabel MessageLabel;
