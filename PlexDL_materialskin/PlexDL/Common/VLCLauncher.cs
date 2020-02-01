@@ -1,5 +1,5 @@
-﻿using PlexDL.UI;
-using PlexDL.Common.Structures;
+﻿using PlexDL.Common.Structures;
+using PlexDL.UI;
 using System;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -13,10 +13,12 @@ namespace PlexDL.Common
             try
             {
                 Process p = new Process();
+                SVarController c = new SVarController();
                 string vlc = Home.settings.Player.VLCMediaPlayerPath;
                 string arg = Home.settings.Player.VLCMediaPlayerArgs;
-                arg = arg.Replace("%TITLE%", "\"" + stream.ContentTitle + "\"");
-                arg = arg.Replace("%FILE%", "\"" + stream.Link + "\"");
+                c.Input = arg;
+                c.Variables = c.BuildFromDlInfo(stream);
+                arg = c.YieldString();
                 p.StartInfo.FileName = vlc;
                 p.StartInfo.Arguments = arg;
                 p.Start();

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PlexDL.Common.Structures;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using PlexDL.Common.Structures;
 
 namespace PlexDL.Common
 {
@@ -11,6 +11,7 @@ namespace PlexDL.Common
         public GridViewDisplays DataDisplay { get; set; } = new GridViewDisplays();
         public PlayerSettings Player { get; set; } = new PlayerSettings();
         public GenericAppSettings Generic { get; set; } = new GenericAppSettings();
+        public CachingSettings CacheSettings { get; set; } = new CachingSettings();
     }
 
     public class GenericAppSettings
@@ -20,6 +21,26 @@ namespace PlexDL.Common
         public int DownloadLayoutDefinition { get; set; } = 0;
         public string DownloadDirectory { get; set; } = "";
         public int AnimationSpeed { get; set; } = 10;
+    }
+
+    public class CacheMode
+    {
+        public bool EnableServerCaching { get; set; } = true;
+        public bool EnableThumbCaching { get; set; } = true;
+        public bool EnableXMLCaching { get; set; } = true;
+    }
+
+    public class CachePaths
+    {
+        public string XMLCachePath { get; set; } = @"cache\%TOKEN%\%SERVER%\xml";
+        public string ThumbCachePath { get; set; } = @"cache\%TOKEN%\%SERVER%\thumb";
+        public string ServerCachePath { get; set; } = @"cache\%TOKEN%";
+    }
+
+    public class CachingSettings
+    {
+        public CacheMode Mode { get; set; } = new CacheMode();
+        public CachePaths Paths { get; set; } = new CachePaths();
     }
 
     public class LoggingSettings
@@ -32,8 +53,8 @@ namespace PlexDL.Common
     public class GridViewDisplays
     {
         public ContentDisplay ContentView { get; set; } = new ContentDisplay();
-        public SeriesDisplay SeriesView { get; set; }  = new SeriesDisplay();
-        public EpisodesDisplay EpisodesView { get; set; }  = new EpisodesDisplay();
+        public SeriesDisplay SeriesView { get; set; } = new SeriesDisplay();
+        public EpisodesDisplay EpisodesView { get; set; } = new EpisodesDisplay();
         public LibraryDisplay LibraryView { get; set; } = new LibraryDisplay();
     }
 
@@ -61,7 +82,6 @@ namespace PlexDL.Common
         public List<string> EpisodesDisplayCaption { get; set; } = new List<string>() { "Title", "Year", "Rating" };
     }
 
-
     public class PlayerKeyBindings
     {
         public Keys PlayPause { get; set; } = Keys.Space;
@@ -73,7 +93,7 @@ namespace PlexDL.Common
 
     public class PlayerSettings
     {
-        public string VLCMediaPlayerArgs { get; set; } = "%FILE% --meta-title=%TITLE%";
+        public string VLCMediaPlayerArgs { get; set; } = @"%FILE% --meta-title=%TITLE%";
         public string VLCMediaPlayerPath { get; set; } = @"C:\Program Files\VideoLAN\VLC\vlc.exe";
         public decimal SkipForwardInterval { get; set; } = 30;
         public decimal SkipBackwardInterval { get; set; } = 10;
@@ -86,5 +106,6 @@ namespace PlexDL.Common
     {
         public const int PVSPlayer = 0;
         public const int VLCPlayer = 1;
+        public const int Browser = 2;
     }
 }

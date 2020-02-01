@@ -86,6 +86,7 @@ namespace PlexDL.UI
                 //ConnectionInfo.PlexAddress = txtPlexIP.Text;
                 //ConnectionInfo.PlexPort = Convert.ToInt32(txtPlexPort.Text);
                 ConnectionInfo.PlexAccountToken = txtAccountToken.Text;
+                ConnectionInfo.RelaysOnly = chkRelays.Checked;
                 connectionStarted = true;
                 this.DialogResult = DialogResult.OK;
                 this.Close();
@@ -129,21 +130,19 @@ namespace PlexDL.UI
             //txtPlexIP.Text = ConnectionInfo.PlexAddress;
             //txtPlexPort.Text = ConnectionInfo.PlexPort.ToString();
             txtAccountToken.Text = ConnectionInfo.PlexAccountToken;
+            chkRelays.Checked = ConnectionInfo.RelaysOnly;
         }
 
         private void materialDivider1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void lblAccountToken_Click(object sender, EventArgs e)
         {
-
         }
 
         private void txtAccountToken_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

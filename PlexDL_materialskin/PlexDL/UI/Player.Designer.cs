@@ -33,7 +33,6 @@
             this.pnlPlayer = new System.Windows.Forms.Panel();
             this.btnExit = new MaterialSkin.Controls.MaterialFlatButton();
             this.tmrCopied = new System.Windows.Forms.Timer(this.components);
-            this.mtlPlayerControls = new MaterialSkin.Controls.MaterialDivider();
             this.lblTotalDuration = new MaterialSkin.Controls.MaterialLabel();
             this.lblTimeSoFar = new MaterialSkin.Controls.MaterialLabel();
             this.tmrRefreshUI = new System.Windows.Forms.Timer(this.components);
@@ -44,7 +43,10 @@
             this.btnSkipBack = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnPlayPause = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnPrevTitle = new MaterialSkin.Controls.MaterialFlatButton();
+            this.mtlPlayerControls = new MaterialSkin.Controls.MaterialDivider();
+            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlPlayer
@@ -76,16 +78,6 @@
             // 
             this.tmrCopied.Interval = 1500;
             this.tmrCopied.Tick += new System.EventHandler(this.tmrCopied_Tick);
-            // 
-            // mtlPlayerControls
-            // 
-            this.mtlPlayerControls.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.mtlPlayerControls.Depth = 0;
-            this.mtlPlayerControls.Location = new System.Drawing.Point(0, 784);
-            this.mtlPlayerControls.MouseState = MaterialSkin.MouseState.HOVER;
-            this.mtlPlayerControls.Name = "mtlPlayerControls";
-            this.mtlPlayerControls.Size = new System.Drawing.Size(1280, 48);
-            this.mtlPlayerControls.TabIndex = 4;
             // 
             // lblTotalDuration
             // 
@@ -222,6 +214,26 @@
             this.btnPrevTitle.UseVisualStyleBackColor = true;
             this.btnPrevTitle.Click += new System.EventHandler(this.btnPrevTitle_Click);
             // 
+            // mtlPlayerControls
+            // 
+            this.mtlPlayerControls.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.mtlPlayerControls.Depth = 0;
+            this.mtlPlayerControls.Location = new System.Drawing.Point(0, 784);
+            this.mtlPlayerControls.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mtlPlayerControls.Name = "mtlPlayerControls";
+            this.mtlPlayerControls.Size = new System.Drawing.Size(1280, 48);
+            this.mtlPlayerControls.TabIndex = 4;
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 64);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(1280, 768);
+            this.axWindowsMediaPlayer1.TabIndex = 10;
+            this.axWindowsMediaPlayer1.Visible = false;
+            // 
             // Player
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,6 +251,7 @@
             this.Controls.Add(this.btnPlayPause);
             this.Controls.Add(this.mtlPlayerControls);
             this.Controls.Add(this.pnlPlayer);
+            this.Controls.Add(this.axWindowsMediaPlayer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Player";
@@ -249,6 +262,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPlayer_FormClosing);
             this.Load += new System.EventHandler(this.frmPlayer_Load);
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,7 +274,6 @@
         private MaterialSkin.Controls.MaterialFlatButton btnExit;
         private System.Windows.Forms.Timer tmrCopied;
         private MaterialSkin.Controls.MaterialFlatButton btnPlayPause;
-        private MaterialSkin.Controls.MaterialDivider mtlPlayerControls;
         private MaterialSkin.Controls.MaterialLabel lblTotalDuration;
         private MaterialSkin.Controls.MaterialLabel lblTimeSoFar;
         private System.Windows.Forms.Timer tmrRefreshUI;
@@ -270,5 +283,7 @@
         private MaterialSkin.Controls.MaterialFlatButton btnStop;
         private MaterialSkin.Controls.MaterialFlatButton btnNextTitle;
         private MaterialSkin.Controls.MaterialFlatButton btnPrevTitle;
+        private MaterialSkin.Controls.MaterialDivider mtlPlayerControls;
+        private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
     }
 }

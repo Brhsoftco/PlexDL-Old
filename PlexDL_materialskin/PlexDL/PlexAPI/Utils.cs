@@ -8,11 +8,25 @@ namespace PlexAPI
     {
         public static DateTime GetDateTimeFromTimestamp(string timestamp)
         {
-            // First make a System.DateTime equivalent to the UNIX Epoch.
-            System.DateTime dateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+            try
+            {
+                if (DateTime.TryParse(timestamp, out DateTime result))
+                {
+                    return result;
+                }
+                else
+                {
+                    // First make a System.DateTime equivalent to the UNIX Epoch.
+                    System.DateTime dateTime = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
 
-            // Add the number of seconds in UNIX timestamp to be converted.
-            return dateTime.AddSeconds(Double.Parse(timestamp));
+                    // Add the number of seconds in UNIX timestamp to be converted.
+                    return dateTime.AddSeconds(Double.Parse(timestamp));
+                }
+            }
+            catch
+            {
+                return DateTime.Now;
+            }
         }
 
         public static T1 CopyFrom<T1, T2>(this T1 obj, T2 otherObject)

@@ -1,7 +1,10 @@
-﻿using PlexDL.Common.Structures;
+﻿using PlexDL.Common.Caching;
+using PlexDL.Common.Structures;
 using PlexDL.UI;
 using System;
+using System.Drawing;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
@@ -68,31 +71,41 @@ namespace PlexDL.Common
                 dblSByte = bytes / 1024.0;
             }
 
-            return System.String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
+            return String.Format("{0:0.##} {1}", dblSByte, Suffix[i]);
         }
 
-        public static System.Drawing.Bitmap getImageFromUrl(string url)
+        public static Bitmap getImageFromUrl(string url)
         {
+            Helpers.CacheStructureBuilder();
             if (url == "")
             {
                 return PlexDL.Properties.Resources.image_not_available_png_8;
             }
             else
             {
-                var request = System.Net.WebRequest.Create(url);
-
-                using (var response = request.GetResponse())
-                using (var stream = response.GetResponseStream())
+                if (ThumbCaching.ThumbInCache(url))
                 {
-                    return (System.Drawing.Bitmap)System.Drawing.Bitmap.FromStream(stream);
+                    return ThumbCaching.ThumbFromCache(url);
+                }
+                else
+                {
+                    var request = System.Net.WebRequest.Create(url);
+
+                    using (var response = request.GetResponse())
+                    using (var stream = response.GetResponseStream())
+                    {
+                        Bitmap result = (Bitmap)Bitmap.FromStream(stream);
+                        ThumbCaching.ThumbToCache(result, url);
+                        return result;
+                    }
                 }
             }
         }
 
         public static string removeIllegalCharacters(string illegal)
         {
-            string regexSearch = new string(System.IO.Path.GetInvalidFileNameChars()) + new string(System.IO.Path.GetInvalidPathChars());
-            System.Text.RegularExpressions.Regex r = new System.Text.RegularExpressions.Regex(string.Format("[{0}]", System.Text.RegularExpressions.Regex.Escape(regexSearch)));
+            string regexSearch = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            Regex r = new Regex(string.Format("[{0}]", Regex.Escape(regexSearch)));
             return r.Replace(illegal, "");
         }
     }
