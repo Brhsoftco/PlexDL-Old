@@ -37,14 +37,14 @@
             this.lblTimeSoFar = new MaterialSkin.Controls.MaterialLabel();
             this.tmrRefreshUI = new System.Windows.Forms.Timer(this.components);
             this.trkDuration = new System.Windows.Forms.TrackBar();
+            this.mtlPlayerControls = new MaterialSkin.Controls.MaterialDivider();
+            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
+            this.btnPrevTitle = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnNextTitle = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnStop = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnSkipForward = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnSkipBack = new MaterialSkin.Controls.MaterialFlatButton();
             this.btnPlayPause = new MaterialSkin.Controls.MaterialFlatButton();
-            this.btnPrevTitle = new MaterialSkin.Controls.MaterialFlatButton();
-            this.mtlPlayerControls = new MaterialSkin.Controls.MaterialDivider();
-            this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             ((System.ComponentModel.ISupportInitialize)(this.trkDuration)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
             this.SuspendLayout();
@@ -63,7 +63,7 @@
             this.btnExit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btnExit.Depth = 0;
             this.btnExit.Icon = null;
-            this.btnExit.Location = new System.Drawing.Point(1164, 792);
+            this.btnExit.Location = new System.Drawing.Point(1164, 790);
             this.btnExit.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.btnExit.MouseState = MaterialSkin.MouseState.HOVER;
             this.btnExit.Name = "btnExit";
@@ -86,7 +86,7 @@
             this.lblTotalDuration.Depth = 0;
             this.lblTotalDuration.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblTotalDuration.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblTotalDuration.Location = new System.Drawing.Point(1093, 800);
+            this.lblTotalDuration.Location = new System.Drawing.Point(1092, 798);
             this.lblTotalDuration.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblTotalDuration.Name = "lblTotalDuration";
             this.lblTotalDuration.Size = new System.Drawing.Size(65, 19);
@@ -101,7 +101,7 @@
             this.lblTimeSoFar.Depth = 0;
             this.lblTimeSoFar.Font = new System.Drawing.Font("Roboto", 11F);
             this.lblTimeSoFar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.lblTimeSoFar.Location = new System.Drawing.Point(323, 800);
+            this.lblTimeSoFar.Location = new System.Drawing.Point(317, 800);
             this.lblTimeSoFar.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblTimeSoFar.Name = "lblTimeSoFar";
             this.lblTimeSoFar.Size = new System.Drawing.Size(65, 19);
@@ -112,11 +112,47 @@
             // 
             this.trkDuration.AutoSize = false;
             this.trkDuration.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.trkDuration.Location = new System.Drawing.Point(393, 800);
+            this.trkDuration.Location = new System.Drawing.Point(384, 800);
             this.trkDuration.Name = "trkDuration";
-            this.trkDuration.Size = new System.Drawing.Size(694, 19);
+            this.trkDuration.Size = new System.Drawing.Size(711, 19);
             this.trkDuration.TabIndex = 7;
             this.trkDuration.TickStyle = System.Windows.Forms.TickStyle.None;
+            // 
+            // mtlPlayerControls
+            // 
+            this.mtlPlayerControls.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.mtlPlayerControls.Depth = 0;
+            this.mtlPlayerControls.Location = new System.Drawing.Point(0, 784);
+            this.mtlPlayerControls.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mtlPlayerControls.Name = "mtlPlayerControls";
+            this.mtlPlayerControls.Size = new System.Drawing.Size(1280, 48);
+            this.mtlPlayerControls.TabIndex = 4;
+            // 
+            // axWindowsMediaPlayer1
+            // 
+            this.axWindowsMediaPlayer1.Enabled = true;
+            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 64);
+            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
+            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
+            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(1280, 768);
+            this.axWindowsMediaPlayer1.TabIndex = 10;
+            this.axWindowsMediaPlayer1.Visible = false;
+            // 
+            // btnPrevTitle
+            // 
+            this.btnPrevTitle.AutoSize = true;
+            this.btnPrevTitle.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnPrevTitle.Depth = 0;
+            this.btnPrevTitle.Icon = global::PlexDL.Properties.Resources.baseline_skip_previous_black_18dp;
+            this.btnPrevTitle.Location = new System.Drawing.Point(110, 790);
+            this.btnPrevTitle.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
+            this.btnPrevTitle.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnPrevTitle.Name = "btnPrevTitle";
+            this.btnPrevTitle.Primary = false;
+            this.btnPrevTitle.Size = new System.Drawing.Size(44, 36);
+            this.btnPrevTitle.TabIndex = 2;
+            this.btnPrevTitle.UseVisualStyleBackColor = true;
+            this.btnPrevTitle.Click += new System.EventHandler(this.btnPrevTitle_Click);
             // 
             // btnNextTitle
             // 
@@ -197,42 +233,6 @@
             this.btnPlayPause.TabIndex = 0;
             this.btnPlayPause.UseVisualStyleBackColor = true;
             this.btnPlayPause.Click += new System.EventHandler(this.btnPlayPause_Click);
-            // 
-            // btnPrevTitle
-            // 
-            this.btnPrevTitle.AutoSize = true;
-            this.btnPrevTitle.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.btnPrevTitle.Depth = 0;
-            this.btnPrevTitle.Icon = global::PlexDL.Properties.Resources.baseline_skip_previous_black_18dp;
-            this.btnPrevTitle.Location = new System.Drawing.Point(110, 790);
-            this.btnPrevTitle.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.btnPrevTitle.MouseState = MaterialSkin.MouseState.HOVER;
-            this.btnPrevTitle.Name = "btnPrevTitle";
-            this.btnPrevTitle.Primary = false;
-            this.btnPrevTitle.Size = new System.Drawing.Size(44, 36);
-            this.btnPrevTitle.TabIndex = 2;
-            this.btnPrevTitle.UseVisualStyleBackColor = true;
-            this.btnPrevTitle.Click += new System.EventHandler(this.btnPrevTitle_Click);
-            // 
-            // mtlPlayerControls
-            // 
-            this.mtlPlayerControls.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.mtlPlayerControls.Depth = 0;
-            this.mtlPlayerControls.Location = new System.Drawing.Point(0, 784);
-            this.mtlPlayerControls.MouseState = MaterialSkin.MouseState.HOVER;
-            this.mtlPlayerControls.Name = "mtlPlayerControls";
-            this.mtlPlayerControls.Size = new System.Drawing.Size(1280, 48);
-            this.mtlPlayerControls.TabIndex = 4;
-            // 
-            // axWindowsMediaPlayer1
-            // 
-            this.axWindowsMediaPlayer1.Enabled = true;
-            this.axWindowsMediaPlayer1.Location = new System.Drawing.Point(0, 64);
-            this.axWindowsMediaPlayer1.Name = "axWindowsMediaPlayer1";
-            this.axWindowsMediaPlayer1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axWindowsMediaPlayer1.OcxState")));
-            this.axWindowsMediaPlayer1.Size = new System.Drawing.Size(1280, 768);
-            this.axWindowsMediaPlayer1.TabIndex = 10;
-            this.axWindowsMediaPlayer1.Visible = false;
             // 
             // Player
             // 

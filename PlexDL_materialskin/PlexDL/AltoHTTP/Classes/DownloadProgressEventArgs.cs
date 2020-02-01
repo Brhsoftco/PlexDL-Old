@@ -5,7 +5,7 @@
     /// </summary>
     public class DownloadProgressChangedEventArgs
     {
-        private int progress;
+        private double progress;
         private int speed;
 
         /// <summary>
@@ -13,7 +13,7 @@
         /// </summary>
         /// <param name="progress">Current download progress</param>
         /// <param name="speed">Current ownload speed</param>
-        public DownloadProgressChangedEventArgs(int progress, int speed)
+        public DownloadProgressChangedEventArgs(double progress, int speed)
         {
             this.progress = progress;
             this.speed = speed;
@@ -22,7 +22,7 @@
         /// <summary>
         /// Gets the current progress
         /// </summary>
-        public int Progress
+        public double Progress
         {
             get { return progress; }
         }

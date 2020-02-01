@@ -100,6 +100,7 @@ namespace PlexDL.Common
         public bool PlayNextTitleAutomatically { get; set; } = false;
         public PlayerKeyBindings KeyBindings { get; set; } = new PlayerKeyBindings();
         public int PlaybackEngine { get; set; } = PlaybackMode.PVSPlayer;
+        public bool ShowFSMessage { get; set; } = true;
     }
 
     public static class PlaybackMode

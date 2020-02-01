@@ -2064,34 +2064,6 @@ namespace PlexDL.UI
             SetProgressLabel(CurrentProgress.ToString() + "% " + order + " @ " + speed);
 
             pbMain.Value = (int)CurrentProgress;
-            if (!(engine.CurrentProgress == alreadyMarkedProgressNumber))
-            {
-                if (engine.CurrentProgress == 15)
-                {
-                    addToLog("Download 15% Completed");
-                    alreadyMarkedProgressNumber = 15;
-                }
-                else if (engine.CurrentProgress == 25)
-                {
-                    addToLog("Download 25% Completed");
-                    alreadyMarkedProgressNumber = 25;
-                }
-                else if (engine.CurrentProgress == 50)
-                {
-                    addToLog("Download 50% Completed");
-                    alreadyMarkedProgressNumber = 50;
-                }
-                else if (engine.CurrentProgress == 75)
-                {
-                    addToLog("Download 75% Completed");
-                    alreadyMarkedProgressNumber = 75;
-                }
-                else if (engine.CurrentProgress == 90)
-                {
-                    addToLog("Download 90% Completed");
-                    alreadyMarkedProgressNumber = 90;
-                }
-            }
 
             //MessageBox.Show("Started!");
         }
@@ -2498,8 +2470,17 @@ namespace PlexDL.UI
 
         private void UpdateFromLibraryKey(string key, bool isTVShow)
         {
+            object[] args = new object[] { key, isTVShow };
+            WaitWindow.WaitWindow.Show(UpdateFromLibraryKey_Worker, "Getting Metadata", args);
+        }
+
+        private void UpdateFromLibraryKey_Worker(object sender, WaitWindow.WaitWindowEventArgs e)
+        {
+            bool isTVShow = (bool)e.Arguments[1];
+            string key = (string)e.Arguments[0];
             try
             {
+
                 addToLog("Requesting ibrary contents");
                 string contentUri = uri + key + "/all/?X-Plex-Token=";
                 XmlDocument contentXml = GetXMLTransaction(contentUri);
@@ -2965,7 +2946,7 @@ namespace PlexDL.UI
                         string accessToken = "";
                         if (node.Attributes["accessToken"] != null)
                         {
-                             accessToken = node.Attributes["accessToken"].Value.ToString();
+                            accessToken = node.Attributes["accessToken"].Value.ToString();
                         }
                         string name = node.Attributes["name"].Value.ToString();
                         string address = "";
