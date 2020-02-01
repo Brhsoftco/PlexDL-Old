@@ -92,7 +92,6 @@ namespace PlexDL.UI
                     {
                         if ((Path.GetExtension(file).ToLower() ?? "") == ".log" | (Path.GetExtension(file).ToLower() ?? "") == ".logdel")
                         {
-                            lstLogFiles.Items.Remove(Path.GetFileName(file));
                             lstLogFiles.Items.Add(Path.GetFileName(file));
                         }
                     }

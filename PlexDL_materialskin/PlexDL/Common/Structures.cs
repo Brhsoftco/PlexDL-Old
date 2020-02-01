@@ -60,7 +60,7 @@ namespace PlexDL.Common.Structures
         public long ContentDuration { get; set; } = 0;
         public List<PlexActor> Actors { get; set; } = new List<PlexActor>();
     }
-    
+
     [Serializable]
     public class PlexMovie : PlexObject
     {
@@ -97,6 +97,8 @@ namespace PlexDL.Common.Structures
         public int PlexPort { get; set; } = 32400;
         public string PlexAddress { get; set; } = "";
         public string PlexAccountToken { get; set; } = "";
+        [NonSerialized]
+        public bool RelaysOnly = false;
     }
 
     public class DownloadInfo

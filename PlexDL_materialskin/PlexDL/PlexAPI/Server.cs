@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace PlexAPI
 {
+    [Serializable]
     public class Server : PlexRest
     {
         public Server()

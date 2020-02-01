@@ -2,6 +2,7 @@
 using MaterialSkin.Controls;
 using PlexAPI;
 using PlexDL.Common;
+using PlexDL.Common.Caching;
 using PlexDL.Common.Structures;
 using System;
 using System.Collections.Generic;
@@ -184,7 +185,7 @@ namespace PlexDL.UI
         [System.Runtime.InteropServices.DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pvd, [In] ref uint pcFonts);
 
-        public int GetTableIndexFromDGV(DataGridView dgv, DataTable table = null)
+        public int GetTableIndexFromDGV(DataGridView dgv, DataTable table = null, string key = "title")
         {
             DataGridViewRow sel = dgv.SelectedRows[0];
             string titleValue = "";
@@ -192,10 +193,10 @@ namespace PlexDL.UI
                 table = returnCorrectTable();
             foreach (DataRow r in table.Rows)
             {
-                if (dgv.Columns.Contains("title"))
+                if (dgv.Columns.Contains(key))
                 {
-                    titleValue = sel.Cells["title"].Value.ToString();
-                    if (r["title"].ToString() == titleValue)
+                    titleValue = sel.Cells[key].Value.ToString();
+                    if (r[key].ToString() == titleValue)
                     {
                         return table.Rows.IndexOf(r);
                     }
@@ -367,81 +368,112 @@ namespace PlexDL.UI
 
         #region GetXMLTransaction
 
-        public XmlDocument GetXMLTransaction(string uri)
+        public XmlDocument GetXMLTransaction(string uri, string secret = "", bool forceNoCache = false)
         {
-            //Declare XMLResponse document
-            XmlDocument XMLResponse = null;
-            //Declare an HTTP-specific implementation of the WebRequest class.
-            HttpWebRequest objHttpWebRequest;
-            //Declare an HTTP-specific implementation of the WebResponse class
-            HttpWebResponse objHttpWebResponse = null;
-            //Declare a generic view of a sequence of bytes
-            Stream objResponseStream = null;
-            //Declare XMLReader
-            XmlTextReader objXMLReader;
+            //Create the cache folder structure
+            Helpers.CacheStructureBuilder();
 
-            string secret2 = MatchUriToToken(uri);
-            string fullUri = uri + secret2;
-
-            //MessageBox.Show(fullUri);
-
-            //MessageBox.Show(uri + secret);
-
-            //Creates an HttpWebRequest for the specified URL.
-            objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
-
-            //---------- Start HttpRequest
-            try
+            if (XMLCaching.XMLInCache(uri) && !forceNoCache)
             {
-                //Set HttpWebRequest properties
-                objHttpWebRequest.Method = "GET";
-                //---------- End HttpRequest
-                //Sends the HttpWebRequest, and waits for a response.
-                objHttpWebResponse = (HttpWebResponse)objHttpWebRequest.GetResponse();
-                //---------- Start HttpResponse, Return code 200
-                if (objHttpWebResponse.StatusCode == HttpStatusCode.OK)
+                XmlDocument XMLResponse = XMLCaching.XMLFromCache(uri);
+                if (XMLResponse != null)
                 {
-                    doNotAttemptAgain = false;
-                    //Get response stream
-                    objResponseStream = objHttpWebResponse.GetResponseStream();
-                    //Load response stream into XMLReader
-                    objXMLReader = new XmlTextReader(objResponseStream);
-                    //Declare XMLDocument
-                    XmlDocument xmldoc = new XmlDocument();
-                    xmldoc.Load(objXMLReader);
-                    //Set XMLResponse object returned from XMLReader
-                    XMLResponse = xmldoc;
-                    //Close XMLReader
-                    objXMLReader.Close();
+                    return XMLResponse;
                 }
-                else if (objHttpWebResponse.StatusCode == HttpStatusCode.Unauthorized)
+                else
                 {
-                    MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
+                    return GetXMLTransaction(uri, "", true);
                 }
-                //Close Steam
-                objResponseStream.Close();
-                //Close HttpWebResponse
-                objHttpWebResponse.Close();
+            }
+            else
+            {
+                //Declare XMLResponse document
+                XmlDocument XMLResponse = null;
+                //Declare an HTTP-specific implementation of the WebRequest class.
+                HttpWebRequest objHttpWebRequest;
+                //Declare an HTTP-specific implementation of the WebResponse class
+                HttpWebResponse objHttpWebResponse = null;
+                //Declare a generic view of a sequence of bytes
+                Stream objResponseStream = null;
+                //Declare XMLReader
+                XmlTextReader objXMLReader;
 
-                recordTransaction(fullUri, ((int)objHttpWebResponse.StatusCode).ToString());
+                string secret2;
+                if (secret == "")
+                {
+                    secret2 = MatchUriToToken(uri);
+                }
+                else
+                {
+                    secret2 = secret;
+                }
+                if (secret2 == "")
+                {
+                    secret2 = settings.ConnectionInfo.PlexAccountToken;
+                }
+                string fullUri = uri + secret2;
+
+                //6MessageBox.Show(fullUri);
+
+
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                //Creates an HttpWebRequest for the specified URL.
+                objHttpWebRequest = (HttpWebRequest)WebRequest.Create(fullUri);
+                //---------- Start HttpRequest
+                try
+                {
+                    //Set HttpWebRequest properties
+                    objHttpWebRequest.Method = "GET";
+                    objHttpWebRequest.KeepAlive = false;
+                    //---------- End HttpRequest
+                    //Sends the HttpWebRequest, and waits for a response.
+                    objHttpWebResponse = (HttpWebResponse)objHttpWebRequest.GetResponse();
+                    //---------- Start HttpResponse, Return code 200
+                    if (objHttpWebResponse.StatusCode == HttpStatusCode.OK)
+                    {
+                        doNotAttemptAgain = false;
+                        //Get response stream
+                        objResponseStream = objHttpWebResponse.GetResponseStream();
+                        //Load response stream into XMLReader
+                        objXMLReader = new XmlTextReader(objResponseStream);
+                        //Declare XMLDocument
+                        XmlDocument xmldoc = new XmlDocument();
+                        xmldoc.Load(objXMLReader);
+                        //Set XMLResponse object returned from XMLReader
+                        XMLResponse = xmldoc;
+                        //Close XMLReader
+                        objXMLReader.Close();
+                    }
+                    else if (objHttpWebResponse.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
+                    }
+                    //Close Steam
+                    objResponseStream.Close();
+                    //Close HttpWebResponse
+                    objHttpWebResponse.Close();
+
+                    recordTransaction(fullUri, ((int)objHttpWebResponse.StatusCode).ToString());
+                }
+                catch (Exception ex)
+                {
+                    recordException(ex.Message, "XMLTransactionError");
+                    recordTransaction(fullUri, "Undetermined");
+                    MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    doNotAttemptAgain = true;
+                    return new XmlDocument();
+                }
+                finally
+                {
+                    //Release objects
+                    objXMLReader = null;
+                    objResponseStream = null;
+                    objHttpWebResponse = null;
+                    objHttpWebRequest = null;
+                }
+                XMLCaching.XMLToCache(XMLResponse, uri);
+                return XMLResponse;
             }
-            catch (Exception ex)
-            {
-                recordException(ex.Message, "XMLTransactionError");
-                recordTransaction(fullUri, "Undetermined");
-                MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                doNotAttemptAgain = true;
-                return new XmlDocument();
-            }
-            finally
-            {
-                //Release objects
-                objXMLReader = null;
-                objResponseStream = null;
-                objHttpWebResponse = null;
-                objHttpWebRequest = null;
-            }
-            return XMLResponse;
         }
 
         #endregion GetXMLTransaction
@@ -828,8 +860,6 @@ namespace PlexDL.UI
             }
         }
 
-
-
         public void doLoadProfile(string fileName, bool silent = false)
         {
             try
@@ -950,34 +980,41 @@ namespace PlexDL.UI
         {
             if (!doNotAttemptAgain)
             {
-                int index = dgvServers.CurrentCell.RowIndex;
-                Server s = plexServers[index];
-                string address = s.address;
-                int port = s.port;
-
-                ConnectionInformation connectInfo = new ConnectionInformation()
+                if (dgvServers.CurrentCell != null)
                 {
-                    PlexAccountToken = getToken(),
-                    PlexAddress = address,
-                    PlexPort = port
-                };
+                    int index = dgvServers.CurrentCell.RowIndex;
+                    Server s = plexServers[index];
+                    string address = s.address;
+                    int port = s.port;
 
-                settings.ConnectionInfo = connectInfo;
+                    ConnectionInformation connectInfo;
 
-                string uri = getBaseUri(true);
-                XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(GetXMLTransactionWorker, "Connecting", new object[] { uri });
-                connected = true;
-                if (settings.Generic.ShowConnectionSuccess)
-                {
-                    MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    connectInfo = new ConnectionInformation()
+                    {
+                        PlexAccountToken = getToken(),
+                        PlexAddress = address,
+                        PlexPort = port,
+                        RelaysOnly = settings.ConnectionInfo.RelaysOnly
+                    };
+
+                    settings.ConnectionInfo = connectInfo;
+
+                    string uri = getBaseUri(true);
+                    //MessageBox.Show(uri);
+                    XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(GetXMLTransactionWorker, "Connecting", new object[] { uri });
+                    connected = true;
+                    if (settings.Generic.ShowConnectionSuccess)
+                    {
+                        MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    SetProgressLabel("Connected");
+                    SetDisconnect();
+                    if (reply.ChildNodes.Count != 0)
+                    {
+                        populateLibrary(reply);
+                    }
+                    doNotAttemptAgain = true;
                 }
-                SetProgressLabel("Connected");
-                SetDisconnect();
-                if (reply.ChildNodes.Count != 0)
-                {
-                    populateLibrary(reply);
-                }
-                doNotAttemptAgain = true;
             }
         }
 
@@ -1026,12 +1063,10 @@ namespace PlexDL.UI
                     libraryFilled = true;
                     uri = baseUri + libraryDir + "/" + sectionDir + "/";
                     //we can render the content view if a row is already selected
-                    if (dgvLibrary.SelectedRows.Count == 1)
+                    if (dgvLibrary.SelectedRows.Count != 0)
                     {
-                        addToLog("Requesting ibrary contents");
-
-                        int index = dgvLibrary.CurrentCell.RowIndex;
-                        DataRow r = sectionsTable.DefaultView[index].Row;
+                        int index = dgvLibrary.SelectedRows[0].Cells[0].RowIndex;
+                        DataRow r = GetDataRowLibrary(index);
                         string key = r["key"].ToString();
                         string contentUri = uri + key + "/all/?X-Plex-Token=";
                         XmlDocument contentXml = GetXMLTransaction(contentUri);
@@ -1621,13 +1656,31 @@ namespace PlexDL.UI
 
         private void GetServerListWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
-            e.Result = plex.GetServers(user);
+            Helpers.CacheStructureBuilder();
+            if (!settings.ConnectionInfo.RelaysOnly)
+            {
+                if (ServerCaching.ServerInCache(user.authenticationToken))
+                {
+                    e.Result = ServerCaching.ServerFromCache(user.authenticationToken);
+                }
+                else
+                {
+                    List<Server> result = plex.GetServers(user);
+                    ServerCaching.ServerToCache(result, user.authenticationToken);
+                    e.Result = result;
+                }
+            }
+            else
+            {
+                List<Server> result = GetServerRelays(user.authenticationToken);
+                e.Result = result;
+            }
         }
 
         private void GetXMLTransactionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
         {
             string uri = (string)e.Arguments[0];
-            e.Result = GetXMLTransaction(uri);
+            e.Result = GetXMLTransaction(uri, settings.ConnectionInfo.PlexAccountToken);
         }
 
         private void GetObjectFromSelectionWorker(object sender, PlexDL.WaitWindow.WaitWindowEventArgs e)
@@ -1856,19 +1909,22 @@ namespace PlexDL.UI
                 engine.Cancel();
                 engine.Clear();
             }
-            SetProgressLabel("Download Cancelled");
-            SetDownloadStart();
-            SetResume();
-            pbMain.Value = 100;
-            addToLog("Download Cancelled");
-            downloadIsRunning = false;
-            downloadIsPaused = false;
-            engineIsRunning = false;
-            DownloadQueueCancelled = true;
-            downloadsSoFar = 0;
-            DownloadTotal = 0;
-            DownloadIndex = 0;
-            MessageBox.Show("Download cancelled", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (downloadIsRunning)
+            {
+                SetProgressLabel("Download Cancelled");
+                SetDownloadStart();
+                SetResume();
+                pbMain.Value = 100;
+                addToLog("Download Cancelled");
+                downloadIsRunning = false;
+                downloadIsPaused = false;
+                engineIsRunning = false;
+                DownloadQueueCancelled = true;
+                downloadsSoFar = 0;
+                DownloadTotal = 0;
+                DownloadIndex = 0;
+                MessageBox.Show("Download cancelled", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private int CheckWebFile(string uri)
@@ -2219,6 +2275,8 @@ namespace PlexDL.UI
             }
         }
 
+        //HOTKEYS
+        //DO NOT CHANGE
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == (Keys.Control | Keys.F))
@@ -2872,6 +2930,93 @@ namespace PlexDL.UI
             }
         }
 
+        private bool _IsPrivate(string ipAddress)
+        {
+            int[] ipParts = ipAddress.Split(new String[] { "." }, StringSplitOptions.RemoveEmptyEntries)
+                                     .Select(s => int.Parse(s)).ToArray();
+            // in private ip range
+            if (ipParts[0] == 10 ||
+                (ipParts[0] == 192 && ipParts[1] == 168) ||
+                (ipParts[0] == 172 && (ipParts[1] >= 16 && ipParts[1] <= 31)))
+            {
+                return true;
+            }
+
+            // IP Address is probably public.
+            // This doesn't catch some VPN ranges like OpenVPN and Hamachi.
+            return false;
+        }
+
+        private List<Server> GetServerRelays(string token, bool matchCurrentList = true)
+        {
+            try
+            {
+                List<Server> relays = new List<Server>();
+                string uri = "https://plex.tv/api/resources?includeHttps=1&amp;includeRelay=1&amp;X-Plex-Token=";
+                XmlDocument reply = GetXMLTransaction(uri, token);
+                XmlNode root = reply.SelectSingleNode("MediaContainer");
+                //MessageBox.Show(root.Name);
+                if (root.HasChildNodes)
+                {
+                    for (int i = 0; i < root.ChildNodes.Count; i++)
+                    {
+                        XmlNode node = root.ChildNodes[i];
+                        //MessageBox.Show(node.Name);
+                        string accessToken = "";
+                        if (node.Attributes["accessToken"] != null)
+                        {
+                             accessToken = node.Attributes["accessToken"].Value.ToString();
+                        }
+                        string name = node.Attributes["name"].Value.ToString();
+                        string address = "";
+                        string local = "";
+                        int port = 0;
+                        if (node.HasChildNodes)
+                        {
+                            foreach (XmlNode n in node.ChildNodes)
+                            {
+                                Uri u = new Uri(n.Attributes["uri"].Value.ToString());
+                                string u_parse = u.Host;
+                                string[] u_parse_split = u_parse.Split('.');
+                                local = n.Attributes["address"].Value.ToString();
+
+                                //MessageBox.Show(u_parse_temp);
+                                if (u_parse.Contains(".plex.direct") && (!_IsPrivate(local)))
+                                {
+                                    address = u_parse;
+                                    port = Convert.ToInt32(n.Attributes["port"].Value);
+                                    Server svrRelay = new Server()
+                                    {
+                                        address = address,
+                                        port = port,
+                                        name = name,
+                                        accessToken = accessToken
+                                    };
+                                    relays.Add(svrRelay);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                //MessageBox.Show(relays.Count.ToString());
+                return relays;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Relay Retrieval Error\n\n" + ex.ToString(), "Relay Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                recordException(ex.Message, "GetRelaysError");
+                return new List<Server>();
+            }
+        }
+
+        private void ReplaceServersWithRelays()
+        {
+            plexServers = GetServerRelays(settings.ConnectionInfo.PlexAccountToken);
+            dgvServers.DataSource = null;
+            renderServersView(plexServers);
+        }
+
         private void StartStreaming(PlexObject stream)
         {
             if (settings.Player.PlaybackEngine == PlaybackMode.PVSPlayer)
@@ -2892,6 +3037,10 @@ namespace PlexDL.UI
             else if (settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
             {
                 VLCLauncher.LaunchVLC(stream.StreamInformation);
+            }
+            else if (settings.Player.PlaybackEngine == PlaybackMode.Browser)
+            {
+                BrowserLauncher.LaunchBrowser(stream.StreamInformation);
             }
         }
 
@@ -2968,21 +3117,28 @@ namespace PlexDL.UI
         {
             if (dgvContent.SelectedRows.Count == 1)
             {
-                if (result == null)
+                if (!downloadIsRunning && !engineIsRunning)
                 {
-                    if (!IsTVShow)
+                    if (result == null)
                     {
-                        result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetObjectFromSelectionWorker, "Getting Metadata");
+                        if (!IsTVShow)
+                        {
+                            result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetObjectFromSelectionWorker, "Getting Metadata");
+                        }
+                        else
+                        {
+                            result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker, "Getting Metadata");
+                        }
                     }
-                    else
+                    using (Metadata frm = new Metadata())
                     {
-                        result = (PlexObject)PlexDL.WaitWindow.WaitWindow.Show(GetTVObjectFromSelectionWorker, "Getting Metadata");
+                        frm.StreamingContent = result;
+                        frm.ShowDialog();
                     }
                 }
-                using (Metadata frm = new Metadata())
+                else
                 {
-                    frm.StreamingContent = result;
-                    frm.ShowDialog();
+                    MessageBox.Show("You cannot view metadata while an internal download is running");
                 }
             }
             else if (dgvContent.Rows.Count == 0)
@@ -3091,6 +3247,7 @@ namespace PlexDL.UI
             saveProfile();
         }
     }
+
     public static class DataTableExtensions
     {
         public static void SetColumnsOrder(this DataTable table, params String[] columnNames)

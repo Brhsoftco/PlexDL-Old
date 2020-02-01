@@ -1,8 +1,11 @@
 using RestSharp;
 using System;
+using System.Xml.Serialization;
 
 namespace PlexAPI
 {
+    [XmlInclude(typeof(Server))]
+    [Serializable]
     public abstract class PlexRest
     {
         private const string BaseUrl = "https://my.plexapp.com";

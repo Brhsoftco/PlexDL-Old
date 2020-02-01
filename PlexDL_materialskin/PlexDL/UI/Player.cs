@@ -8,7 +8,6 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
-using System.Diagnostics;
 
 namespace PlexDL.UI
 {
@@ -26,6 +25,8 @@ namespace PlexDL.UI
         public string PlayingPosition, Duration;
 
         public bool CanFadeOut = true;
+
+        public bool IsWMP = false;
 
         public Player()
         {
@@ -154,13 +155,36 @@ namespace PlexDL.UI
                 }
             }
 
-            mPlayer = new PVS.MediaPlayer.Player(pnlPlayer);
-            mPlayer.Sliders.Position.TrackBar = trkDuration;
-            mPlayer.Events.MediaPositionChanged += mPlayer_MediaPositionChanged;
-            mPlayer.Events.MediaEnded += mPlayer_ContentFinished;
-            mPlayer.Events.MediaStarted += mPlayer_ContentStarted;
-            //MessageBox.Show(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
-            //MessageBox.Show("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
+            if (!IsWMP)
+            {
+                mPlayer = new PVS.MediaPlayer.Player(pnlPlayer);
+                mPlayer.Sliders.Position.TrackBar = trkDuration;
+                mPlayer.Events.MediaPositionChanged += mPlayer_MediaPositionChanged;
+                mPlayer.Events.MediaEnded += mPlayer_ContentFinished;
+                mPlayer.Events.MediaStarted += mPlayer_ContentStarted;
+                //MessageBox.Show(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
+                //MessageBox.Show("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
+            }
+            else
+            {
+
+                //disable default player
+                pnlPlayer.Visible = false;
+                mtlPlayerControls.Visible = false;
+                btnPlayPause.Visible = false;
+                btnStop.Visible = false;
+                btnPrevTitle.Visible = false;
+                btnNextTitle.Visible = false;
+                btnSkipBack.Visible = false;
+                btnSkipForward.Visible = false;
+                trkDuration.Visible = false;
+                lblTotalDuration.Visible = false;
+                lblTimeSoFar.Visible = false;
+
+                //enable WMP
+                axWindowsMediaPlayer1.Visible = true;
+                axWindowsMediaPlayer1.URL = StreamingContent.StreamInformation.Link;
+            }
         }
 
         /*
@@ -171,34 +195,38 @@ namespace PlexDL.UI
          * DOWN ARROW=Previous Title Index
          * SPACE=Play/Pause
          */
+
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == (settings.Player.KeyBindings.PlayPause))
+            if (!IsWMP)
             {
-                PlayPause();
-                return true;
-            }
-            else if (keyData == (settings.Player.KeyBindings.SkipForward))
-            {
-                SkipForward();
-                return true;
-            }
-            else if (keyData == (settings.Player.KeyBindings.SkipBackward))
-            {
-                SkipBack();
-                return true;
-            }
-            else if (keyData == (settings.Player.KeyBindings.NextTitle))
-            {
-                Stop();
-                NextTitle();
-                return true;
-            }
-            else if (keyData == (settings.Player.KeyBindings.PrevTitle))
-            {
-                Stop();
-                PrevTitle();
-                return true;
+                if (keyData == (settings.Player.KeyBindings.PlayPause))
+                {
+                    PlayPause();
+                    return true;
+                }
+                else if (keyData == (settings.Player.KeyBindings.SkipForward))
+                {
+                    SkipForward();
+                    return true;
+                }
+                else if (keyData == (settings.Player.KeyBindings.SkipBackward))
+                {
+                    SkipBack();
+                    return true;
+                }
+                else if (keyData == (settings.Player.KeyBindings.NextTitle))
+                {
+                    Stop();
+                    NextTitle();
+                    return true;
+                }
+                else if (keyData == (settings.Player.KeyBindings.PrevTitle))
+                {
+                    Stop();
+                    PrevTitle();
+                    return true;
+                }
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
