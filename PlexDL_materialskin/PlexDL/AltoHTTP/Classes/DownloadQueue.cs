@@ -21,7 +21,7 @@ namespace PlexDL.AltoHttp
         private HttpDownloader downloader;
         private List<QueueElement> elements;
         private QueueElement currentElement;
-        private int progress;
+        private double progress;
         private int downloadSpeed;
         private bool queuePaused, startEventRaised;
 
@@ -131,7 +131,7 @@ namespace PlexDL.AltoHttp
         /// <summary>
         /// Gets the download progress of the current download process
         /// </summary>
-        public int CurrentProgress
+        public double CurrentProgress
         {
             get
             {

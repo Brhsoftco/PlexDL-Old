@@ -12,7 +12,7 @@ namespace PlexDL.AltoHttp
 
         long ContentSize { get; }
         long BytesReceived { get; }
-        int Progress { get; }
+        double Progress { get; }
         int SpeedInBytes { get; }
         string FileURL { get; }
         string DestPath { get; }

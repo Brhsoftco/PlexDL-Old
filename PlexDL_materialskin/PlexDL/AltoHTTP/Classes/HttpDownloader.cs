@@ -48,7 +48,8 @@ namespace PlexDL.AltoHttp
         private FileStream file;
         private Stopwatch stpWatch;
         private AsyncOperation oprtor;
-        private int bytesReceived, progress, speed, speedBytes;
+        private int bytesReceived, speed, speedBytes;
+        private double progress;
         private long contentLength;
         private bool acceptRange;
         private string fileURL, destPath;
@@ -85,7 +86,7 @@ namespace PlexDL.AltoHttp
         /// <summary>
         /// Gets the current download progress over 100
         /// </summary>
-        public int Progress
+        public double Progress
         {
             get { return progress; }
             private set
@@ -237,7 +238,7 @@ namespace PlexDL.AltoHttp
                 file.Flush();
                 bytesReceived += bytesRead;
                 speedBytes += bytesRead;
-                this.Progress = progress = (int)(bytesReceived * 100.0 / contentLength);
+                this.Progress = progress = (double)(((double)bytesReceived * 100) / (double)contentLength);
                 speed = (int)(speedBytes / 1.0 / stpWatch.Elapsed.TotalSeconds);
             }
 
