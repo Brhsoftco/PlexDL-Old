@@ -1,4 +1,5 @@
-﻿using PlexDL.Common;
+﻿using MaterialSkin.Controls;
+using PlexDL.Common;
 using PlexDL.Common.Structures;
 using PVS.MediaPlayer;
 using System;
@@ -7,12 +8,10 @@ using System.IO;
 using System.Net;
 using System.Windows.Forms;
 using System.Xml;
-using MetroSet_UI.Forms;
-using MetroSet_UI.Extensions;
 
 namespace PlexDL.UI
 {
-    public partial class Player : MetroSetForm
+    public partial class Player : MaterialForm
     {
         public Timer t1 = new Timer();
 
@@ -33,6 +32,15 @@ namespace PlexDL.UI
         public Player()
         {
             InitializeComponent();
+            //Setup material design skin
+            MaterialSkin.MaterialSkinManager materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+
+            /*materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.Blue400,MaterialSkin.Primary.Blue500,MaterialSkin.Primary.Blue500,MaterialSkin.Accent.LightBlue200,MaterialSkin.TextShade.WHITE
+
+                );*/
         }
 
         public XmlDocument GetXMLTransaction(string uri, string secret)
@@ -145,14 +153,38 @@ namespace PlexDL.UI
                     }
                 }
             }
-            mPlayer = new PVS.MediaPlayer.Player(pnlPlayer);
-            mPlayer.Sliders.Position.TrackBar = trkDuration;
-            mPlayer.Events.MediaPositionChanged += mPlayer_MediaPositionChanged;
-            mPlayer.Events.MediaEnded += mPlayer_ContentFinished;
-            mPlayer.Events.MediaStarted += mPlayer_ContentStarted;
-            mPlayer.FullScreenMode = FullScreenMode.Display;
-            //MessageBox.Show(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
-            //MessageBox.Show("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
+
+            if (!IsWMP)
+            {
+                mPlayer = new PVS.MediaPlayer.Player(pnlPlayer);
+                mPlayer.Sliders.Position.TrackBar = trkDuration;
+                mPlayer.Events.MediaPositionChanged += mPlayer_MediaPositionChanged;
+                mPlayer.Events.MediaEnded += mPlayer_ContentFinished;
+                mPlayer.Events.MediaStarted += mPlayer_ContentStarted;
+                mPlayer.FullScreenMode = FullScreenMode.Display;
+                //MessageBox.Show(TitlesTable.Rows.Count + "\n" +StreamingContent.StreamIndex);
+                //MessageBox.Show("Duration: "+StreamingContent.ContentDuration+"\nSize: "+StreamingContent.ByteLength);
+            }
+            else
+            {
+
+                //disable default player
+                pnlPlayer.Visible = false;
+                mtlPlayerControls.Visible = false;
+                btnPlayPause.Visible = false;
+                btnStop.Visible = false;
+                btnPrevTitle.Visible = false;
+                btnNextTitle.Visible = false;
+                btnSkipBack.Visible = false;
+                btnSkipForward.Visible = false;
+                trkDuration.Visible = false;
+                lblTotalDuration.Visible = false;
+                lblTimeSoFar.Visible = false;
+
+                //enable WMP
+                axWindowsMediaPlayer1.Visible = true;
+                axWindowsMediaPlayer1.URL = StreamingContent.StreamInformation.Link;
+            }
         }
 
         /*
@@ -317,33 +349,31 @@ namespace PlexDL.UI
 
         private void SetIconPause()
         {
-            ImageSet images = new ImageSet() { Focus = PlexDL.Properties.Resources.baseline_pause_black_18dp_white, Idle = PlexDL.Properties.Resources.baseline_pause_black_18dp };
             if (btnPlayPause.InvokeRequired)
             {
                 btnPlayPause.BeginInvoke((MethodInvoker)delegate
                 {
-                    btnPlayPause.ImageSet = images;
+                    btnPlayPause.Icon = PlexDL.Properties.Resources.baseline_pause_black_18dp;
                 });
             }
             else
             {
-                btnPlayPause.ImageSet = images;
+                btnPlayPause.Icon = PlexDL.Properties.Resources.baseline_pause_black_18dp;
             }
         }
 
         private void SetIconPlay()
         {
-            ImageSet images = new ImageSet() { Focus = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp_white, Idle = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp };
             if (btnPlayPause.InvokeRequired)
             {
                 btnPlayPause.BeginInvoke((MethodInvoker)delegate
                 {
-                    btnPlayPause.ImageSet = images;
+                    btnPlayPause.Icon = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
                 });
             }
             else
             {
-                btnPlayPause.ImageSet = images;
+                btnPlayPause.Icon = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
             }
         }
 

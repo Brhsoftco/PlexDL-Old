@@ -76,37 +76,29 @@ namespace PlexDL.Common
 
         public static Bitmap getImageFromUrl(string url)
         {
-            try
+            Helpers.CacheStructureBuilder();
+            if (url == "")
             {
-                Helpers.CacheStructureBuilder();
-                if (url == "")
+                return PlexDL.Properties.Resources.image_not_available_png_8;
+            }
+            else
+            {
+                if (ThumbCaching.ThumbInCache(url))
                 {
-                    return PlexDL.Properties.Resources.image_not_available_png_8;
+                    return ThumbCaching.ThumbFromCache(url);
                 }
                 else
                 {
-                    if (ThumbCaching.ThumbInCache(url))
-                    {
-                        return ThumbCaching.ThumbFromCache(url);
-                    }
-                    else
-                    {
-                        var request = System.Net.WebRequest.Create(url);
+                    var request = System.Net.WebRequest.Create(url);
 
-                        using (var response = request.GetResponse())
-                        using (var stream = response.GetResponseStream())
-                        {
-                            Bitmap result = (Bitmap)Bitmap.FromStream(stream);
-                            ThumbCaching.ThumbToCache(result, url);
-                            return result;
-                        }
+                    using (var response = request.GetResponse())
+                    using (var stream = response.GetResponseStream())
+                    {
+                        Bitmap result = (Bitmap)Bitmap.FromStream(stream);
+                        ThumbCaching.ThumbToCache(result, url);
+                        return result;
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Home.recordException(ex.Message, "ImageFetchError");
-                return PlexDL.Properties.Resources.image_not_available_png_8;
             }
         }
 

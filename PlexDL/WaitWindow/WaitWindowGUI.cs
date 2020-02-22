@@ -1,13 +1,22 @@
-﻿using System;
+﻿/*
+ * Created by SharpDevelop.
+ * User: mjackson
+ * Date: 05/03/2010
+ * Time: 09:43
+ *
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+
+using MaterialSkin.Controls;
+using System;
 using System.Windows.Forms;
-using MetroSet_UI.Forms;
 
 namespace PlexDL.WaitWindow
 {
     /// <summary>
     /// The dialogue displayed by a WaitWindow instance.
     /// </summary>
-    internal partial class WaitWindowGUI : MetroSetForm
+    internal partial class WaitWindowGUI : MaterialForm
     {
         public WaitWindowGUI(WaitWindow parent)
         {
@@ -21,8 +30,6 @@ namespace PlexDL.WaitWindow
             //	Position the window in the top right of the main screen.
             this.Top = Screen.PrimaryScreen.WorkingArea.Top + 32;
             this.Left = Screen.PrimaryScreen.WorkingArea.Right - this.Width - 32;
-            this.Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, (float)13);
-            this.AllowResize = false;
         }
 
         private WaitWindow _Parent;

@@ -1,13 +1,13 @@
-﻿using System;
+﻿using MaterialSkin.Controls;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Windows.Forms;
-using MetroSet_UI.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class LogViewer : MetroSetForm
+    public partial class LogViewer : MaterialForm
     {
         public libbrhscgui.Components.UserInteraction objUI = new libbrhscgui.Components.UserInteraction();
         public string dir = AppDomain.CurrentDomain.BaseDirectory + @"\Logs";
@@ -83,7 +83,7 @@ namespace PlexDL.UI
             try
             {
                 string strAlready = "";
-                if (lstLogFiles.SelectedItem != null)
+                if (!(lstLogFiles.SelectedIndex == -1))
                     strAlready = lstLogFiles.SelectedItem.ToString();
                 lstLogFiles.Items.Clear();
                 if (Directory.Exists("Logs"))
@@ -134,19 +134,19 @@ namespace PlexDL.UI
             }
         }
 
-        private void lstLogFiles_SelectedIndexChanged(object sender)
+        private void lstLogFiles_SelectedIndexChanged(object sender, EventArgs e)
         {
             {
                 try
                 {
-                    if (lstLogFiles.SelectedIndex != -1)
+                    if (!(lstLogFiles.SelectedIndex == -1))
                     {
                         dgvMain.Columns.Clear();
                         dgvMain.Rows.Clear();
                         dgvMain.Columns.Add("LINE", "LINE");
                         int intRowCount = 1;
                         bool headersFound = false;
-                        foreach (string line in System.IO.File.ReadAllLines(@"Logs\" + lstLogFiles.Items[lstLogFiles.SelectedIndex].ToString()))
+                        foreach (string line in System.IO.File.ReadAllLines(AppDomain.CurrentDomain.BaseDirectory + @"\Logs\" + lstLogFiles.SelectedItem))
                         {
                             if ((intRowCount == 2) && (!headersFound))
                             {

@@ -1,36 +1,42 @@
-﻿namespace PlexDL.WaitWindow
+﻿/*
+ * Created by SharpDevelop.
+ * User: mjackson
+ * Date: 05/03/2010
+ * Time: 09:43
+ * 
+ * To change this template use Tools | Options | Coding | Edit Standard Headers.
+ */
+namespace PlexDL.WaitWindow
 {
-    partial class WaitWindowGUI
-    {
-        /// <summary>
-        /// Designer variable used to keep track of non-visual components.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Disposes resources used by the form.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                if (components != null)
-                {
-                    components.Dispose();
-                }
-            }
-            base.Dispose(disposing);
-        }
-
-        /// <summary>
-        /// This method is required for Windows Forms designer support.
-        /// Do not change the method contents inside the source code editor. The Forms designer might
-        /// not be able to load this method if it was changed manually.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.MessageLabel = new MetroSet_UI.Controls.MetroSetLabel();
+	partial class WaitWindowGUI
+	{
+		/// <summary>
+		/// Designer variable used to keep track of non-visual components.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
+		
+		/// <summary>
+		/// Disposes resources used by the form.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing) {
+				if (components != null) {
+					components.Dispose();
+				}
+			}
+			base.Dispose(disposing);
+		}
+		
+		/// <summary>
+		/// This method is required for Windows Forms designer support.
+		/// Do not change the method contents inside the source code editor. The Forms designer might
+		/// not be able to load this method if it was changed manually.
+		/// </summary>
+		private void InitializeComponent()
+		{
+            this.MessageLabel = new MaterialSkin.Controls.MaterialLabel();
             this.Marquee = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
             // 
@@ -38,9 +44,11 @@
             // 
             this.MessageLabel.AutoSize = true;
             this.MessageLabel.BackColor = System.Drawing.Color.White;
-            this.MessageLabel.Font = new System.Drawing.Font(System.Drawing.FontFamily.GenericSansSerif, 11F);
+            this.MessageLabel.Depth = 0;
+            this.MessageLabel.Font = new System.Drawing.Font("Roboto", 11F);
             this.MessageLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.MessageLabel.Location = new System.Drawing.Point(12, 70);
+            this.MessageLabel.MouseState = MaterialSkin.MouseState.HOVER;
             this.MessageLabel.Name = "MessageLabel";
             this.MessageLabel.Size = new System.Drawing.Size(103, 19);
             this.MessageLabel.TabIndex = 2;
@@ -70,8 +78,8 @@
             this.PerformLayout();
             this.ControlBox = false;
 
-        }
-        public MetroSet_UI.Controls.MetroSetLabel MessageLabel;
+		}
+        public MaterialSkin.Controls.MaterialLabel MessageLabel;
         private System.Windows.Forms.ProgressBar Marquee;
     }
 }

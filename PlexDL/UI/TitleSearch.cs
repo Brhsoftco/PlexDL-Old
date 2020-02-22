@@ -1,4 +1,4 @@
-﻿using MetroSet_UI.Forms;
+﻿using MaterialSkin.Controls;
 using PlexDL.Common.Structures;
 using System;
 using System.Data;
@@ -6,12 +6,11 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class SearchForm : MetroSetForm
+    public partial class SearchForm : MaterialForm
     {
         public SearchOptions SearchContext = new SearchOptions();
         public bool CanFadeOut = true;
         private Timer t1 = new Timer();
-
         public SearchForm()
         {
             InitializeComponent();

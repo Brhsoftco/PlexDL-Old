@@ -1,11 +1,9 @@
 ﻿using libbrhscgui.Components;
-using MetroSet_UI.Extensions;
-using MetroSet_UI.Forms;
+using MaterialSkin.Controls;
 using PlexAPI;
 using PlexDL.Common;
 using PlexDL.Common.Caching;
 using PlexDL.Common.Structures;
-using PlexDL.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -25,7 +23,7 @@ using System.Xml.Serialization;
 
 namespace PlexDL.UI
 {
-    public partial class Home : MetroSetForm
+    public partial class Home : MaterialForm
     {
         #region GlobalVariables
 
@@ -35,9 +33,9 @@ namespace PlexDL.UI
 
         public readonly UserInteraction objUI = new UserInteraction();
         public Timer t1 = new Timer();
+        public DownloadManager DownloadManager = new DownloadManager();
         public User user = new User();
         public Server svr;
-        public static MetroSet_UI.StyleManager styleMain;
 
         #region Fonts
 
@@ -134,15 +132,23 @@ namespace PlexDL.UI
         {
             InitializeComponent();
 
-            styleMain = new MetroSet_UI.StyleManager();
-            // 
-            // styleMain
-            // 
-            styleMain.CustomTheme = "C:\\Users\\baele\\AppData\\Roaming\\Microsoft\\Windows\\Templates\\ThemeFile.xml";
-            styleMain.MetroForm = this;
-            styleMain.Style = MetroSet_UI.Design.Style.Light;
-            styleMain.ThemeAuthor = null;
-            styleMain.ThemeName = null;
+            if (!System.Windows.Forms.SystemInformation.TerminalServerSession)
+            {
+                Type dgvType = dgvLibrary.GetType();
+                PropertyInfo pi = dgvType.GetProperty("DoubleBuffered",
+                  BindingFlags.Instance | BindingFlags.NonPublic);
+                pi.SetValue(dgvLibrary, true, null);
+            }
+
+            //Setup material design skin
+            MaterialSkin.MaterialSkinManager materialSkinManager = MaterialSkin.MaterialSkinManager.Instance;
+            materialSkinManager.AddFormToManage(this);
+            materialSkinManager.Theme = MaterialSkin.MaterialSkinManager.Themes.LIGHT;
+            /*materialSkinManager.ColorScheme = new MaterialSkin.ColorScheme(
+                MaterialSkin.Primary.Blue400,MaterialSkin.Primary.Blue500,MaterialSkin.Primary.Blue500,MaterialSkin.Accent.LightBlue200,MaterialSkin.TextShade.WHITE
+
+                );*/
+            lstLog.Padding = new System.Windows.Forms.Padding(10);
         }
 
         #endregion FormInitialiser
@@ -231,7 +237,7 @@ namespace PlexDL.UI
                 addToLog("Grabbing Titles");
                 DataRow infRow;
 
-                //MetroSetMessageBox.Show(this, index.ToString());
+                //MessageBox.Show(index.ToString());
 
                 metadata = GetEpisodeMetadata(index);
 
@@ -268,8 +274,8 @@ namespace PlexDL.UI
             if (dgvContent.SelectedRows.Count == 1)
             {
                 string sel = dgvContent.SelectedRows[0].Cells[0].Value.ToString();
-                //MetroSetMessageBox.Show(this, "Primary Key:"+returnCorrectTable().PrimaryKey[0].ColumnName);
-                //MetroSetMessageBox.Show(this, "Proper:" + GetIndexFromPrimary(sel) + "\nActual:" + index);
+                //MessageBox.Show("Primary Key:"+returnCorrectTable().PrimaryKey[0].ColumnName);
+                //MessageBox.Show("Proper:" + GetIndexFromPrimary(sel) + "\nActual:" + index);
                 addToLog("Content Parse Started");
                 addToLog("Grabbing Titles");
                 DataRow infRow;
@@ -407,7 +413,8 @@ namespace PlexDL.UI
                 }
                 string fullUri = uri + secret2;
 
-                //6MetroSetMessageBox.Show(this, fullUri);
+                //6MessageBox.Show(fullUri);
+
 
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 //Creates an HttpWebRequest for the specified URL.
@@ -439,7 +446,7 @@ namespace PlexDL.UI
                     }
                     else if (objHttpWebResponse.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        MetroSetMessageBox.Show(this, "The web server denied access to the resource. Check your token and try again.");
+                        MessageBox.Show("The web server denied access to the resource. Check your token and try again.");
                     }
                     //Close Steam
                     objResponseStream.Close();
@@ -452,7 +459,7 @@ namespace PlexDL.UI
                 {
                     recordException(ex.Message, "XMLTransactionError");
                     recordTransaction(fullUri, "Undetermined");
-                    MetroSetMessageBox.Show(this, "Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Error Occurred in XML Transaction\n\n" + ex.ToString(), "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     doNotAttemptAgain = true;
                     return new XmlDocument();
                 }
@@ -576,7 +583,7 @@ namespace PlexDL.UI
             key = key.TrimStart('/');
             string uri = baseUri + key + "/?X-Plex-Token=";
 
-            //MetroSetMessageBox.Show(this, uri);
+            //MessageBox.Show(uri);
 
             addToLog("Contacting server");
             XmlDocument reply = GetXMLTransaction(uri);
@@ -595,7 +602,7 @@ namespace PlexDL.UI
             key = key.TrimStart('/');
             string uri = baseUri + key + "/?X-Plex-Token=";
 
-            //MetroSetMessageBox.Show(this, uri);
+            //MessageBox.Show(uri);
 
             addToLog("Contacting server");
             XmlDocument reply = GetXMLTransaction(uri);
@@ -811,7 +818,7 @@ namespace PlexDL.UI
             }
             else
             {
-                MetroSetMessageBox.Show(this, "You need to specify an account token before saving a profile", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You need to specify an account token before saving a profile", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -837,7 +844,7 @@ namespace PlexDL.UI
 
                 if (!silent)
                 {
-                    MetroSetMessageBox.Show(this, "Successfully saved profile!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Successfully saved profile!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 addToLog("Saved profile " + fileName);
@@ -847,7 +854,7 @@ namespace PlexDL.UI
                 recordException(ex.Message, "SaveProfileError");
                 if (!silent)
                 {
-                    MetroSetMessageBox.Show(this, ex.ToString(), "Error in saving XML Profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.ToString(), "Error in saving XML Profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return;
             }
@@ -869,7 +876,7 @@ namespace PlexDL.UI
 
                 if (!silent)
                 {
-                    MetroSetMessageBox.Show(this, "Successfully loaded profile!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Successfully loaded profile!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 addToLog("Loaded profile " + fileName);
             }
@@ -878,7 +885,7 @@ namespace PlexDL.UI
                 recordException(ex.Message, "LoadProfileError");
                 if (!silent)
                 {
-                    MetroSetMessageBox.Show(this, ex.ToString(), "Error in loading XML Profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.ToString(), "Error in loading XML Profile", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return;
             }
@@ -921,17 +928,11 @@ namespace PlexDL.UI
                         ConnectionInformation result = frm.ConnectionInfo;
                         settings.ConnectionInfo = result;
                         user.authenticationToken = result.PlexAccountToken;
-
-                        object serversResult;
-                        if (settings.ConnectionInfo.RelaysOnly)
-                            serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Relays");
-                        else
-                            serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Servers");
-
+                        object serversResult = PlexDL.WaitWindow.WaitWindow.Show(GetServerListWorker, "Getting Servers");
                         List<Server> servers = (List<Server>)serversResult;
                         if (servers.Count == 0)
                         {
-                            DialogResult msg = MetroSetMessageBox.Show(this, "No servers found for entered account token. Would you like to try a direct connection?", "Authentication Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+                            DialogResult msg = MessageBox.Show("No servers found for entered account token. Would you like to try a direct connection?", "Authentication Error", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                             if (msg == DialogResult.Yes)
                             {
                                 using (DirectConnect frmDir = new DirectConnect())
@@ -969,7 +970,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 recordException(ex.Message, "ConnectionError");
-                MetroSetMessageBox.Show(this, "Connection Error:\n\n" + ex.ToString(), "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Connection Error:\n\n" + ex.ToString(), "Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ResetContentGridViews();
                 SetConnect();
             }
@@ -999,12 +1000,12 @@ namespace PlexDL.UI
                     settings.ConnectionInfo = connectInfo;
 
                     string uri = getBaseUri(true);
-                    //MetroSetMessageBox.Show(this, uri);
+                    //MessageBox.Show(uri);
                     XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(GetXMLTransactionWorker, "Connecting", new object[] { uri });
                     connected = true;
                     if (settings.Generic.ShowConnectionSuccess)
                     {
-                        MetroSetMessageBox.Show(this, "Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     SetProgressLabel("Connected");
                     SetDisconnect();
@@ -1041,12 +1042,12 @@ namespace PlexDL.UI
                     string libraryDir = getLibraryKey(doc).TrimEnd('/');
                     string baseUri = getBaseUri(false);
                     string uriSectionKey = baseUri + libraryDir + "/?X-Plex-Token=";
-                    //MetroSetMessageBox.Show(this, uriSectionKey + token);
+                    //MessageBox.Show(uriSectionKey + token);
                     System.Xml.XmlDocument xmlSectionKey = GetXMLTransaction(uriSectionKey);
 
                     string sectionDir = getSectionKey(xmlSectionKey).TrimEnd('/');
                     string uriSections = baseUri + libraryDir + "/" + sectionDir + "/?X-Plex-Token=";
-                    //MetroSetMessageBox.Show(this, uriSections+token);
+                    //MessageBox.Show(uriSections+token);
                     System.Xml.XmlDocument xmlSections = GetXMLTransaction(uriSections);
 
                     addToLog("Creating new datasets");
@@ -1099,15 +1100,15 @@ namespace PlexDL.UI
                             switch ((int)response.StatusCode)
                             {
                                 case 401:
-                                    MetroSetMessageBox.Show(this, "The web server denied access to the resource. Check your token and try again. (401)");
+                                    MessageBox.Show("The web server denied access to the resource. Check your token and try again. (401)");
                                     break;
 
                                 case 404:
-                                    MetroSetMessageBox.Show(this, "The web server couldn't serve the request because it couldn't find the resource specified. (404)");
+                                    MessageBox.Show("The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                     break;
 
                                 case 400:
-                                    MetroSetMessageBox.Show(this, "The web server couldn't serve the request because the request was bad. (400)");
+                                    MessageBox.Show("The web server couldn't serve the request because the request was bad. (400)");
                                     break;
                             }
                         }
@@ -1125,7 +1126,7 @@ namespace PlexDL.UI
                 {
                     recordException(ex.Message, "LibPopError");
                     DGVServersEnabled(true);
-                    MetroSetMessageBox.Show(this, ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
             }
@@ -1165,6 +1166,8 @@ namespace PlexDL.UI
 
             IsTVShow = isTVShow;
 
+            dgvLibrary.ScrollBars = ScrollBars.None;
+
             addToLog("Creating datasets");
 
             addToLog("Cleaning unwanted data");
@@ -1176,7 +1179,7 @@ namespace PlexDL.UI
 
             DGVLibraryEnabled(true);
 
-            //MetroSetMessageBox.Show(this, "ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + titlesTable.Rows.Count.ToString());
+            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + titlesTable.Rows.Count.ToString());
         }
 
         private void updateEpisodeViewWorker(XmlDocument doc)
@@ -1208,7 +1211,7 @@ namespace PlexDL.UI
 
             DGVSeasonsEnabled(true);
 
-            //MetroSetMessageBox.Show(this, "ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + titlesTable.Rows.Count.ToString());
+            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + titlesTable.Rows.Count.ToString());
         }
 
         private void updateSeriesViewWorker(XmlDocument doc)
@@ -1240,7 +1243,7 @@ namespace PlexDL.UI
 
             DGVContentEnabled(true);
 
-            //MetroSetMessageBox.Show(this, "ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + titlesTable.Rows.Count.ToString());
+            //MessageBox.Show("ContentTable: " + contentTable.Rows.Count.ToString() + "\nTitlesTable: " + titlesTable.Rows.Count.ToString());
         }
 
         #endregion UpdateWorkers
@@ -1920,7 +1923,7 @@ namespace PlexDL.UI
                 downloadsSoFar = 0;
                 DownloadTotal = 0;
                 DownloadIndex = 0;
-                MetroSetMessageBox.Show(this, "Download cancelled", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Download cancelled", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -1970,7 +1973,7 @@ namespace PlexDL.UI
             engine.QueueCompleted += Engine_DownloadCompleted;
 
             engine.StartAsync();
-            //MetroSetMessageBox.Show(this, "Started!");
+            //MessageBox.Show("Started!");
             addToLog("Download is Progressing");
             downloadIsRunning = true;
             engineIsRunning = true;
@@ -1983,7 +1986,7 @@ namespace PlexDL.UI
             if (fbdSave.ShowDialog() == DialogResult.OK)
             {
                 settings.Generic.DownloadDirectory = fbdSave.SelectedPath;
-                MetroSetMessageBox.Show(this, "Download directory updated to " + settings.Generic.DownloadDirectory, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Download directory updated to " + settings.Generic.DownloadDirectory, "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 addToLog("Download directory updated to " + settings.Generic.DownloadDirectory);
             }
         }
@@ -2031,7 +2034,7 @@ namespace PlexDL.UI
                 if (File.Exists(fqPath))
                 {
                     addToLog(dl.FileName + " already exists; get user confirmation.");
-                    DialogResult msg = MetroSetMessageBox.Show(this, dl.FileName + " already exists. Skip this title?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult msg = MessageBox.Show(dl.FileName + " already exists. Skip this title?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (msg == DialogResult.Yes)
                     {
                         SetDownloadCompleted();
@@ -2062,7 +2065,7 @@ namespace PlexDL.UI
 
             pbMain.Value = (int)CurrentProgress;
 
-            //MetroSetMessageBox.Show(this, "Started!");
+            //MessageBox.Show("Started!");
         }
 
         #endregion DownloadEngineMethods
@@ -2139,7 +2142,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 recordException(ex.Message, "SearchError");
-                MetroSetMessageBox.Show(this, ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
@@ -2156,13 +2159,13 @@ namespace PlexDL.UI
             else
             {
                 if (!silent)
-                    MetroSetMessageBox.Show(this, "No Results Found for '" + query + "'", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("No Results Found for '" + query + "'", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
             IsFiltered = true;
             filteredTable = tblFiltered;
-            //MetroSetMessageBox.Show(this, "Filtered Table:" + filteredTable.Rows.Count + "\nTitles Table:" + titlesTable.Rows.Count);
+            //MessageBox.Show("Filtered Table:" + filteredTable.Rows.Count + "\nTitles Table:" + titlesTable.Rows.Count);
         }
 
         #endregion Search
@@ -2182,31 +2185,6 @@ namespace PlexDL.UI
             {
                 dgvContent.Enabled = enabled;
             }
-        }
-
-        private static Image InvertGDI(Image imgSource)
-        {
-            Bitmap bmpDest = null;
-
-            using (Bitmap bmpSource = new Bitmap(imgSource))
-            {
-                bmpDest = new Bitmap(bmpSource.Width, bmpSource.Height);
-
-                for (int x = 0; x < bmpSource.Width; x++)
-                {
-                    for (int y = 0; y < bmpSource.Height; y++)
-                    {
-                        Color clrPixel = bmpSource.GetPixel(x, y);
-
-                        clrPixel = Color.FromArgb(255 - clrPixel.R, 255 -
-                           clrPixel.G, 255 - clrPixel.B);
-
-                        bmpDest.SetPixel(x, y, clrPixel);
-                    }
-                }
-            }
-
-            return (Image)bmpDest;
         }
 
         private void DGVLibraryEnabled(bool enabled)
@@ -2298,50 +2276,42 @@ namespace PlexDL.UI
 
         private void SetDownloadCancel()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_cancel_black_18dp, Focus = Resources.baseline_cancel_black_18dp_white };
-            btnDownload.ImageSet = images;
+            btnDownload.Icon = PlexDL.Properties.Resources.baseline_cancel_black_18dp;
         }
 
         private void SetDownloadStart()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_cloud_download_black_18dp, Focus = Resources.baseline_cloud_download_black_18dp_white };
-            btnDownload.ImageSet = images;
+            btnDownload.Icon = PlexDL.Properties.Resources.baseline_cloud_download_black_18dp;
         }
 
         private void SetPause()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_pause_black_18dp, Focus = Resources.baseline_pause_black_18dp_white };
-            btnPause.ImageSet = images;
+            btnPause.Icon = PlexDL.Properties.Resources.baseline_pause_black_18dp;
         }
 
         private void SetResume()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_play_arrow_black_18dp, Focus = Resources.baseline_play_arrow_black_18dp_white };
-            btnPause.ImageSet = images;
+            btnPause.Icon = PlexDL.Properties.Resources.baseline_play_arrow_black_18dp;
         }
 
         private void SetStartSearch()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_search_black_18dp, Focus = Resources.baseline_search_black_18dp_white };
-            btnSearch.ImageSet = images;
+            btnSearch.Icon = PlexDL.Properties.Resources.baseline_search_black_18dp;
         }
 
         private void SetCancelSearch()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_cancel_black_18dp, Focus = Resources.baseline_cancel_black_18dp_white };
-            btnSearch.ImageSet = images;
+            btnSearch.Icon = PlexDL.Properties.Resources.baseline_cancel_black_18dp;
         }
 
         private void SetConnect()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_power_black_18dp, Focus = Resources.baseline_power_black_18dp_white };
-            btnConnect.ImageSet = images;
+            btnConnect.Icon = PlexDL.Properties.Resources.baseline_power_black_18dp;
         }
 
         private void SetDisconnect()
         {
-            ImageSet images = new ImageSet() { Idle = Resources.baseline_power_off_black_18dp, Focus = Resources.baseline_power_off_black_18dp_white };
-            btnConnect.ImageSet = images;
+            btnConnect.Icon = PlexDL.Properties.Resources.baseline_power_off_black_18dp;
         }
 
         #endregion UIMethods
@@ -2416,7 +2386,7 @@ namespace PlexDL.UI
             {
                 if (!(msgAlreadyShown))
                 {
-                    DialogResult msg = MetroSetMessageBox.Show(this, "Are you sure you want to exit PlexDL? A download is still running.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult msg = MessageBox.Show("Are you sure you want to exit PlexDL? A download is still running.", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (msg == DialogResult.Yes)
                     {
                         msgAlreadyShown = true;
@@ -2460,6 +2430,9 @@ namespace PlexDL.UI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            //TEMPORARY (FOR TESTING A NEW FEATURE)
+            //frmChromecast frm = new frmChromecast();
+            //frm.ShowDialog();
             if (settings.Generic.AnimationSpeed > 0)
             {
                 Opacity = 0;      //first the opacity is 0
@@ -2480,17 +2453,17 @@ namespace PlexDL.UI
                 }
 
                 addToLog("Processing Fonts");
-                ROBOTO_MEDIUM_12 = new Font(LoadFont(Resources.Roboto_Medium), 12f);
-                ROBOTO_MEDIUM_10 = new Font(LoadFont(Resources.Roboto_Medium), 10f);
-                ROBOTO_REGULAR_11 = new Font(LoadFont(Resources.Roboto_Regular), 11f);
-                ROBOTO_MEDIUM_11 = new Font(LoadFont(Resources.Roboto_Medium), 11f);
+                ROBOTO_MEDIUM_12 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Medium), 12f);
+                ROBOTO_MEDIUM_10 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Medium), 10f);
+                ROBOTO_REGULAR_11 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Regular), 11f);
+                ROBOTO_MEDIUM_11 = new Font(LoadFont(PlexDL.Properties.Resources.Roboto_Medium), 11f);
 
                 addToLog("PlexDL Started");
             }
             catch (Exception ex)
             {
                 recordException(ex.Message, "StartupError");
-                MetroSetMessageBox.Show(this, "Startup Error:\n\n" + ex.ToString(), "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Startup Error:\n\n" + ex.ToString(), "Startup Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
@@ -2507,6 +2480,7 @@ namespace PlexDL.UI
             string key = (string)e.Arguments[0];
             try
             {
+
                 addToLog("Requesting ibrary contents");
                 string contentUri = uri + key + "/all/?X-Plex-Token=";
                 XmlDocument contentXml = GetXMLTransaction(contentUri);
@@ -2526,15 +2500,15 @@ namespace PlexDL.UI
                         switch ((int)response.StatusCode)
                         {
                             case 401:
-                                MetroSetMessageBox.Show(this, "The web server denied access to the resource. Check your token and try again. (401)");
+                                MessageBox.Show("The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
-                                MetroSetMessageBox.Show(this, "The web server couldn't serve the request because it couldn't find the resource specified. (404)");
+                                MessageBox.Show("The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
-                                MetroSetMessageBox.Show(this, "The web server couldn't serve the request because the request was bad. (400)");
+                                MessageBox.Show("The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
                     }
@@ -2551,7 +2525,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 recordException(ex.Message, "UpdateLibraryError");
-                MetroSetMessageBox.Show(this, ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
         }
@@ -2613,7 +2587,7 @@ namespace PlexDL.UI
                     index = GetTableIndexFromDGV(dgvContent, titlesTable);
                 }
 
-                //MetroSetMessageBox.Show(this, index.ToString());
+                //MessageBox.Show(index.ToString());
 
                 if (IsTVShow)
                 {
@@ -2633,7 +2607,7 @@ namespace PlexDL.UI
                 if (!(address == settings.ConnectionInfo.PlexAddress))
                 {
                     doNotAttemptAgain = false;
-                    //MetroSetMessageBox.Show(this, "attempted connection");
+                    //MessageBox.Show("attempted connection");
                     doConnectFromSelectedServer();
                 }
             }
@@ -2650,7 +2624,7 @@ namespace PlexDL.UI
                 //deprecated (planned reintroduction)
                 string uri = getBaseUri(true);
                 XmlDocument reply = (XmlDocument)PlexDL.WaitWindow.WaitWindow.Show(GetXMLTransactionWorker, "Connecting", new object[] { uri });
-                MetroSetMessageBox.Show(this, "Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connection successful!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (WebException ex)
             {
@@ -2664,26 +2638,26 @@ namespace PlexDL.UI
                         switch ((int)response.StatusCode)
                         {
                             case 401:
-                                MetroSetMessageBox.Show(this, "The web server denied access to the resource. Check your token and try again. (401)");
+                                MessageBox.Show("The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
-                                MetroSetMessageBox.Show(this, "The web server couldn't serve the request because it couldn't find the resource specified. (404)");
+                                MessageBox.Show("The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
-                                MetroSetMessageBox.Show(this, "The web server couldn't serve the request because the request was bad. (400)");
+                                MessageBox.Show("The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
                     }
                     else
                     {
-                        MetroSetMessageBox.Show(this, "Unknown status code; the server failed to serve the request. (?)");
+                        MessageBox.Show("Unknown status code; the server failed to serve the request. (?)");
                     }
                 }
                 else
                 {
-                    MetroSetMessageBox.Show(this, "An unknown error occurred:\n\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An unknown error occurred:\n\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return;
             }
@@ -2710,13 +2684,13 @@ namespace PlexDL.UI
                     }
                     else
                     {
-                        MetroSetMessageBox.Show(this, "No internet connection", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No internet connection", "Network Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
                     Disconnect();
-                    MetroSetMessageBox.Show(this, "Disconnected from server", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Disconnected from server", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (WebException ex)
@@ -2731,26 +2705,26 @@ namespace PlexDL.UI
                         switch ((int)response.StatusCode)
                         {
                             case 401:
-                                MetroSetMessageBox.Show(this, "The web server denied access to the resource. Check your token and try again. (401)");
+                                MessageBox.Show("The web server denied access to the resource. Check your token and try again. (401)");
                                 break;
 
                             case 404:
-                                MetroSetMessageBox.Show(this, "The web server couldn't serve the request because it couldn't find the resource specified. (404)");
+                                MessageBox.Show("The web server couldn't serve the request because it couldn't find the resource specified. (404)");
                                 break;
 
                             case 400:
-                                MetroSetMessageBox.Show(this, "The web server couldn't serve the request because the request was bad. (400)");
+                                MessageBox.Show("The web server couldn't serve the request because the request was bad. (400)");
                                 break;
                         }
                     }
                     else
                     {
-                        MetroSetMessageBox.Show(this, "Unknown status code; the server failed to serve the request. (?)");
+                        MessageBox.Show("Unknown status code; the server failed to serve the request. (?)");
                     }
                 }
                 else
                 {
-                    MetroSetMessageBox.Show(this, "An unknown error occurred:\n\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("An unknown error occurred:\n\n" + ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 return;
             }
@@ -2803,7 +2777,7 @@ namespace PlexDL.UI
             if (IsContentSortingEnabled)
             {
                 string name = dgvContent.SortedColumn.Name;
-                //MetroSetMessageBox.Show(this, name);
+                //MessageBox.Show(name);
                 if (!IsFiltered)
                 {
                     if (dgvContent.SortOrder == SortOrder.Descending)
@@ -2819,7 +2793,7 @@ namespace PlexDL.UI
                         titlesTable.DefaultView.Sort = "";
                     }
                     titlesTable = titlesTable.DefaultView.ToTable();
-                    //MetroSetMessageBox.Show(this, "Titles Table:" + titlesTable.Rows.Count + "\nGridView:" + dgvContent.Rows.Count);
+                    //MessageBox.Show("Titles Table:" + titlesTable.Rows.Count + "\nGridView:" + dgvContent.Rows.Count);
                 }
                 else
                 {
@@ -2836,7 +2810,7 @@ namespace PlexDL.UI
                         filteredTable.DefaultView.Sort = "";
                     }
                     filteredTable = filteredTable.DefaultView.ToTable();
-                    //MetroSetMessageBox.Show(this, "Filtered Table:" + filteredTable.Rows.Count + "\nGridView:" + dgvContent.Rows.Count);
+                    //MessageBox.Show("Filtered Table:" + filteredTable.Rows.Count + "\nGridView:" + dgvContent.Rows.Count);
                 }
             }
             */
@@ -2937,7 +2911,7 @@ namespace PlexDL.UI
             }
         }
 
-        public static bool _IsPrivate(string ipAddress)
+        private bool _IsPrivate(string ipAddress)
         {
             int[] ipParts = ipAddress.Split(new String[] { "." }, StringSplitOptions.RemoveEmptyEntries)
                                      .Select(s => int.Parse(s)).ToArray();
@@ -3012,7 +2986,7 @@ namespace PlexDL.UI
             catch (Exception ex)
             {
                 MessageBox.Show("Relay Retrieval Error\n\n" + ex.ToString(), "Relay Data Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Home.recordException(ex.Message, "GetRelaysError");
+                recordException(ex.Message, "GetRelaysError");
                 return new List<Server>();
             }
         }
@@ -3038,7 +3012,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    MetroSetMessageBox.Show(this, "You cannot stream " + stream.StreamInformation.ContentTitle + " because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("You cannot stream " + stream.StreamInformation.ContentTitle + " because a download is already running. Cancel the download before attempting to stream within PlexDL.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else if (settings.Player.PlaybackEngine == PlaybackMode.VLCPlayer)
@@ -3068,7 +3042,7 @@ namespace PlexDL.UI
                     }
                     else
                     {
-                        MetroSetMessageBox.Show(this, "No episode is selected", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No episode is selected", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -3145,7 +3119,7 @@ namespace PlexDL.UI
                 }
                 else
                 {
-                    MetroSetMessageBox.Show(this, "You cannot view metadata while an internal download is running");
+                    MessageBox.Show("You cannot view metadata while an internal download is running");
                 }
             }
             else if (dgvContent.Rows.Count == 0)
@@ -3167,7 +3141,7 @@ namespace PlexDL.UI
 
         #endregion Events
 
-        private void lblViewFullLog_LinkClicked(object sender, EventArgs e)
+        private void lblViewFullLog_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             using (LogViewer frm = new LogViewer())
                 frm.ShowDialog();
@@ -3189,7 +3163,7 @@ namespace PlexDL.UI
                 }
                 else if (!int.TryParse(ipt.txt, out int r))
                 {
-                    MetroSetMessageBox.Show(this, "Section key ust be numeric", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Section key ust be numeric", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {

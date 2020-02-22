@@ -40,16 +40,15 @@
     <ApplicationIcon>Resources\baseline_cloud_download_black_48dp.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="libbrhscgui, Version=1.0.7261.35271, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\source\repos\PlexDL_materialskin\PlexDL\bin\Release\libbrhscgui.dll</HintPath>
+    <Reference Include="libbrhscgui">
+      <HintPath>D:\Documents\SharpDevelop Projects\libbrhscgui\libbrhscgui\bin\Debug\libbrhscgui.dll</HintPath>
     </Reference>
-    <Reference Include="MetroSet UI, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="MaterialSkin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\MetroSet UI.dll</HintPath>
+      <HintPath>bin\Debug\MaterialSkin.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\..\..\..\..\source\repos\csharp-plex-api-master\PlexApi\bin\Debug\RestSharp.dll</HintPath>
+      <HintPath>..\..\csharp-plex-api-master\PlexApi\bin\Debug\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -78,20 +77,11 @@
     <Compile Include="AltoHTTP\Interfaces\IDownloader.cs" />
     <Compile Include="AltoHTTP\Interfaces\IQueue.cs" />
     <Compile Include="Common\AppOptions.cs" />
-    <Compile Include="Common\BrowserLauncher.cs" />
-    <Compile Include="Common\Caching\Helpers.cs" />
-    <Compile Include="Common\Caching\ServerCaching.cs" />
-    <Compile Include="Common\Caching\ThumbCaching.cs" />
-    <Compile Include="Common\Caching\XMLCaching.cs" />
     <Compile Include="Common\Methods.cs" />
-    <Compile Include="Common\SearchOptions.cs" />
-    <Compile Include="Common\StringVar.cs" />
     <Compile Include="Common\Structures.cs" />
-    <Compile Include="Common\Components\Components.cs">
+    <Compile Include="Common\Components.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Common\UnhandledExceptionHandler.cs" />
-    <Compile Include="Common\VLCLauncher.cs" />
     <Compile Include="Player\CursorHide.cs" />
     <Compile Include="Player\DisplayClones.cs" />
     <Compile Include="Player\InfoLabel.cs" />
@@ -120,6 +110,12 @@
     <Compile Include="PlexAPI\Utils.cs" />
     <Compile Include="PlexAPI\Video.cs" />
     <Compile Include="PlexAPI\Writer.cs" />
+    <Compile Include="UI\Chromecast.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\Chromecast.Designer.cs">
+      <DependentUpon>Chromecast.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Connect.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -131,6 +127,12 @@
     </Compile>
     <Compile Include="UI\DirectConnect.Designer.cs">
       <DependentUpon>DirectConnect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\DownloadManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\DownloadManager.Designer.cs">
+      <DependentUpon>DownloadManager.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\Home.cs">
       <SubType>Form</SubType>
@@ -170,11 +172,17 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WaitWindow\WaitWindowGUI.Designer.cs" />
+    <EmbeddedResource Include="UI\Chromecast.resx">
+      <DependentUpon>Chromecast.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\Connect.resx">
       <DependentUpon>Connect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\DirectConnect.resx">
       <DependentUpon>DirectConnect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\DownloadManager.resx">
+      <DependentUpon>DownloadManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\Home.resx">
       <DependentUpon>Home.cs</DependentUpon>
@@ -198,7 +206,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="WaitWindow\WaitWindowGUI.resx" />
-    <None Include="packages.config" />
     <None Include="Properties\packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -231,54 +238,6 @@
     <None Include="Resources\baseline_folder_open_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\VLC.jpg" />
-    <None Include="Resources\VLC.png" />
-    <None Include="Resources\white\baseline_refresh_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_refresh_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_directions_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_directions_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_backup_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_backup_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_video_library_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_video_library_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_stop_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_stop_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_skip_previous_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_skip_previous_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_skip_next_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_skip_next_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_signal_wifi_off_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_signal_wifi_off_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_signal_wifi_4_bar_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_signal_wifi_4_bar_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_search_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_search_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_save_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_save_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_rss_feed_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_rss_feed_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_power_off_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_power_off_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_power_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_power_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_play_arrow_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_play_arrow_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_pause_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_pause_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_folder_open_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_folder_open_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_fast_rewind_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_fast_rewind_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_fast_forward_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_fast_forward_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_dvr_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_dvr_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_cloud_download_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_cloud_download_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_cancel_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_cancel_black_18dp_white.png" />
-    <None Include="Resources\white\baseline_book_black_48dp_white.png" />
-    <None Include="Resources\white\baseline_book_black_18dp_white.png" />
     <None Include="Resources\baseline_video_library_black_48dp.png" />
     <None Include="Resources\baseline_video_library_black_18dp.png" />
     <None Include="Resources\baseline_signal_wifi_off_black_48dp.png" />
@@ -298,8 +257,6 @@
     <None Include="Resources\image-not-available-png-8.png" />
     <None Include="Resources\baseline_book_black_18dp.png" />
     <None Include="Resources\baseline_book_black_48dp.png" />
-    <None Include="Resources\baseline_backup_black_18dp.png" />
-    <None Include="Resources\baseline_backup_black_48dp.png" />
     <Content Include="Resources\baseline_cloud_download_black_48dp.ico" />
     <Content Include="Resources\baseline_cancel_black_48dp.png" />
     <None Include="Resources\baseline_pause_black_18dp.png" />
@@ -315,28 +272,13 @@
     <None Include="Resources\baseline_fast_rewind_black_48dp.png" />
     <None Include="Resources\baseline_dvr_black_18dp.png" />
     <None Include="Resources\baseline_dvr_black_48dp.png" />
-    <None Include="Resources\baseline_directions_black_18dp.png" />
-    <None Include="Resources\baseline_directions_black_48dp.png" />
     <Content Include="Resources\baseline_pause_black_48dp.png" />
     <Content Include="Resources\baseline_play_arrow_black_48dp.png" />
     <Content Include="Resources\baseline_power_off_black_48dp.png" />
-    <None Include="Resources\baseline_refresh_black_18dp.png" />
-    <None Include="Resources\baseline_refresh_black_48dp.png" />
     <Content Include="Resources\baseline_rss_feed_black_48dp.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="WMPLib">
-      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

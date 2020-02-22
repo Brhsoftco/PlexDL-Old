@@ -63,59 +63,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_backup_black_18dp {
-            get {
-                object obj = ResourceManager.GetObject("baseline_backup_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_backup_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_backup_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_backup_black_48dp {
-            get {
-                object obj = ResourceManager.GetObject("baseline_backup_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_backup_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_backup_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_book_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_book_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_book_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_book_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -133,29 +83,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_book_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_book_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_cancel_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_cancel_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_cancel_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_cancel_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -173,29 +103,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_cancel_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_cancel_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_cloud_download_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_cloud_download_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_cloud_download_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_cloud_download_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -213,69 +123,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_cloud_download_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_cloud_download_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_directions_black_18dp {
-            get {
-                object obj = ResourceManager.GetObject("baseline_directions_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_directions_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_directions_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_directions_black_48dp {
-            get {
-                object obj = ResourceManager.GetObject("baseline_directions_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_directions_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_directions_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_dvr_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_dvr_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_dvr_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_dvr_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -293,29 +143,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_dvr_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_dvr_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_fast_forward_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_forward_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_fast_forward_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_fast_forward_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -333,29 +163,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_fast_forward_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_fast_forward_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_fast_rewind_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_fast_rewind_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_fast_rewind_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_fast_rewind_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -373,29 +183,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_fast_rewind_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_fast_rewind_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_folder_open_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_folder_open_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_folder_open_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_folder_open_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -413,29 +203,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_folder_open_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_folder_open_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_pause_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_pause_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_pause_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_pause_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -453,29 +223,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_pause_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_pause_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_play_arrow_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_play_arrow_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_play_arrow_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_play_arrow_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -493,29 +243,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_play_arrow_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_play_arrow_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_power_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_power_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_power_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -533,29 +263,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_power_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_power_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_power_off_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_power_off_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_power_off_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_power_off_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -573,69 +283,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_power_off_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_power_off_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_refresh_black_18dp {
-            get {
-                object obj = ResourceManager.GetObject("baseline_refresh_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_refresh_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_refresh_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_refresh_black_48dp {
-            get {
-                object obj = ResourceManager.GetObject("baseline_refresh_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_refresh_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_refresh_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_rss_feed_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_rss_feed_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_rss_feed_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_rss_feed_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -653,29 +303,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_rss_feed_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_rss_feed_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_save_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_save_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_save_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_save_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -693,29 +323,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_save_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_save_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_search_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_search_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_search_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_search_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -733,29 +343,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_search_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_search_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -773,29 +363,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_signal_wifi_4_bar_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_signal_wifi_4_bar_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_signal_wifi_off_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_signal_wifi_off_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_signal_wifi_off_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_signal_wifi_off_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -813,29 +383,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_signal_wifi_off_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_signal_wifi_off_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_skip_next_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_next_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_skip_next_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_skip_next_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -853,29 +403,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_skip_next_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_skip_next_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_skip_previous_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_skip_previous_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_skip_previous_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_skip_previous_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -893,29 +423,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_skip_previous_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_skip_previous_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_stop_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_stop_black_18dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_stop_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_stop_black_18dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -933,16 +443,6 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_stop_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_stop_black_48dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_video_library_black_18dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_video_library_black_18dp", resourceCulture);
@@ -953,29 +453,9 @@ namespace PlexDL.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap baseline_video_library_black_18dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_video_library_black_18dp_white", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap baseline_video_library_black_48dp {
             get {
                 object obj = ResourceManager.GetObject("baseline_video_library_black_48dp", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap baseline_video_library_black_48dp_white {
-            get {
-                object obj = ResourceManager.GetObject("baseline_video_library_black_48dp_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1007,16 +487,6 @@ namespace PlexDL.Properties {
             get {
                 object obj = ResourceManager.GetObject("Roboto_Regular", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap VLC {
-            get {
-                object obj = ResourceManager.GetObject("VLC", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

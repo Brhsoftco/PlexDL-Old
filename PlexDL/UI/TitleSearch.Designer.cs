@@ -28,189 +28,138 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            MetroSet_UI.Extensions.ImageSet imageSet1 = new MetroSet_UI.Extensions.ImageSet();
-            MetroSet_UI.Extensions.ImageSet imageSet2 = new MetroSet_UI.Extensions.ImageSet();
-            this.btnStartSearch = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.btnCancelSearch = new MetroSet_UI.Controls.MetroSetEllipse();
-            this.cbxSearchColumn = new MetroSet_UI.Controls.MetroSetComboBox();
-            this.lblSearchField = new MetroSet_UI.Controls.MetroSetLabel();
-            this.chkDirectMatch = new MetroSet_UI.Controls.MetroSetCheckBox();
-            this.txtSearchTerm = new MetroSet_UI.Controls.MetroSetTextBox();
-            this.tipMain = new System.Windows.Forms.ToolTip(this.components);
+            this.cbxSearchColumn = new System.Windows.Forms.ComboBox();
+            this.txtSearchTerm = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.chkDirectMatch = new MaterialSkin.Controls.MaterialCheckBox();
+            this.mtlMain = new MaterialSkin.Controls.MaterialDivider();
+            this.btnStartSearch = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.lblSearchField = new MaterialSkin.Controls.MaterialLabel();
+            this.btnCancelSearch = new MaterialSkin.Controls.MaterialRaisedButton();
             this.SuspendLayout();
-            // 
-            // btnStartSearch
-            // 
-            this.btnStartSearch.BorderThickness = 0;
-            this.btnStartSearch.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnStartSearch.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnStartSearch.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnStartSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnStartSearch.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnStartSearch.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnStartSearch.HoverTextColor = System.Drawing.Color.White;
-            this.btnStartSearch.Image = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            imageSet1.Focus = global::PlexDL.Properties.Resources.baseline_search_black_18dp_white;
-            imageSet1.Idle = global::PlexDL.Properties.Resources.baseline_search_black_18dp;
-            this.btnStartSearch.ImageSet = imageSet1;
-            this.btnStartSearch.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnStartSearch.Location = new System.Drawing.Point(311, 215);
-            this.btnStartSearch.Name = "btnStartSearch";
-            this.btnStartSearch.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnStartSearch.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnStartSearch.NormalTextColor = System.Drawing.Color.Black;
-            this.btnStartSearch.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnStartSearch.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnStartSearch.PressTextColor = System.Drawing.Color.White;
-            this.btnStartSearch.Size = new System.Drawing.Size(44, 36);
-            this.btnStartSearch.Style = MetroSet_UI.Design.Style.Light;
-            this.btnStartSearch.StyleManager = null;
-            this.btnStartSearch.TabIndex = 4;
-            this.btnStartSearch.ThemeAuthor = "Narwin";
-            this.btnStartSearch.ThemeName = "MetroLite";
-            this.tipMain.SetToolTip(this.btnStartSearch, "Start Content Search");
-            this.btnStartSearch.Click += new System.EventHandler(this.btnStartSearch_Click);
-            // 
-            // btnCancelSearch
-            // 
-            this.btnCancelSearch.BorderThickness = 0;
-            this.btnCancelSearch.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnCancelSearch.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.btnCancelSearch.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.btnCancelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.btnCancelSearch.HoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnCancelSearch.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.btnCancelSearch.HoverTextColor = System.Drawing.Color.White;
-            this.btnCancelSearch.Image = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
-            imageSet2.Focus = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp_white;
-            imageSet2.Idle = global::PlexDL.Properties.Resources.baseline_cancel_black_18dp;
-            this.btnCancelSearch.ImageSet = imageSet2;
-            this.btnCancelSearch.ImageSize = new System.Drawing.Size(28, 28);
-            this.btnCancelSearch.Location = new System.Drawing.Point(261, 215);
-            this.btnCancelSearch.Name = "btnCancelSearch";
-            this.btnCancelSearch.NormalBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.btnCancelSearch.NormalColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.btnCancelSearch.NormalTextColor = System.Drawing.Color.Black;
-            this.btnCancelSearch.PressBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnCancelSearch.PressColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.btnCancelSearch.PressTextColor = System.Drawing.Color.White;
-            this.btnCancelSearch.Size = new System.Drawing.Size(44, 36);
-            this.btnCancelSearch.Style = MetroSet_UI.Design.Style.Light;
-            this.btnCancelSearch.StyleManager = null;
-            this.btnCancelSearch.TabIndex = 3;
-            this.btnCancelSearch.ThemeAuthor = "Narwin";
-            this.btnCancelSearch.ThemeName = "MetroLite";
-            this.tipMain.SetToolTip(this.btnCancelSearch, "Cancel Content Search");
-            this.btnCancelSearch.Click += new System.EventHandler(this.btnCancelSearch_Click);
             // 
             // cbxSearchColumn
             // 
-            this.cbxSearchColumn.AllowDrop = true;
-            this.cbxSearchColumn.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.cbxSearchColumn.BackColor = System.Drawing.Color.Transparent;
-            this.cbxSearchColumn.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.cbxSearchColumn.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.cbxSearchColumn.CausesValidation = false;
-            this.cbxSearchColumn.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.cbxSearchColumn.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.cbxSearchColumn.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.cbxSearchColumn.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cbxSearchColumn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxSearchColumn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
+            this.cbxSearchColumn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbxSearchColumn.FormattingEnabled = true;
-            this.cbxSearchColumn.ItemHeight = 20;
-            this.cbxSearchColumn.Location = new System.Drawing.Point(24, 177);
+            this.cbxSearchColumn.Location = new System.Drawing.Point(24, 179);
             this.cbxSearchColumn.Name = "cbxSearchColumn";
-            this.cbxSearchColumn.SelectedItemBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.cbxSearchColumn.SelectedItemForeColor = System.Drawing.Color.White;
-            this.cbxSearchColumn.Size = new System.Drawing.Size(331, 26);
-            this.cbxSearchColumn.Style = MetroSet_UI.Design.Style.Light;
-            this.cbxSearchColumn.StyleManager = null;
-            this.cbxSearchColumn.TabIndex = 5;
-            this.cbxSearchColumn.ThemeAuthor = "Narwin";
-            this.cbxSearchColumn.ThemeName = "MetroLite";
+            this.cbxSearchColumn.Size = new System.Drawing.Size(331, 21);
+            this.cbxSearchColumn.TabIndex = 2;
+            // 
+            // txtSearchTerm
+            // 
+            this.txtSearchTerm.BackColor = System.Drawing.Color.White;
+            this.txtSearchTerm.Depth = 0;
+            this.txtSearchTerm.Hint = "Search Term";
+            this.txtSearchTerm.Location = new System.Drawing.Point(24, 95);
+            this.txtSearchTerm.MaxLength = 32767;
+            this.txtSearchTerm.MouseState = MaterialSkin.MouseState.HOVER;
+            this.txtSearchTerm.Name = "txtSearchTerm";
+            this.txtSearchTerm.PasswordChar = '\0';
+            this.txtSearchTerm.SelectedText = "";
+            this.txtSearchTerm.SelectionLength = 0;
+            this.txtSearchTerm.SelectionStart = 0;
+            this.txtSearchTerm.Size = new System.Drawing.Size(331, 23);
+            this.txtSearchTerm.TabIndex = 0;
+            this.txtSearchTerm.TabStop = false;
+            this.txtSearchTerm.UseSystemPasswordChar = false;
+            // 
+            // chkDirectMatch
+            // 
+            this.chkDirectMatch.AutoSize = true;
+            this.chkDirectMatch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.chkDirectMatch.Depth = 0;
+            this.chkDirectMatch.Font = new System.Drawing.Font("Roboto", 10F);
+            this.chkDirectMatch.Location = new System.Drawing.Point(24, 121);
+            this.chkDirectMatch.Margin = new System.Windows.Forms.Padding(0);
+            this.chkDirectMatch.MouseLocation = new System.Drawing.Point(-1, -1);
+            this.chkDirectMatch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.chkDirectMatch.Name = "chkDirectMatch";
+            this.chkDirectMatch.Ripple = true;
+            this.chkDirectMatch.Size = new System.Drawing.Size(109, 30);
+            this.chkDirectMatch.TabIndex = 1;
+            this.chkDirectMatch.Text = "Direct Match";
+            this.chkDirectMatch.UseVisualStyleBackColor = false;
+            // 
+            // mtlMain
+            // 
+            this.mtlMain.BackColor = System.Drawing.SystemColors.Control;
+            this.mtlMain.Depth = 0;
+            this.mtlMain.Location = new System.Drawing.Point(12, 75);
+            this.mtlMain.MouseState = MaterialSkin.MouseState.HOVER;
+            this.mtlMain.Name = "mtlMain";
+            this.mtlMain.Size = new System.Drawing.Size(355, 187);
+            this.mtlMain.TabIndex = 0;
+            this.mtlMain.Text = "materialDivider1";
+            // 
+            // btnStartSearch
+            // 
+            this.btnStartSearch.AutoSize = true;
+            this.btnStartSearch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnStartSearch.Depth = 0;
+            this.btnStartSearch.Icon = null;
+            this.btnStartSearch.Location = new System.Drawing.Point(282, 215);
+            this.btnStartSearch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnStartSearch.Name = "btnStartSearch";
+            this.btnStartSearch.Primary = true;
+            this.btnStartSearch.Size = new System.Drawing.Size(73, 36);
+            this.btnStartSearch.TabIndex = 4;
+            this.btnStartSearch.Text = "Search";
+            this.btnStartSearch.UseVisualStyleBackColor = true;
+            this.btnStartSearch.Click += new System.EventHandler(this.btnStartSearch_Click);
             // 
             // lblSearchField
             // 
             this.lblSearchField.AutoSize = true;
-            this.lblSearchField.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lblSearchField.Location = new System.Drawing.Point(24, 157);
+            this.lblSearchField.Depth = 0;
+            this.lblSearchField.Font = new System.Drawing.Font("Roboto", 11F);
+            this.lblSearchField.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.lblSearchField.Location = new System.Drawing.Point(20, 157);
+            this.lblSearchField.MouseState = MaterialSkin.MouseState.HOVER;
             this.lblSearchField.Name = "lblSearchField";
-            this.lblSearchField.Size = new System.Drawing.Size(87, 17);
-            this.lblSearchField.Style = MetroSet_UI.Design.Style.Light;
-            this.lblSearchField.StyleManager = null;
-            this.lblSearchField.TabIndex = 6;
+            this.lblSearchField.Size = new System.Drawing.Size(91, 19);
+            this.lblSearchField.TabIndex = 3;
             this.lblSearchField.Text = "Search Field";
-            this.lblSearchField.ThemeAuthor = "Narwin";
-            this.lblSearchField.ThemeName = "MetroLite";
             // 
-            // chkDirectMatch
+            // btnCancelSearch
             // 
-            this.chkDirectMatch.BackColor = System.Drawing.Color.Transparent;
-            this.chkDirectMatch.BackgroundColor = System.Drawing.Color.White;
-            this.chkDirectMatch.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.chkDirectMatch.Checked = false;
-            this.chkDirectMatch.CheckSignColor = System.Drawing.Color.FromArgb(((int)(((byte)(65)))), ((int)(((byte)(177)))), ((int)(((byte)(225)))));
-            this.chkDirectMatch.CheckState = MetroSet_UI.Enums.CheckState.Unchecked;
-            this.chkDirectMatch.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.chkDirectMatch.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(205)))), ((int)(((byte)(205)))), ((int)(((byte)(205)))));
-            this.chkDirectMatch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.chkDirectMatch.Location = new System.Drawing.Point(24, 126);
-            this.chkDirectMatch.Name = "chkDirectMatch";
-            this.chkDirectMatch.SignStyle = MetroSet_UI.Enums.SignStyle.Sign;
-            this.chkDirectMatch.Size = new System.Drawing.Size(331, 16);
-            this.chkDirectMatch.Style = MetroSet_UI.Design.Style.Light;
-            this.chkDirectMatch.StyleManager = null;
-            this.chkDirectMatch.TabIndex = 7;
-            this.chkDirectMatch.Text = "Direct Match";
-            this.chkDirectMatch.ThemeAuthor = "Narwin";
-            this.chkDirectMatch.ThemeName = "MetroLite";
-            // 
-            // txtSearchTerm
-            // 
-            this.txtSearchTerm.AutoCompleteCustomSource = null;
-            this.txtSearchTerm.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
-            this.txtSearchTerm.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
-            this.txtSearchTerm.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.txtSearchTerm.DisabledBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(204)))), ((int)(((byte)(204)))));
-            this.txtSearchTerm.DisabledBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(155)))), ((int)(((byte)(155)))));
-            this.txtSearchTerm.DisabledForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(136)))), ((int)(((byte)(136)))), ((int)(((byte)(136)))));
-            this.txtSearchTerm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.txtSearchTerm.HoverColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(102)))), ((int)(((byte)(102)))));
-            this.txtSearchTerm.Image = null;
-            this.txtSearchTerm.Lines = null;
-            this.txtSearchTerm.Location = new System.Drawing.Point(24, 90);
-            this.txtSearchTerm.MaxLength = 64;
-            this.txtSearchTerm.Multiline = false;
-            this.txtSearchTerm.Name = "txtSearchTerm";
-            this.txtSearchTerm.ReadOnly = false;
-            this.txtSearchTerm.Size = new System.Drawing.Size(331, 26);
-            this.txtSearchTerm.Style = MetroSet_UI.Design.Style.Light;
-            this.txtSearchTerm.StyleManager = null;
-            this.txtSearchTerm.TabIndex = 8;
-            this.txtSearchTerm.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
-            this.txtSearchTerm.ThemeAuthor = "Narwin";
-            this.txtSearchTerm.ThemeName = "MetroLite";
-            this.txtSearchTerm.UseSystemPasswordChar = false;
-            this.txtSearchTerm.WatermarkText = "Search Term (Limited to 64 Characters)";
+            this.btnCancelSearch.AutoSize = true;
+            this.btnCancelSearch.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnCancelSearch.Depth = 0;
+            this.btnCancelSearch.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancelSearch.Icon = null;
+            this.btnCancelSearch.Location = new System.Drawing.Point(203, 215);
+            this.btnCancelSearch.MouseState = MaterialSkin.MouseState.HOVER;
+            this.btnCancelSearch.Name = "btnCancelSearch";
+            this.btnCancelSearch.Primary = true;
+            this.btnCancelSearch.Size = new System.Drawing.Size(73, 36);
+            this.btnCancelSearch.TabIndex = 3;
+            this.btnCancelSearch.Text = "Cancel";
+            this.btnCancelSearch.UseVisualStyleBackColor = true;
+            this.btnCancelSearch.Click += new System.EventHandler(this.btnCancelSearch_Click);
             // 
             // SearchForm
             // 
-            this.AllowResize = false;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
+            this.AcceptButton = this.btnStartSearch;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(379, 271);
+            this.CancelButton = this.btnCancelSearch;
+            this.ClientSize = new System.Drawing.Size(379, 274);
             this.ControlBox = false;
-            this.Controls.Add(this.txtSearchTerm);
-            this.Controls.Add(this.chkDirectMatch);
-            this.Controls.Add(this.lblSearchField);
-            this.Controls.Add(this.cbxSearchColumn);
             this.Controls.Add(this.btnCancelSearch);
+            this.Controls.Add(this.lblSearchField);
             this.Controls.Add(this.btnStartSearch);
+            this.Controls.Add(this.chkDirectMatch);
+            this.Controls.Add(this.cbxSearchColumn);
+            this.Controls.Add(this.txtSearchTerm);
+            this.Controls.Add(this.mtlMain);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "SearchForm";
             this.ShowIcon = false;
+            this.Sizable = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Search for Content";
             this.Load += new System.EventHandler(this.frmSearch_Load);
@@ -220,12 +169,12 @@
         }
 
         #endregion
-        private MetroSet_UI.Controls.MetroSetEllipse btnStartSearch;
-        private MetroSet_UI.Controls.MetroSetEllipse btnCancelSearch;
-        private MetroSet_UI.Controls.MetroSetComboBox cbxSearchColumn;
-        private MetroSet_UI.Controls.MetroSetLabel lblSearchField;
-        private MetroSet_UI.Controls.MetroSetCheckBox chkDirectMatch;
-        private MetroSet_UI.Controls.MetroSetTextBox txtSearchTerm;
-        private System.Windows.Forms.ToolTip tipMain;
+        private System.Windows.Forms.ComboBox cbxSearchColumn;
+        private MaterialSkin.Controls.MaterialSingleLineTextField txtSearchTerm;
+        private MaterialSkin.Controls.MaterialCheckBox chkDirectMatch;
+        private MaterialSkin.Controls.MaterialDivider mtlMain;
+        private MaterialSkin.Controls.MaterialRaisedButton btnStartSearch;
+        private MaterialSkin.Controls.MaterialLabel lblSearchField;
+        private MaterialSkin.Controls.MaterialRaisedButton btnCancelSearch;
     }
 }

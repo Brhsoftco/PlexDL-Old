@@ -1,4 +1,4 @@
-﻿using MetroSet_UI.Forms;
+﻿using MaterialSkin.Controls;
 using PlexDL.Common.Structures;
 using PlexDL.WaitWindow;
 using System;
@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace PlexDL.UI
 {
-    public partial class DirectConnect : MetroSetForm
+    public partial class DirectConnect : MaterialForm
     {
         public ConnectionInformation ConnectionInfo { get; set; } = new ConnectionInformation();
 
