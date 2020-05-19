@@ -1,6 +1,10 @@
-# PlexDL
-## A warning to potential adopters!
-### This version of PlexDL is no longer being worked on. Please see the revised and current version @ https://github.com/Brhsoftco/PlexDL-MetroSet_UI
+## PlexDL
+### A warning to potential adopters!
+
+### There will be no further updates to this version of PlexDL, and all issue reports will be ignored.
+#### Please see https://github.com/Brhsoftco/PlexDL for the revised and current version.
+
+---
 
 Plex Downloader/Streamer written in C#
 
